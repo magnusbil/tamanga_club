@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '04e3y9#6q_k4+wf8-m#=m-^%9ana(h-c+0ea2i2(txa*=x25%$'
+SECRET_KEY = 'ud8)$a_gz0wo&rq@83+q*unhh$sabbyh0f@#p(8w%jyjbe3mi%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.trianglemanga.club', '208.68.36.200']
+ALLOWED_HOSTS = ['.trianglemanga.club', '142.93.195.61']
 
 
 # Application definition
@@ -78,9 +78,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'tamanga_main',
         'USER': 'admin',
-        'PASSWORD': 'speakFr13ndand3tner',
+        'PASSWORD': os.getenv('DBSECRET'),
         'HOST': 'localhost',
-        'PORT': '', 
+        'PORT': '',
     }
 }
 
