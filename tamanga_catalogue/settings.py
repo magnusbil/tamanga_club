@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'catalogue'
 ]
 
 MIDDLEWARE = [
@@ -47,7 +50,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
+
+AUTH_USER_MODEL='catalogue.User'
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+        'https://localhost:80',
+)
 
 ROOT_URLCONF = 'tamanga_catalogue.urls'
 
@@ -78,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'tamanga_main',
         'USER': 'admin',
-        'PASSWORD': os.getenv('DBSECRET'),
+        'PASSWORD': os.environ['DBSECRET'],
         'HOST': 'localhost',
         'PORT': '',
     }

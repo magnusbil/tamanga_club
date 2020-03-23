@@ -1,1 +1,9 @@
+#virtualenv
 tamc/
+
+#node
+node_modules/
+npm-debug.log
+
+#django static files
+static/

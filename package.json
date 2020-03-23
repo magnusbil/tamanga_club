@@ -1,0 +1,8 @@
+{
+  "name": "tamanga_catalogue",
+  "description": "Cataloguing website for the Triangle Anime manga club internal library.",
+  "dependencies": {
+    "latest-version": "^5.1.0",
+    "npx": "^10.2.2"
+  }
+}
