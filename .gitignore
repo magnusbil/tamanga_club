@@ -2,8 +2,12 @@
 tamc/
 
 #node
-node_modules/
+*/node_modules/
 npm-debug.log
 
 #django static files
 static/
+*/__pycache__/
+
+# PyCharm
+.idea
