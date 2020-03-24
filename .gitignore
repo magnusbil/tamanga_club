@@ -7,3 +7,6 @@ npm-debug.log
 
 #django static files
 static/
+
+# PyCharm
+.idea

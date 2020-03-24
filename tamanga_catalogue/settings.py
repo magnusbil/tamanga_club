@@ -88,11 +88,11 @@ WSGI_APPLICATION = 'tamanga_catalogue.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tamanga_main',
-        'USER': 'admin',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
         'PASSWORD': os.environ['DBSECRET'],
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'db-postgresql-nyc1-36336-do-user-783079-0.a.db.ondigitalocean.com',
+        'PORT': '25060'
     }
 }
 
