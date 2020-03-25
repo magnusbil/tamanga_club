@@ -90,9 +90,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'defaultdb',
         'USER': 'doadmin',
-        'PASSWORD': os.environ['DBSECRET'],
+        'PASSWORD': os.environ.get('DATABASE_SECRET'),
         'HOST': 'db-postgresql-nyc1-36336-do-user-783079-0.a.db.ondigitalocean.com',
-        'PORT': '25060'
+        'PORT': '25060',
+        'OPTIONS': {
+            'sslmode': 'require',
+        }
     }
 }
 
