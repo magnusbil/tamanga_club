@@ -1,5 +1,5 @@
 #virtualenv
-tamc/
+venv/
 
 #node
 */node_modules/
