@@ -12,6 +12,8 @@ static/
 __pycache__
 media
 
+# vscode #
+.vscode
 
 # If you are using PyCharm #
 .idea 
