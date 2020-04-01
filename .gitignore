@@ -1,5 +1,6 @@
 #node
-*/node_modules/
+node_modules/
+frontend/node_modules/
 npm-debug.log
 
 #django static files
@@ -9,9 +10,13 @@ static/
 *.log
 *.pot
 *.pyc
-__pycache__
+__pycache__/
+catalogue/__pycache__/
+tamanga_catalogue/__pycache__/
 media
 
+# vscode #
+.vscode
 
 # If you are using PyCharm #
 .idea 
