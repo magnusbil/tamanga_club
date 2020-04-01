@@ -19,7 +19,7 @@ class Book(models.Model):
     loaned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
-        return self.series.title + " vol. " + str(self.number)
+        return Series.objects.get(pk=self.series).title + " Vol. " + str(self.number)
 
     @property
     def is_available(self):
