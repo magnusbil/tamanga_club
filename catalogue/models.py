@@ -12,15 +12,15 @@ class Series(models.Model):
 
 # Model for an individual book in a series
 class Book(models.Model):
-    series = models.ForeignKey(Series, on_delete=models.CASCADE)
+    series = models.ForeignKey(Series, on_delete=models.CASCADE, null=True)
     number = models.IntegerField()
     image = models.ImageField(null=True)
     available = models.BooleanField(default=False)
-    loaned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    loaned_to = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
-        return Series.objects.get(pk=self.series).title + " Vol. " + str(self.number)
-
+        return self.series.title + " Vol. " + str(self.number)
+    
     @property
     def is_available(self):
         return self.available

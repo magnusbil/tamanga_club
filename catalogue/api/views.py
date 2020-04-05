@@ -6,15 +6,17 @@ class SeriesListView(ListAPIView):
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
 
-class BookListView(ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class SeriesDetailView(RetrieveAPIView):
+class SeriesByTitleDetailView(RetrieveAPIView):
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
+    lookup_field = 'title'
 
-class BookDetailView(RetrieveAPIView):
+class BooksListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+class BooksBySeriesListView(ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_up = 'series'
 
