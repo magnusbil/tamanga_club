@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'shards-react';
 
-class Book extends React.Component {
+class Series extends React.Component {
   constructor(props){
     super(props);
   }
@@ -15,4 +15,4 @@ class Book extends React.Component {
   }
 }
 
-export default Book;
+export default Series;

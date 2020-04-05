@@ -6,8 +6,16 @@ class BookDetailView extends React.Component {
     super(props);
 
     this.state = {
-      data: this.props.data
+      data: {}
     }
+  }
+
+  componentDidMount(){
+    fetch("https://trianglemanga.club/catalogue/books/" + this.props.match.params.id)
+    .then(res =>  res.json())
+    .then(book => {
+      this.setState({data: book})
+    });
   }
 
   render(){
