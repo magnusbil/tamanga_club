@@ -1,5 +1,7 @@
 import React from 'react';
-import { Container } from 'shards-react';
+import {
+  Container
+} from "shards-react";
 
 class Book extends React.Component {
   constructor(props){
@@ -8,8 +10,8 @@ class Book extends React.Component {
 
   render(){
     return(
-      <Container>
-        
+      <Container >
+
       </Container>
     );
   }

@@ -11,7 +11,6 @@ import {
   Col,
   Form,
   InputGroupAddon,
-  Button,
 } from "shards-react";
 
 class SearchBar extends React.Component {
@@ -20,6 +19,7 @@ class SearchBar extends React.Component {
 
     this.state = {
       searchValue: "",
+      pulledSeriesData: {},
       redirect: false
     }
 
@@ -32,15 +32,25 @@ class SearchBar extends React.Component {
   }
 
   handleSubmit(event){
-    if(this.state.searchValue != ""){
-      this.setState({redirect: true});
+    if(this.state.searchValue !== ""){
+      fetch("https://trianglemanga.club/catalogue/series/"  + this.state.searchValue) 
+        .then(res => res.json())
+        .then(series => {
+          this.setState({pulledSeriesData: series})
+          this.setState({redirect: true});
+      }); 
     }
     event.preventDefault()
   }
 
   render(){
     if(this.state.redirect){
-      return <Redirect push to={"/series/" + this.state.searchValue}/>
+      return <Redirect push to={{
+        pathname: "/series/" + this.state.searchValue,
+        state: {
+          series: this.state.pulledSeriesData
+        }
+      }}/>
     }
     return(
       <div className="col pt-5">

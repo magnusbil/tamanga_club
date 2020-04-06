@@ -10,10 +10,6 @@ import {
 } from "shards-react";
 
 class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Navbar type="dark" theme="primary" expand="md">
