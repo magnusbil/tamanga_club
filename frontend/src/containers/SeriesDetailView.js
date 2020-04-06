@@ -13,7 +13,7 @@ class SeriesDetailView extends React.Component {
 
     this.state = {
       series: {},
-      book_list: []
+      book_list: [],
     }
   }
 
@@ -24,25 +24,28 @@ class SeriesDetailView extends React.Component {
       .then(book_list => {
         this.setState({
           series: this.props.location.state.series,
-          book_list: book_list});
+          book_list: book_list,
+        });
       });
     }
   }
 
   render(){
-    // const {book_cards} = this.state.book_list.map(function(book){
-    //   return(<Card style={{ maxWidth: "460px" }}>
-    //     <CardImg src={book.image} />
-    //     <CardBody>
-    //       <CardTitle>{this.state.series.title}</CardTitle>
-    //       <p>Vol. {book.number}</p>
-    //     </CardBody>
-    //   </Card>);
-    // });
-
+    var book_cards  = this.state.book_list.map(function(book){
+      console.log(book);
+      return (
+        <Card style={{ maxWidth: "250px"}}>
+          <CardImg src={book.image} />
+          <CardBody>
+            <CardTitle></CardTitle>
+            <p>Vol. {book.number}</p>
+          </CardBody>
+        </Card>)
+      });
+    console.log(book_cards);
     return(
       <Container>
-         {/* {book_cards} */}
+        {book_cards}
       </Container>
     );
   }
