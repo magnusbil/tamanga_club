@@ -9,7 +9,7 @@ class SeriesListView(ListAPIView):
 class SeriesByTitleDetailView(RetrieveAPIView):
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
-    lookup_field = 'title'
+    lookup_field = 'series_title'
 
 class BooksListView(ListAPIView):
     queryset = Book.objects.all()
@@ -18,5 +18,8 @@ class BooksListView(ListAPIView):
 class BooksBySeriesListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    lookup_up = 'series'
+    lookup_field = 'series'
 
+class RecentBooksView(ListAPIView):
+    queryset = Book.objects.all()[:8]
+    serializer_class = BookSerializer
