@@ -4,7 +4,9 @@ import {
   CardImg,
   CardBody,
   CardTitle,
-  Container
+  Container,
+  Col,
+  Row
 } from 'shards-react';
 
 class SeriesDetailView extends React.Component {
@@ -13,41 +15,45 @@ class SeriesDetailView extends React.Component {
 
     this.state = {
       series: {},
-      book_list: [],
     }
   }
 
   componentDidMount() { 
-    if (this.props.location.state.series) {
-      fetch("https://www.trianglemanga.club/catalogue/books/" + this.props.location.state.series.id)
-      .then(res => res.json())
-      .then(book_list => {
-        this.setState({
-          series: this.props.location.state.series,
-          book_list: book_list,
-        });
+    fetch("https://trianglemanga.club/catalogue/series/" + this.props.match.params.title)
+    .then(res => res.json())
+    .then(data => {
+      this.setState({
+        series: data,
       });
-    }
+    });
   }
 
   render(){
-    var book_cards  = this.state.book_list.map(function(book){
-      console.log(book);
+    if(this.state.series.BookList){
+      var book_cards  = this.state.series.BookList.map(function(book){
+        return (
+          <Col sm={{ size: 3, order: 2, offset: 2}} >
+            <Card>
+              <CardImg src={book.image} className="book-img"/>
+            </Card>
+          </Col>)
+        });
+      console.log(book_cards);
+      return(
+        <div className="coll pt-5">
+          <Container>
+            <Row> 
+              {book_cards}
+            </Row>
+          </Container>
+        </div>
+      );
+    }
+    else {
       return (
-        <Card style={{ maxWidth: "250px"}}>
-          <CardImg src={book.image} />
-          <CardBody>
-            <CardTitle></CardTitle>
-            <p>Vol. {book.number}</p>
-          </CardBody>
-        </Card>)
-      });
-    console.log(book_cards);
-    return(
-      <Container>
-        {book_cards}
-      </Container>
-    );
+        <Container></Container>
+      );
+    }
   }
 }
 
