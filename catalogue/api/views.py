@@ -11,13 +11,12 @@ class SeriesByTitleDetailView(RetrieveAPIView):
     serializer_class = SeriesSerializer
     lookup_field = 'title'
 
-class BookListView(ListAPIView):
+class BooksListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-
-class BookBySeriesDetailView(RetrieveAPIView):
+class BooksBySeriesListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    lookup_field = 'series'
+    lookup_up = 'series'
 
