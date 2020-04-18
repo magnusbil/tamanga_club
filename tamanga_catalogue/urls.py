@@ -22,6 +22,10 @@ from django.views.generic.base import TemplateView
 urlpatterns = [
     path('api-admin', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
-    path('catalogue/', include('catalogue.api.urls')),
-    re_path(r'(^$)', TemplateView.as_view(template_name='index.html')) 
+    path('catalogue/', include('catalogue.api.urls')), 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r'', TemplateView.as_view(template_name='index.html'))
+    #re_path(r'^(?:.*)/?$', TemplateView.as_view(template_name='index.html')) 
+]
