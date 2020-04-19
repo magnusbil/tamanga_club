@@ -2,8 +2,6 @@ import React from 'react';
 import { 
   Card,
   CardImg,
-  CardBody,
-  CardTitle,
   Container,
   Col,
   Row
@@ -34,7 +32,7 @@ class SeriesDetailView extends React.Component {
         return (
           <Col sm={{ size: 3, order: 2, offset: 2}} >
             <Card>
-              <CardImg src={book.image} className="book-img"/>
+              <CardImg src={book.cover_image} className="book-img"/>
             </Card>
           </Col>)
         });

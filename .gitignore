@@ -1,7 +1,7 @@
 #node
 node_modules/
-frontend/node_modules/
 npm-debug.log
+build/
 
 #django static files
 static/
@@ -10,9 +10,7 @@ static/
 *.log
 *.pot
 *.pyc
-__pycache__/
-catalogue/__pycache__/
-tamanga_catalogue/__pycache__/
+**/__pycache__/*
 media
 
 # vscode #
