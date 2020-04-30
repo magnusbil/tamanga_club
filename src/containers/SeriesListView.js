@@ -9,7 +9,7 @@ import {
 
 const SeriesRow = (props) => {
   return(
-    <Row className="series-row">
+    <Row className="display-row">
       {props.cards}
     </Row>
   );
