@@ -7,6 +7,14 @@ import {
   Row
 } from 'shards-react';
 
+const BookRow = (props) => {
+  return(
+    <Row className="display-row">
+      {props.cards}
+    </Row>
+  );
+}
+
 class SeriesDetailView extends React.Component {
   constructor(props) {
     super(props);
@@ -28,21 +36,27 @@ class SeriesDetailView extends React.Component {
 
   render(){
     if(this.state.series.BookList){
-      var book_cards  = this.state.series.BookList.map(function(book){
+      var cards = [];
+      var rows = [];
+      var book_cards = this.state.series.BookList.map(function(book){
         return (
-          <Col sm={{ size: 3, order: 2, offset: 2}} >
+          <Col sm={{ size: 3, order: 1, offset: 1}} >
             <Card>
               <CardImg src={book.cover_image} className="book-img"/>
             </Card>
           </Col>)
         });
-      console.log(book_cards);
+      for (var i=0; i<book_cards.length; i++){
+        cards.push(book_cards[i]);
+        if(cards.length===3 || i===book_cards.length-1){
+          rows.push(<BookRow cards={cards}></BookRow>);
+          cards = [];
+        }
+      }
       return(
         <div className="coll pt-5">
           <Container>
-            <Row> 
-              {book_cards}
-            </Row>
+              {rows}
           </Container>
         </div>
       );
