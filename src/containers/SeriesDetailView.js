@@ -28,7 +28,7 @@ class SeriesDetailView extends React.Component {
 
   render(){
     if(this.state.series.BookList){
-      var book_cards  = this.state.series.BookList.map(function(book){
+      var book_cards = this.state.series.BookList.map(function(book){
         return (
           <Col sm={{ size: 3, order: 2, offset: 2}} >
             <Card>
@@ -36,7 +36,6 @@ class SeriesDetailView extends React.Component {
             </Card>
           </Col>)
         });
-      console.log(book_cards);
       return(
         <div className="coll pt-5">
           <Container>
