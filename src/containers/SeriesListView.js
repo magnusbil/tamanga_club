@@ -71,6 +71,7 @@ class SeriesListView extends React.Component {
             </Col>
           </Row>
         </Container>
+        
       );
     }
   }

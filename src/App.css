@@ -3,6 +3,10 @@
   width:  280px;
 }
 
+.book-img:hover {
+  opacity: .7;
+}
+
 .display-row {
   margin-top: 1em; 
 }
