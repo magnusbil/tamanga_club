@@ -2,14 +2,11 @@ import React from 'react';
 import {
   Button,
   Card,
-  CardImg,
   Container,
   Col,
   Modal,
-  ModalBody,
-  ModalHeader,
   Row
-} from 'shards-react';
+} from 'react-bootstrap';
 
 const BookRow = (props) => {
   return(
@@ -55,9 +52,9 @@ class SeriesDetailView extends React.Component {
       var rows = [];
       var book_cards = this.state.series.BookList.map(function(book){
         return (
-          <Col sm={{ size: 3, order: 1, offset: 1}}>
-            <Card>
-              <CardImg src={book.cover_image} className="book-img" onClick={() => this.toggle(this.state.series.series_title)}/>
+          <Col sm={{ size: 3, order: 1, offset: 0}}>
+            <Card className="img-card">
+              <Card.Img src={book.cover_image} className="book-img" onClick={() => this.toggle(this.state.series.series_title + " Vol. " + book.volume)}/>
             </Card>
           </Col>)
         }, this);
@@ -73,12 +70,12 @@ class SeriesDetailView extends React.Component {
         <div className="coll pt-5">
           <Container>
               {rows}
-              <Modal open={show_modal} toggle={() => this.toggle()}>
-                <ModalHeader>Reserve {this.state.current_title}?</ModalHeader>
-                <ModalBody>
+              <Modal centered={true} show={show_modal} onHide={() => this.toggle()}>
+                <Modal.Header>Reserve {this.state.current_title}?</Modal.Header>
+                <Modal.Body>
                   <Button>Reserve</Button>
                   <Button onClick={() => this.toggle()}>Cancel</Button>
-                </ModalBody>
+                </Modal.Body>
               </Modal>
           </Container>
         </div>

@@ -1,11 +1,10 @@
 import React from 'react';
 import { 
   Card,
-  CardImg,
   Container,
   Col,
   Row
-} from 'shards-react';
+} from 'react-bootstrap';
 
 const SeriesRow = (props) => {
   return(
@@ -36,15 +35,13 @@ class SeriesListView extends React.Component {
     if(this.state.seriesList.length !== 0){
       var rows = [];
       var cards = [];
-      var series_cards  = this.state.seriesList.map(function(series){
+      var series_cards = this.state.seriesList.map(function(series){
       return (
-        <Col sm={{ size: 3, order: 1, offset: 0}} >
           <a href={"/series/" + series.series_title}>
-            <Card>
-              <CardImg src={series.series_cover_image} className="book-img"/>
+            <Card className="img-card">
+              <Card.Img src={series.series_cover_image} className="book-img"/>
             </Card>
-          </a>
-        </Col>)
+          </a>)
       });
       for (var i=0; i<series_cards.length; i++){
         cards.push(series_cards[i]);
