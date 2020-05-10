@@ -5,13 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Row,
   InputGroup,
-  InputGroupText,
-  FormInput,
   Container,
   Col,
   Form,
-  InputGroupAddon,
-} from "shards-react";
+} from "react-bootstrap";
 
 class SearchBar extends React.Component {
   constructor(props){
@@ -45,15 +42,15 @@ class SearchBar extends React.Component {
       <div className="col pt-5">
           <Container>
             <Row>
-              <Col sm={{ size: 8, order: 2, offset: 2}}>
+              <Col sm={{ span: 8, order: 2, offset: 2}}>
                 <Form onSubmit={this.handleSubmit}>
-                    <InputGroup seamless className="mb-2">
-                      <InputGroupAddon type="prepend">
-                        <InputGroupText>
+                    <InputGroup className="mb-2">
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>
                           <FontAwesomeIcon icon={ faSearch } />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <FormInput onChange={this.handleChange} placeholder="Search for a book series" />
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control onChange={this.handleChange} placeholder="Search for a book series" />
                     </InputGroup>
                   </Form>
               </Col>
