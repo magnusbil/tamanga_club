@@ -44,7 +44,7 @@ class SearchBar extends React.Component {
             <Row>
               <Col sm={{ span: 8, order: 2, offset: 2}}>
                 <Form onSubmit={this.handleSubmit}>
-                    <InputGroup className="mb-2">
+                    <InputGroup className="mb-2 input-seamless">
                       <InputGroup.Prepend>
                         <InputGroup.Text>
                           <FontAwesomeIcon icon={ faSearch } />

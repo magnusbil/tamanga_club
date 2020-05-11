@@ -34,31 +34,11 @@ class NavBar extends React.Component {
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">Meetup</Nav.Link>
         </Nav>
         <Nav className="ml-auto">
+        <Nav.Link active href="#login" id="login" onClick={() => this.toggle(true)}>
           <FontAwesomeIcon icon={faUser} />
+        </Nav.Link>
         </Nav>
       </Navbar>
-      // <Navbar bg="dark" variant="primary">
-      //   <Navbar.ComponentBrand href="/">TAMC Library Catalogue</NavbarBrand>
-      //   <Nav>
-      //     <NavItem>
-      //       <NavLink active href="/series">
-      //         Series
-      //       </NavLink>
-      //     </NavItem>
-      //     <NavItem>
-      //       <NavLink active href="https://www.meetup.com/TriangleAnime/">
-      //         Meetup
-      //       </NavLink>
-      //     </NavItem>
-      //   </Nav>
-      //   <Nav className="ml-auto">
-      //     <NavItem>
-      //       <Nav.Link active href="#" id="login" onClick={() => this.toggle(true)}>
-      //         <FontAwesomeIcon icon={faUser} />
-      //       </Nav.Link>
-      //     </NavItem>
-      //   </Nav>
-      // </Navbar>
     );
   }
 }

@@ -23,3 +23,24 @@ body{
 .recents-header { 
   text-align: center;
 }
+
+.nav-link {
+  padding: .625rem 1.125rem;
+}
+
+.input-seamless > .input-group-prepend {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+}
+
+.input-seamless > .input-group-prepend > .input-group-text {
+  background: 0 0;
+  border: 0;
+
+}
+
+.input-seamless > input {
+  padding-left: 40px;
+}
