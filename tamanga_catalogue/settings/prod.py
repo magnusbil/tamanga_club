@@ -1,7 +1,7 @@
 from .base import *
 import os
 
-ALLOWED_HOSTS = ['.trianglemanga.club']
+ALLOWED_HOSTS = ['.trianglemanga.club', '142.93.195.61']
 DEBUG=False
 
 WSGI_APPLICATION = 'tamanga_catalogue.wsgi.prod.application'

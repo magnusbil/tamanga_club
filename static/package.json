@@ -27,7 +27,8 @@
     "webpack": "^4.43.0",
     "webpack-bundle-tracker": "^1.0.0-alpha.1",
     "webpack-cli": "^3.3.11",
-    "webpack-manifest-plugin": "^2.2.0"
+    "webpack-manifest-plugin": "^2.2.0",
+    "webpack-merge": "^4.2.2"
   },
   "scripts": {
     "start": "webpack --config webpack.dev.js",
