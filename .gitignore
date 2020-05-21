@@ -3,9 +3,6 @@ node_modules/
 npm-debug.log
 build/
 
-#django static files
-static/
-
 # Django #
 *.log
 *.pot
