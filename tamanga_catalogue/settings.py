@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #if DJANGO_HOST=="production":
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG=False
-ALLOWED_HOSTS = ['.trianglemanga.club', 'trianglemanga.herokuapp.com']
+ALLOWED_HOSTS = ['.trianglemanga.club', 'trianglemanga.herokuapp.com', 'localhost']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -159,3 +159,20 @@ MEDIA_URL= '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 
 django_heroku.settings(locals())
+
+import logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
