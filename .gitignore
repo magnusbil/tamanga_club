@@ -6,7 +6,7 @@ build/
 # Django #
 *.log
 *.pot
-*.pyc
+**/*.pyc
 **/__pycache__/*
 media
 

@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #if DJANGO_HOST=="production":
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG=False
-ALLOWED_HOSTS = ['.trianglemanga.club', '142.93.195.61']
+ALLOWED_HOSTS = ['.trianglemanga.club', 'trianglemanga.herokuapp.com', '142.93.195.61']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -70,7 +70,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'catalogue'
+    'catalogue',
+
 ]
 
 REST_FRAMEWORK = {
@@ -148,8 +149,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'build')
 ]
 MEDIA_URL= '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
