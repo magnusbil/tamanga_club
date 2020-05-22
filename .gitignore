@@ -29,6 +29,8 @@ media
 .idea/**/libraries 
 *.iws /out/ 
 
+static/
+staticfiles/
 
 # Unit test / coverage reports 
 .coverage 

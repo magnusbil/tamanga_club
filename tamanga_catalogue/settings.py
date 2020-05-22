@@ -11,54 +11,50 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import socket
+import sys
+import logging
 import django_heroku
-
-DJ_HOSTNAME = socket.gethostname()
-if socket.gethostname().startswith('live'):
-    DJANGO_HOST = "production"
-else:
-    DJANGO_HOST = "development"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+IS_DEV_ENV = (sys.argv[1] == 'runserver')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-#if DJANGO_HOST=="production":
-SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG=False
-ALLOWED_HOSTS = ['.trianglemanga.club', 'trianglemanga.herokuapp.com', 'localhost']
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': os.environ.get('DATABASE_SECRET'),
-        'HOST': 'db-postgresql-nyc1-36336-do-user-783079-0.a.db.ondigitalocean.com',
-        'PORT': '25060',
-        'OPTIONS': {
-            'sslmode': 'require',
+if IS_DEV_ENV == False:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+    ALLOWED_HOSTS = ['.trianglemanga.club']
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'defaultdb',
+            'USER': 'doadmin',
+            'PASSWORD': os.environ.get('DATABASE_SECRET'),
+            'HOST': 'db-postgresql-nyc1-36336-do-user-783079-0.a.db.ondigitalocean.com',
+            'PORT': '25060',
+            'OPTIONS': {
+                'sslmode': 'require',
+            }
         }
     }
-}
-#else:
-#    SECRET_KEY ='ud8)$a_gz0wo&rq@83+q*unhh$sabbyh0f@#p(8w%jyjbe3mi%'
-#    DEBUG = True
-#    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-#    DATABASES = {
-#        'default': {
-#            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#            'NAME': 'tamc',
-#            'USER': 'admin',
-#            'PASSWORD': 'admin',
-#            'HOST': 'localhost',
-#            'PORT': ''
-#        }
-#    }
+else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+    ALLOWED_HOSTS = ['localhost']
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'tamc',
+            'USER': 'admin',
+            'PASSWORD': 'admin',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 
 # Application definition
 INSTALLED_APPS = [
@@ -151,16 +147,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build')
+    os.path.join(BASE_DIR, 'build/static')
 ]
-MEDIA_URL= '/media/'
-MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 django_heroku.settings(locals())
 
-import logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
