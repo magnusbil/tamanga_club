@@ -7,6 +7,7 @@ import {
   Modal,
   Row
 } from 'react-bootstrap';
+import { API_BASE_URL } from '../api-config';
 
 const BookRow = (props) => {
   return(
@@ -30,7 +31,7 @@ class SeriesDetailView extends React.Component {
   }
 
   componentDidMount() { 
-    fetch("https://trianglemanga.club/catalogue/series/" + this.props.match.params.title)
+    fetch(API_BASE_URL+"catalogue/series/" + this.props.match.params.title)
     .then(res => res.json())
     .then(data => {
       this.setState({

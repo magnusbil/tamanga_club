@@ -5,16 +5,7 @@ import {
   Container,
   Row,
 } from 'react-bootstrap';
-
-const Recents = (props) => {
-  var  slide_count = 2;
-  if(props.bookList.length > 8) {
-    slide_count = 3;
-  }
-  return (
-    <Container></Container>
-  );
-}
+import { API_BASE_URL } from '../api-config';
 
 class RecentAdditions extends React.Component {
   constructor(props) {
@@ -29,7 +20,8 @@ class RecentAdditions extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://www.trianglemanga.club/catalogue/recents')
+    console.log(process.env.NODE_ENV);
+    fetch(API_BASE_URL+'catalogue/recents')
     .then(res => res.json())
     .then(bookList => {
       this.setState({

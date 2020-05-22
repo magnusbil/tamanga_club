@@ -5,6 +5,7 @@ import {
   Col,
   Row
 } from 'react-bootstrap';
+import { API_BASE_URL } from '../api-config';
 
 const SeriesRow = (props) => {
   return(
@@ -24,7 +25,7 @@ class SeriesListView extends React.Component {
   }
 
   componentDidMount(){
-    fetch("https://trianglemanga.club/catalogue/series")
+    fetch(API_BASE_URL+"catalogue/series")
     .then(res => res.json())
     .then(seriesList => {
       this.setState({seriesList: seriesList})
