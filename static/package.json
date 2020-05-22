@@ -34,7 +34,8 @@
     "start": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+		"postinstall":"npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
