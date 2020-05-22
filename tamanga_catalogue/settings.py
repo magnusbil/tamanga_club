@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #if DJANGO_HOST=="production":
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG=False
-ALLOWED_HOSTS = ['.trianglemanga.club', 'trianglemanga.herokuapp.com', '142.93.195.61']
+ALLOWED_HOSTS = ['.trianglemanga.club', 'trianglemanga.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -91,6 +91,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
