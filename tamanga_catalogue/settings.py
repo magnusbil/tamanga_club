@@ -22,8 +22,8 @@ if IS_DEV_ENV == False:
   # SECURITY WARNING: keep the secret key used in production secret!
   SECRET_KEY = os.environ.get('SECRET_KEY')
   # SECURITY WARNING: don't run with debug turned on in production!
-  DEBUG = (sys.argv[1] == 'runserver')
-  ALLOWED_HOSTS = ['.trianglemanga.herokuapp.com', 'localhost']
+  DEBUG = False
+  ALLOWED_HOSTS = ['.trianglemanga.club']
   DATABASES = {
       'default': {
           'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -41,7 +41,7 @@ else:
   # SECURITY WARNING: keep the secret key used in production secret!
   SECRET_KEY = os.environ.get('SECRET_KEY')
   # SECURITY WARNING: don't run with debug turned on in production!
-  DEBUG = (sys.argv[1] == 'runserver')
+  DEBUG = True
   ALLOWED_HOSTS = ['localhost']
   DATABASES = {
       'default': {
