@@ -11,13 +11,54 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import socket
+import django_heroku
+
+DJ_HOSTNAME = socket.gethostname()
+if socket.gethostname().startswith('live'):
+    DJANGO_HOST = "production"
+else:
+    DJANGO_HOST = "development"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+#if DJANGO_HOST=="production":
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG=False
+ALLOWED_HOSTS = ['.trianglemanga.club', '142.93.195.61']
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': os.environ.get('DATABASE_SECRET'),
+        'HOST': 'db-postgresql-nyc1-36336-do-user-783079-0.a.db.ondigitalocean.com',
+        'PORT': '25060',
+        'OPTIONS': {
+            'sslmode': 'require',
+        }
+    }
+}
+#else:
+#    SECRET_KEY ='ud8)$a_gz0wo&rq@83+q*unhh$sabbyh0f@#p(8w%jyjbe3mi%'
+#    DEBUG = True
+#    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+#    DATABASES = {
+#        'default': {
+#            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#            'NAME': 'tamc',
+#            'USER': 'admin',
+#            'PASSWORD': 'admin',
+#            'HOST': 'localhost',
+#            'PORT': ''
+#        }
+#    }
 
 # Application definition
 INSTALLED_APPS = [
@@ -29,7 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'catalogue',
+    'catalogue'
 ]
 
 REST_FRAMEWORK = {
@@ -74,22 +115,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tamanga_catalogue.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tamc',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': ''
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -113,13 +138,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -132,3 +153,5 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL= '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+
+django_heroku.settings(locals())
