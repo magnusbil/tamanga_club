@@ -24,7 +24,7 @@ if IS_DEV_ENV == False:
   SECRET_KEY = os.environ.get('SECRET_KEY')
   # SECURITY WARNING: don't run with debug turned on in production!
   DEBUG = False
-  ALLOWED_HOSTS = ['.trianglemanga.club']
+  ALLOWED_HOSTS = ['.trianglemanga.club', '.trianglemanga.herokuapp.com']
   DATABASES = {
       'default': {
           'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -146,7 +146,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.GzipManifestStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build')
 ]
