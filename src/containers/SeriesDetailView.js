@@ -7,7 +7,6 @@ import {
   Modal,
   Row
 } from 'react-bootstrap';
-import { API_BASE_URL } from '../api-config';
 
 const BookRow = (props) => {
   return(
@@ -31,7 +30,7 @@ class SeriesDetailView extends React.Component {
   }
 
   componentDidMount() { 
-    fetch(API_BASE_URL+"catalogue/series/" + this.props.match.params.title)
+    fetch(process.env.API_BASE_URL + "catalogue/series/" + this.props.match.params.title)
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -53,7 +52,7 @@ class SeriesDetailView extends React.Component {
       var rows = [];
       var book_cards = this.state.series.BookList.map(function(book){
         return (
-          <Col sm={{ size: 3, order: 1, offset: 0}}>
+          <Col sm={{ size: 3, order: 1, offset: 0}} key={book.volume}>
             <Card className="img-card">
               <Card.Img src={book.cover_image} className="book-img" onClick={() => this.toggle(this.state.series.series_title + " Vol. " + book.volume)}/>
             </Card>
@@ -62,7 +61,7 @@ class SeriesDetailView extends React.Component {
       for (var i=0; i<book_cards.length; i++){
         cards.push(book_cards[i]);
         if(cards.length===3 || i===book_cards.length-1){
-          rows.push(<BookRow cards={cards}></BookRow>);
+          rows.push(<BookRow cards={cards} key={i}></BookRow>);
           cards = [];
         }
       }

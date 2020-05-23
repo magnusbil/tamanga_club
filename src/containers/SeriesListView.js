@@ -5,7 +5,6 @@ import {
   Col,
   Row
 } from 'react-bootstrap';
-import { API_BASE_URL } from '../api-config';
 
 const SeriesRow = (props) => {
   return(
@@ -38,7 +37,7 @@ class SeriesListView extends React.Component {
       var cards = [];
       var series_cards = this.state.seriesList.map(function(series){
       return (
-          <a href={"/series/" + series.series_title}>
+          <a href={"/series/" + series.series_title} key={series.series_title}>
             <Card className="img-card">
               <Card.Img src={series.series_cover_image} className="book-img"/>
             </Card>
@@ -47,7 +46,7 @@ class SeriesListView extends React.Component {
       for (var i=0; i<series_cards.length; i++){
         cards.push(series_cards[i]);
         if(cards.length===4 || i===series_cards.length-1){
-          rows.push(<SeriesRow cards={cards}></SeriesRow>);
+          rows.push(<SeriesRow cards={cards} key={i}></SeriesRow>);
           cards = [];
         }
       }

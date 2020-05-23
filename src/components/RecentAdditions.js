@@ -5,7 +5,6 @@ import {
   Container,
   Row,
 } from 'react-bootstrap';
-import { API_BASE_URL } from '../api-config';
 
 class RecentAdditions extends React.Component {
   constructor(props) {
@@ -20,8 +19,7 @@ class RecentAdditions extends React.Component {
   }
 
   componentDidMount() {
-    console.log(process.env.NODE_ENV);
-    fetch(API_BASE_URL+'catalogue/recents')
+    fetch(process.env.API_BASE_URL + "catalogue/recents")
     .then(res => res.json())
     .then(bookList => {
       this.setState({
@@ -45,7 +43,7 @@ class RecentAdditions extends React.Component {
     if(this.state.bookList.length > 0){
       var book_cards = this.state.bookList.map(function(book){
         return (
-            <a href={"/series/" + book.series_title}>
+            <a href={"/series/" + book.series_title} key={book.volume}>
               <Card className="img-card">
                 <Card.Img src={book.cover_image} className="book-img"/>
               </Card>
@@ -54,7 +52,7 @@ class RecentAdditions extends React.Component {
       
       return(
         <div className="col pt-5">
-          <h3 class="recents-header">Recent Additions</h3>
+          <h3 className="recents-header">Recent Additions</h3>
           <Container controls={false}>
             <Carousel>
               {/* for right now these values are static because I know the data is there.

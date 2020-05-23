@@ -3,13 +3,10 @@ node_modules/
 npm-debug.log
 build/
 
-#django static files
-static/
-
 # Django #
 *.log
 *.pot
-*.pyc
+**/*.pyc
 **/__pycache__/*
 media
 
@@ -32,6 +29,8 @@ media
 .idea/**/libraries 
 *.iws /out/ 
 
+static/
+staticfiles/
 
 # Unit test / coverage reports 
 .coverage 
