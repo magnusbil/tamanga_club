@@ -7,6 +7,6 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
 	watch: true,
   plugins: [
-    new webpack.DefinePlugin({'process.env.API_BASE_URL': JSON.stringify("http://localhost:8000/")})
+    new webpack.DefinePlugin({'process.env.API_BASE_URL': JSON.stringify("http://localhost:5000/")})
   ]
 });

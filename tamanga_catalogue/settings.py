@@ -12,33 +12,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import sys
+import logging
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-IS_DEV_ENV = (sys.argv[1] == 'runserver')
-
-if IS_DEV_ENV == False:
-  # SECURITY WARNING: keep the secret key used in production secret!
-  SECRET_KEY = os.environ.get('SECRET_KEY')
-  # SECURITY WARNING: don't run with debug turned on in production!
-  DEBUG = False
-  ALLOWED_HOSTS = ['.trianglemanga.club', '.trianglemanga.herokuapp.com']
-  DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-          'NAME': 'defaultdb',
-          'USER': 'doadmin',
-          'PASSWORD': os.environ.get('DATABASE_SECRET'),
-          'HOST': 'db-postgresql-nyc1-36336-do-user-783079-0.a.db.ondigitalocean.com',
-          'PORT': '25060',
-          'OPTIONS': {
-              'sslmode': 'require',
-          }
-      }
-  }
-else:
+if sys.argv[1] != 'runserver':
   # SECURITY WARNING: keep the secret key used in production secret!
   SECRET_KEY = os.environ.get('SECRET_KEY')
   # SECURITY WARNING: don't run with debug turned on in production!
@@ -155,7 +135,6 @@ MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 
 django_heroku.settings(locals())
 
-import logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -171,3 +150,4 @@ LOGGING = {
         },
     },
 }
+
