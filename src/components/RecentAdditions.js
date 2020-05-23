@@ -6,16 +6,6 @@ import {
   Row,
 } from 'react-bootstrap';
 
-const Recents = (props) => {
-  var  slide_count = 2;
-  if(props.bookList.length > 8) {
-    slide_count = 3;
-  }
-  return (
-    <Container></Container>
-  );
-}
-
 class RecentAdditions extends React.Component {
   constructor(props) {
     super(props);

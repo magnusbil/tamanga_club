@@ -24,7 +24,7 @@ class SeriesListView extends React.Component {
   }
 
   componentDidMount(){
-    fetch(process.env.API_BASE_URL + "catalogue/series")
+    fetch(API_BASE_URL+"catalogue/series")
     .then(res => res.json())
     .then(seriesList => {
       this.setState({seriesList: seriesList})
