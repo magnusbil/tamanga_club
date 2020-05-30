@@ -16,25 +16,9 @@ import logging
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if sys.argv[1] == 'runserver': 
-  DEBUG = True
-  ALLOWED_HOSTS = ['localhost']
-  DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-          'NAME': 'tamc',
-          'USER': 'admin',
-          'PASSWORD': 'admin',
-          'HOST': 'localhost',
-          'PORT': '',
-      }
-  }
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
   
 SECRET_KEY = os.environ.get('SECRET_KEY')
-# else: # Dev environment
-#   MEDIA_URL= '/media/'
-#   MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 
 # Application definition
 INSTALLED_APPS = [
@@ -90,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tamanga_catalogue.wsgi.application'
+WSGI_APPLICATION = 'tamanga_catalogue.wsgi.prod.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -132,7 +116,7 @@ STATICFILES_DIRS = [
   os.path.join(BASE_DIR, 'build/static')
 ]
 
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
 
 LOGGING = {
     'version': 1,

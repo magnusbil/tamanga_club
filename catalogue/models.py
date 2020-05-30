@@ -1,15 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_s3_storage.storage import S3Storage
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 # from django.core.files.storage import FileSystemStorage
 # import sys
 
-# if sys.argv[1] != 'runserver':
-#   # uUe AWS for production media
-storage = S3Storage(aws_s3_bucket_name='triangle-manga-media') 
-# else:
-#   #create a default storage system for development
-#   storage = FileSystemStorage()
+if settings.DEBUG == True:
+  storage = FileSystemStorage()
+else:
+  storage = S3Storage(aws_s3_bucket_name='triangle-manga-media')   
 
 # Model for a Series
 class Series(models.Model):
