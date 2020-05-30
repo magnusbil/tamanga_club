@@ -154,11 +154,9 @@ LOGGING = {
 # The AWS region to connect to.
 AWS_REGION = "us-east-1"
 # The AWS access key to use.
-# AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_ACCESS_KEY_ID='AKIAJTVSCTYYOGHHITTA'
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 # The AWS secret access key to use.
-# AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_SECRET_ACCESS_KEY = 'SWGINeXNZ4k9jhwBo9YydiOGzzl4h2/8DnjC6cTa'
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 # The name of the bucket to store files in.
 AWS_S3_BUCKET_NAME = "triangle-manga-media"
 AWS_S3_KEY_PREFIX='media'
