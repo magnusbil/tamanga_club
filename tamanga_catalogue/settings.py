@@ -132,7 +132,7 @@ STATICFILES_DIRS = [
   os.path.join(BASE_DIR, 'build/static')
 ]
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
 LOGGING = {
     'version': 1,
@@ -154,9 +154,10 @@ LOGGING = {
 # The AWS region to connect to.
 AWS_REGION = "us-east-1"
 # The AWS access key to use.
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 # The AWS secret access key to use.
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 # The name of the bucket to store files in.
 AWS_S3_BUCKET_NAME = "triangle-manga-media"
+AWS_S3_BUCKET_NAME_STATIC='triangle-manga-media'
 AWS_S3_KEY_PREFIX='media'
