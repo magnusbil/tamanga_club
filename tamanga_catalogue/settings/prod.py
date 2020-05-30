@@ -16,24 +16,11 @@ import logging
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-if sys.argv[1] != 'runserver':
-  # SECURITY WARNING: keep the secret key used in production secret!
-  SECRET_KEY = os.environ.get('SECRET_KEY')
-  # SECURITY WARNING: don't run with debug turned on in production!
-  DEBUG = True
-  ALLOWED_HOSTS = ['localhost']
-  DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-          'NAME': 'tamc',
-          'USER': 'admin',
-          'PASSWORD': 'admin',
-          'HOST': 'localhost',
-          'PORT': '',
-      }
-  }
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+DEBUG = False
 
 # Application definition
 INSTALLED_APPS = [
@@ -46,7 +33,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'catalogue',
-
+    'django_s3_storage'
 ]
 
 REST_FRAMEWORK = {
@@ -66,7 +53,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -90,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tamanga_catalogue.wsgi.application'
+WSGI_APPLICATION = 'tamanga_catalogue.wsgi.prod.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -120,20 +106,16 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+DEFAULT_STORAGE = "django_s3_storage.storage.S3Storage"
+STATICFILES_STORAGE="django_s3_storage.storage.StaticS3Storage"
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
   os.path.join(BASE_DIR, 'build/static')
 ]
-MEDIA_URL= '/media/'
-MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
-
-django_heroku.settings(locals())
 
 LOGGING = {
     'version': 1,
@@ -151,3 +133,16 @@ LOGGING = {
     },
 }
 
+#AWS SETTINGS
+# The AWS region to connect to.
+AWS_REGION = "us-east-1"
+# The AWS access key to use.
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+# The AWS secret access key to use.
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+# The name of the bucket to store files in.
+AWS_S3_BUCKET_NAME = "triangle-manga-media"
+AWS_S3_BUCKET_NAME_STATIC='triangle-manga-media'
+AWS_S3_KEY_PREFIX='media'
+
+django_heroku.settings(locals())
