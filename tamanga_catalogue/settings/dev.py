@@ -32,8 +32,6 @@ DATABASES = {
 }
   
 SECRET_KEY = 'as99*r8u(n2c031/'
-# else: # Dev environment
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -46,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'catalogue',
+    'club'
 ]
 
 REST_FRAMEWORK = {

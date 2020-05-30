@@ -48,8 +48,8 @@ class RecentAdditions extends React.Component {
       }, this);
 
       return (
-        <div className="col pt-5">
-          <h3 className="recents-header">Recent Additions</h3>
+        <div className="col p-5">
+          <h3 className="text-center">Recent Additions</h3>
           <Container controls={false}>
             <Carousel>
               {/* for right now these values are static because I know the data is there.

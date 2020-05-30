@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'catalogue',
-    'django_s3_storage'
+    'django_s3_storage',
+    'club'
 ]
 
 REST_FRAMEWORK = {

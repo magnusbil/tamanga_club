@@ -31,6 +31,7 @@ class NavBar extends React.Component {
         <Navbar.Brand href="/">TAMC Library Catalogue</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="/series">Series</Nav.Link>
+          <Nav.Link href="/polls">Polls</Nav.Link>
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">Meetup</Nav.Link>
         </Nav>
         <Nav className="ml-auto">

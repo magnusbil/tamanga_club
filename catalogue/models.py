@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django_s3_storage.storage import S3Storage
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-# from django.core.files.storage import FileSystemStorage
-# import sys
 
 if settings.DEBUG == True:
   storage = FileSystemStorage()
