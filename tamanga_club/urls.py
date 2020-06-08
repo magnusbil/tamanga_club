@@ -8,7 +8,7 @@ from django.conf import settings
 urlpatterns = [
     path('api-admin', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
-    path('catalogue/', include('catalogue.api.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('club/', include('club.api.urls'))
 ]
 

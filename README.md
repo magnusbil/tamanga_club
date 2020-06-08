@@ -1,4 +1,4 @@
-# Tamanga Catalogue
+# Tamanga club
 Website for the Triangle Anime Manga Club
 
 ## Functions

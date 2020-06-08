@@ -21,9 +21,7 @@ class SeriesDetailView extends React.Component {
 
   componentDidMount() {
     fetch(
-      process.env.API_BASE_URL +
-        'catalogue/series/' +
-        this.props.match.params.title
+      process.env.API_BASE_URL + 'club/series/' + this.props.match.params.title
     )
       .then((res) => res.json())
       .then((data) => {

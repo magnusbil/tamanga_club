@@ -15,12 +15,21 @@ class SeriesListView extends React.Component {
     };
   }
 
+<<<<<<< HEAD
   componentDidMount() {
     fetch(process.env.API_BASE_URL + 'catalogue/series')
       .then((res) => res.json())
       .then((seriesList) => {
         this.setState({ seriesList: seriesList });
       });
+=======
+  componentDidMount(){
+    fetch(process.env.API_BASE_URL+"club/series")
+    .then(res => res.json())
+    .then(seriesList => {
+      this.setState({seriesList: seriesList})
+    });
+>>>>>>> 60624bb... rename catalogue to club in urls
   }
 
   render() {

@@ -28,9 +28,9 @@ class NavBar extends React.Component {
   render() {
     return (
       <Navbar bg="primary" variant="dark">
-        <Navbar.Brand href="/">TAMC Library Catalogue</Navbar.Brand>
+        <Navbar.Brand href="/">TAMC Library club</Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="/series">Series</Nav.Link>
+          <Nav.Link href="/series">Library</Nav.Link>
           <Nav.Link href="/polls">Polls</Nav.Link>
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">Meetup</Nav.Link>
         </Nav>

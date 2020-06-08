@@ -15,12 +15,20 @@ class RecentAdditions extends React.Component {
   }
 
   componentDidMount() {
+<<<<<<< HEAD
     fetch(process.env.API_BASE_URL + 'catalogue/recents')
       .then((res) => res.json())
       .then((bookList) => {
         this.setState({
           bookList: bookList,
         });
+=======
+    fetch(process.env.API_BASE_URL + "club/recents")
+    .then(res => res.json())
+    .then(bookList => {
+      this.setState({
+        bookList: bookList
+>>>>>>> 60624bb... rename catalogue to club in urls
       });
 
     this.updateWindowDimensions();

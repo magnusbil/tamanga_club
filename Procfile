@@ -1,2 +1,2 @@
-release: python manage.py migrate --settings=tamanga_catalogue.settings.prod
-web: gunicorn tamanga_catalogue.wsgi.prod --log-file -
+release: python manage.py migrate --settings=tamanga_club.settings.prod
+web: gunicorn tamanga_club.wsgi.prod --log-file -
