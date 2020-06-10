@@ -5,25 +5,16 @@ import {
   Navbar,
   Nav
 } from "react-bootstrap";
+import { connect } from 'react-redux';
+import {logout} from '../../actions/auth';
+import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      show_login_modal: false
-    }
-
-    this.toggle = this.toggle.bind(this);
+  static propTypes = {
+    logout: PropTypes.func.isRequired
   }
 
-  toggle(flip){
-    if (flip) {
-      this.setState({
-        show_login_modal: !this.state.show_login_modal
-      });
-    }
-  }
+  onSubmit = (e) => this.props.logout();
 
   render() {
     return (
@@ -35,7 +26,7 @@ class NavBar extends React.Component {
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">Meetup</Nav.Link>
         </Nav>
         <Nav className="ml-auto">
-        <Nav.Link active href="#login" id="login" onClick={() => this.toggle(true)}>
+        <Nav.Link active href="/login" id="login" onClick={this.onSubmit}>
           <FontAwesomeIcon icon={faUser} />
         </Nav.Link>
         </Nav>
@@ -44,4 +35,4 @@ class NavBar extends React.Component {
   }
 }
 
-export default NavBar;
+export default connect(null, { logout })(NavBar);

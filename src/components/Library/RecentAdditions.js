@@ -1,51 +1,21 @@
 import React from 'react';
 import { Card, Carousel, Container, Row } from 'react-bootstrap';
-import { API_BASE_URL } from '../api-config';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getRecents } from '../../actions/library';
 
 class RecentAdditions extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bookList: [],
-      window_width: 0,
-    };
-
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-  }
+  static propTypes = {
+    getRecents: PropTypes.func.isRequired,
+  };
 
   componentDidMount() {
-<<<<<<< HEAD
-    fetch(process.env.API_BASE_URL + 'catalogue/recents')
-      .then((res) => res.json())
-      .then((bookList) => {
-        this.setState({
-          bookList: bookList,
-        });
-=======
-    fetch(process.env.API_BASE_URL + "club/recents")
-    .then(res => res.json())
-    .then(bookList => {
-      this.setState({
-        bookList: bookList
->>>>>>> 60624bb... rename catalogue to club in urls
-      });
-
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
-
-  updateWindowDimensions() {
-    this.setState({ width: window.innerWidth });
+    this.props.getRecents();
   }
 
   render() {
-    if (this.state.bookList.length > 0) {
-      var book_cards = this.state.bookList.map(function (book) {
+    if (this.props.recent_additions.length > 0) {
+      var book_cards = this.props.recent_additions.map(function (book) {
         return (
           <a href={'/series/' + book.series_title} key={book.volume}>
             <Card className="img-card">
@@ -78,4 +48,8 @@ class RecentAdditions extends React.Component {
   }
 }
 
-export default RecentAdditions;
+const mapStateToProps = (state) => ({
+  recent_additions: state.library.recent_additions,
+});
+
+export default connect(mapStateToProps, { getRecents })(RecentAdditions);

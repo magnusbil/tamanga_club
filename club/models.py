@@ -31,8 +31,11 @@ INTERESTS = GENRES + SUB_GENRES
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    interests = ArrayField(models.CharField(max_length=255, choices=INTERESTS), blank=True, null=True)
+    interests = ArrayField(models.CharField(max_length=255, choices=INTERESTS, null=True), blank=True, null=True)
     icon = models.ImageField("User Icon", storage=storage, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username + "'s Profile"
 
 # Create your models here.
 class Poll(models.Model):
@@ -44,9 +47,9 @@ class Poll(models.Model):
         return self.poll_title
 
 class Choice(models.Model):
-    poll = models.ForeignKey('Poll', on_delete=models.CASCADE)
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name='choices')
     choice_title = models.CharField(max_length=255)
-
+ 
     def __str__(self): 
         return self.choice_title
 
@@ -56,7 +59,7 @@ class Vote(models.Model):
     choice = models.ForeignKey('Choice', on_delete=models.CASCADE)
 
     def __str__(self):
-      return "Poll: " + self.poll.poll_title + "Vote: " + self.choice.choice_title + "User: " + self.user.username
+      return self.user.username + "'s vote on " + self.poll.poll_title
    
 # Model for a Series
 class Series(models.Model):
@@ -67,19 +70,20 @@ class Series(models.Model):
     series_sub_genres = models.CharField("Sub Genre", max_length=30, choices=SUB_GENRES, blank=True, null=True)
     series_cover_image = models.ImageField("Series Cover Image", storage=storage, blank=True, null=True)
     complete = models.BooleanField("Is this series completed?", default=False)
+
     def __str__(self):
         return self.series_title
 
 # Model for an individual book in a series
 class Book(models.Model):
-    series = models.ForeignKey(Series, on_delete=models.CASCADE, null=True)
+    series = models.ForeignKey(Series, related_name='volumes', on_delete=models.CASCADE, null=True)
     volume_number = models.IntegerField("Volume number", default=0)
     cover_image = models.ImageField("Cover Image", storage=storage, blank=True, null=True)
-    loaned_to = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    hold_for = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    loaned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books_checked_out', null=True, blank=True)
+    hold_for = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books_on_hold', null=True, blank=True)
     
     def __str__(self):
-        return self.series.series_title + " Vol. " + str(self.volume)
+        return self.series.series_title + " Vol. " + str(self.volume_number)
 
 class SharedAccess(models.Model):
     resource_name = models.CharField(max_length=255)

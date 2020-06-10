@@ -7,5 +7,5 @@ from club.models import UserProfile
 def update_user_profile(sender, instance, created, **kwargs):
   if created:
     UserProfile.objects.create(
-      user=User
+      user=instance
     )
