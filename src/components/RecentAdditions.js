@@ -19,7 +19,7 @@ class RecentAdditions extends React.Component {
   }
 
   componentDidMount() {
-    fetch(process.env.API_BASE_URL + "catalogue/recents")
+    fetch("/catalogue/recents")
     .then(res => res.json())
     .then(bookList => {
       this.setState({

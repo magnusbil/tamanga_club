@@ -1,16 +1,22 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import HomePage from './containers/HomePage';
-import SeriesListView from './containers/SeriesListView';
-import SeriesDetailView from './containers/SeriesDetailView';
+import { connect } from 'react-redux';
+import PrivateRoute from './components/common/PrivateRoute';
+import HomePage from './containers/Library/HomePage';
+import AuthPage from './containers/Account/AuthPage';
+import SeriesListView from './containers/Library/SeriesListView';
+import SeriesDetailView from './containers/Library/SeriesDetailView';
+import PollListView from './containers/Club/PollListView';
+
 
 const BaseRouter = () => (
   <div>
-    <Route exact path='/' component={HomePage}/>
-    {/* <Route exact path='/login' component={LoginPage}/> */}
-    <Route exact path='/series' component={SeriesListView}/>
-    <Route exact path='/series/:title' component={SeriesDetailView}/>
+    <Route exact path='/login' component={AuthPage}/>
+    <PrivateRoute exact path='/' component={HomePage}/>
+    <PrivateRoute exact path='/polls' component={PollListView}/>
+    <PrivateRoute exact path='/series' component={SeriesListView}/>
+    <PrivateRoute exact path='/series/:title' component={SeriesDetailView}/>
   </div>
 );
 
-export default BaseRouter;
+export default connect()(BaseRouter);
