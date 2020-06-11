@@ -8,6 +8,11 @@ Website for the Triangle Anime Manga Club
 ## Technologies
 - Python
   - Django
+    - Knox
+    - AS-Storage
 - Javascript
   - React
+    - React-redux
+    - React-bootstrap
+  - Webpack & Babel
 - Heroku
