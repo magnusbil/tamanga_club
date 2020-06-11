@@ -59,7 +59,6 @@ class SeriesListView extends React.Component {
   }
 
   render() {
-    console.log(this.props.series_list);
     return this.props.series_list ? this.renderSeries() : <Loading />;
   }
 }

@@ -13,6 +13,20 @@ class RecentAdditions extends React.Component {
     this.props.getRecents();
   }
 
+  generateItems(cards) {
+    let items = [];
+    for (var i = 0; i < cards.length; i += 4) {
+      let start = i == 0 ? 0 : cards.length - (cards.length - 4);
+      let end = i + 4 < cards.length ? i + 4 : cards.length;
+      items.push(
+        <Carousel.Item>
+          <Row>{cards.slice(start, end)}</Row>
+        </Carousel.Item>
+      );
+    }
+    return items;
+  }
+
   render() {
     if (this.props.recent_additions.length > 0) {
       var book_cards = this.props.recent_additions.map(function (book) {
@@ -28,16 +42,9 @@ class RecentAdditions extends React.Component {
       return (
         <div className="col p-5">
           <h3 className="text-center">Recent Additions</h3>
-          <Container controls={false}>
-            <Carousel>
-              {/* for right now these values are static because I know the data is there.
-              I plan to make this dynamic after the poc is done */}
-              <Carousel.Item>
-                <Row>{book_cards.slice(0, 4)}</Row>
-              </Carousel.Item>
-              <Carousel.Item>
-                <Row>{book_cards.slice(4)}</Row>
-              </Carousel.Item>
+          <Container>
+            <Carousel interval={4000} controls={false} indicators={false}>
+              {this.generateItems(book_cards)}
             </Carousel>
           </Container>
         </div>
