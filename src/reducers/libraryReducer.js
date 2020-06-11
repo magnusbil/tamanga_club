@@ -31,6 +31,7 @@ export default function (state = initialState, action) {
     case GET_SINGLE_SERIES_FAIL:
       return {
         ...state,
+        current_series_data: [],
       };
     default:
       return state;
