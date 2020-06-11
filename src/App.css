@@ -1,18 +1,18 @@
-body{
+body {
   background-color: rgb(243, 243, 243);
 }
 
 .book-img {
   height: 400px;
-  width:  280px;
+  width: 280px;
 }
 
 .book-img:hover {
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .display-row {
-  margin-top: 1em; 
+  margin-top: 1em;
 }
 
 .img-card {
@@ -30,7 +30,6 @@ body{
 .input-seamless > .input-group-prepend > .input-group-text {
   background: 0 0;
   border: 0;
-
 }
 
 .input-seamless > input {
@@ -38,7 +37,7 @@ body{
 }
 
 .nav-link {
-  padding: .625rem 1.125rem;
+  padding: 0.625rem 1.125rem;
 }
 
 .poll {
@@ -50,6 +49,10 @@ body{
   padding-left: 5px;
 }
 
-.text-center { 
+.text-center {
   text-align: center;
+}
+
+#loading {
+  padding-top: 20em;
 }

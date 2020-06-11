@@ -14,23 +14,26 @@ import {
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
-  // User Loading
   dispatch({ type: USER_LOADING });
+  // User Loading
   let token = tokenConfig(getState);
-  if (token.headers['Authorization']) {
+  if (!token.headers.Authorization) {
+    dispatch({ type: AUTH_ERROR });
+  } else {
     axios
-      .get('/club/auth/user', tokenConfig(getState))
+      .get('/club/auth/user', token)
       .then((res) => {
+        console.log();
         dispatch({
           type: USER_LOADED,
           payload: res.data,
         });
       })
       .catch((err) => {
-        dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
           type: AUTH_ERROR,
         });
+        dispatch(returnErrors(err.response.data, err.response.status));
       });
   }
 };
