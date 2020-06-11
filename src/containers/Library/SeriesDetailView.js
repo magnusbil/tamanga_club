@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Button, Card, Container, Col, Modal, Row } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,10 +16,6 @@ class SeriesDetailView extends React.Component {
     selected_volume: '',
   };
 
-  static propTypes = {
-    getSingleSeries: PropTypes.func.isRequired,
-  };
-
   componentDidMount() {
     if (!this.props.series_data) {
       this.props.getSingleSeries(this.props.title);
@@ -32,7 +29,7 @@ class SeriesDetailView extends React.Component {
     });
   }
 
-  renderSeriesDetails() {
+  generateBookRows() {
     var cards = [];
     var rows = [];
     // Creates an array of Cards that contain individual book data
@@ -65,30 +62,41 @@ class SeriesDetailView extends React.Component {
       }
     }
 
-    const { show_modal } = this.state;
-    return (
-      <div className="coll pt-5">
-        <Container>
-          {rows}
-          {/* Create a reservation modal that appears when you click on a book */}
-          <Modal
-            centered={true}
-            show={show_modal}
-            onHide={() => this.toggle.bind(this)}
-          >
-            <Modal.Header>
-              Reserve {this.props.series_data.series_title}?
-            </Modal.Header>
-            <Modal.Body>
-              <Button>Reserve</Button>
-              <Button onClick={() => this.toggle()}>Cancel</Button>
-            </Modal.Body>
-          </Modal>
-        </Container>
-      </div>
-    );
+    return rows;
   }
+
+  renderSeriesDetails() {
+    if (Object.keys(this.props.series_data).length > 0) {
+      let rows = this.generateBookRows();
+      const { show_modal } = this.state;
+      return (
+        <div className="coll pt-5">
+          <Container>
+            {rows}
+            {/* Create a reservation modal that appears when you click on a book */}
+            <Modal
+              centered={true}
+              show={show_modal}
+              onHide={() => this.toggle.bind(this)}
+            >
+              <Modal.Header>
+                Reserve {this.props.series_data.series_title}?
+              </Modal.Header>
+              <Modal.Body>
+                <Button>Reserve</Button>
+                <Button onClick={() => this.toggle()}>Cancel</Button>
+              </Modal.Body>
+            </Modal>
+          </Container>
+        </div>
+      );
+    } else {
+      return <Redirect to="/" />;
+    }
+  }
+
   render() {
+    console.log('CURRENT_DATA: ' + this.props.series_data);
     return this.props.series_data ? this.renderSeriesDetails() : <Loading />;
   }
 }
