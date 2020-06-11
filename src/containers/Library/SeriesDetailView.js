@@ -66,8 +66,8 @@ class SeriesDetailView extends React.Component {
   }
 
   renderSeriesDetails() {
-    if (this.props.series_data.length > 0) {
-      rows = this.generateBookRows();
+    if (Object.keys(this.props.series_data).length > 0) {
+      let rows = this.generateBookRows();
       const { show_modal } = this.state;
       return (
         <div className="coll pt-5">
@@ -96,11 +96,13 @@ class SeriesDetailView extends React.Component {
   }
 
   render() {
+    console.log('CURRENT_DATA: ' + this.props.series_data);
     return this.props.series_data ? this.renderSeriesDetails() : <Loading />;
   }
 }
 
 const mapStateToProps = (state, thisProps) => ({
+  title: thisProps.match.params.title,
   series_data: state.library.current_series_data,
 });
 
