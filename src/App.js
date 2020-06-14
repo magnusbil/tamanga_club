@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap';
+import './App.css';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { Provider as AlertProvider } from 'react-alert';
 import { Provider } from 'react-redux';
 import AlertTemplate from 'react-alert-template-basic';
@@ -10,7 +11,6 @@ import NavBar from './components/common/NavBar';
 import Alerts from './components/common/Alerts';
 import store from './store';
 import { loadUser } from './actions/auth';
-import './App.css';
 
 // Alert Options
 const alertOptions = {

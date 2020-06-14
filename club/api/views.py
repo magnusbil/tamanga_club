@@ -78,18 +78,22 @@ class SeriesByTitleDetailView(RetrieveAPIView):
 def vote(request):
   try:
     request_data = json.loads(request.body.decode(encoding='utf-8'))
-    user = User.objects.get(id=request_data['user_id'])
-    poll = Poll.objects.get(id=request_data['poll_id'])
-    choice = Choice.objects.get(id=request_data['choice_id'])
-    vote = Vote.objects.create(user=user,poll=poll,choice=choice)
-    vote.save()
-    choice_total_votes = Vote.objects.filter(choice=choice).count()
-    poll_total_votes = Vote.objects.filter(poll=poll).count()
-    result_data = {
-      'choice_total_votes': choice_total_votes,
-      'poll_total_votes': poll_total_votes
-    }
-    return JsonResponse(result_data)
+    votes = Vote.objects.filter(user=request_data['user_id'], poll=request_data['poll_id'])
+    if len(votes) == 0:
+      user = User.objects.get(id=request_data['user_id'])
+      poll = Poll.objects.get(id=request_data['poll_id'])
+      choice = Choice.objects.get(id=request_data['choice_id'])
+      vote = Vote.objects.create(user=user,poll=poll,choice=choice)
+      vote.save()
+      choice_total_votes = Vote.objects.filter(choice=choice).count()
+      poll_total_votes = Vote.objects.filter(poll=poll).count()
+      result_data = {
+        'choice_total_votes': choice_total_votes,
+        'poll_total_votes': poll_total_votes
+      }
+      return JsonResponse(result_data)
+    else:
+      return JsonResponse({"message": "You have already voted on this poll."})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message":error_message}, status=400)

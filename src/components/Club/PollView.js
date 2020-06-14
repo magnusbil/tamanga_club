@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { submitVote } from '../../actions/poll';
 import Loading from '../common/Loading';
+import { createMessage } from '../../actions/message';
 
 class Poll extends React.Component {
   static propTypes = {
@@ -12,9 +13,7 @@ class Poll extends React.Component {
   };
 
   state = {
-    selection: {
-      id: -1,
-    },
+    selection: null,
   };
 
   handleChange(choice) {
@@ -22,12 +21,13 @@ class Poll extends React.Component {
   }
 
   handleSubmit() {
-    this.props.submitVote(
-      this.props.poll_data['id'],
-      this.props.user['id'],
-      this.state.selection['id']
-    );
-    this.state.selection['choice_total_votes'] += 1;
+    if (this.state.selection) {
+      this.props.submitVote(
+        this.props.poll_data.id,
+        this.props.user.id,
+        this.state.selection.id
+      );
+    }
   }
 
   calcProgress(count) {
@@ -38,19 +38,34 @@ class Poll extends React.Component {
     return 0.0;
   }
 
+  showResults() {
+    var end_date = new Date(this.props.poll_data.poll_end_date);
+    if (end_date < Date.Now || this.props.poll_results.poll_total_votes) {
+      return true;
+    } else {
+      let vote_list = this.props.user.poll_votes;
+      for (var vote in vote_list) {
+        if (vote_list[vote].poll == this.props.poll_data.id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   renderPoll() {
     const choices = this.props.poll_data.choices.map(function (choice) {
       return (
-        <Row key={'choice_' + choice['id']}>
+        <Row key={'choice_' + choice.id}>
           <Col sm={{ span: 4, order: 2, offset: 4 }}>
             <input
-              id={'choice_' + choice['id']}
+              id={'choice_' + choice.id}
               type="radio"
-              checked={this.state.selection['id'] == choice['id']}
+              checked={this.state.selection.id == choice.id}
               onChange={() => this.handleChange(choice)}
-              value={choice['choice_title']}
+              value={choice.choice_title}
             />
-            <label className="poll-label">{choice['choice_title']}</label>
+            <label className="poll-label">{choice.choice_title}</label>
           </Col>
         </Row>
       );
@@ -61,7 +76,7 @@ class Poll extends React.Component {
         <Container>
           <Row>
             <Col sm={{ span: 4, order: 2, offset: 4 }}>
-              <h3>{this.props.poll_data['poll_title']}</h3>
+              <h3>{this.props.poll_data.poll_title}</h3>
             </Col>
           </Row>
           <form>{choices}</form>
@@ -76,14 +91,19 @@ class Poll extends React.Component {
   }
 
   renderResults() {
+    this.state.selection.choice_total_votes +=
+      this.props.poll_results.choice_total_votes != undefined
+        ? this.props.poll_results.choice_total_votes
+        : 0;
+    console.log(this.state.selection);
     var results = this.props.poll_data.choices.map(function (choice) {
-      var progress = this.calcProgress(choice['choice_total_votes']);
+      var progress = this.calcProgress(choice.choice_total_votes);
       return (
-        <Row key={'choice_' + choice['id']}>
+        <Row key={'choice_' + choice.id}>
           <Col sm={{ span: 4, order: 2, offset: 4 }}>
             <p>
-              {choice['choice_title']}, {progress}%,{' '}
-              {choice['choice_total_votes']} votes
+              {choice.choice_title}, {progress}%, {choice.choice_total_votes}{' '}
+              votes
             </p>
             <ProgressBar now={progress} />
           </Col>
@@ -95,7 +115,7 @@ class Poll extends React.Component {
         <Container>
           <Row>
             <Col sm={{ span: 4, order: 2, offset: 4 }}>
-              <h3>{this.props.poll_data['poll_title']}</h3>
+              <h3>{this.props.poll_data.poll_title}</h3>
             </Col>
           </Row>
           {results}
@@ -105,13 +125,8 @@ class Poll extends React.Component {
   }
 
   render() {
-    var end_date = new Date(this.props.poll_data['poll_end_date']);
-    var has_ended = end_date < Date.now();
-    var show_result =
-      this.props.poll_results && this.props.poll_results.poll_total_votes;
-
     return this.props.poll_data ? (
-      has_ended || show_result ? (
+      this.showResults() ? (
         this.renderResults()
       ) : (
         this.renderPoll()
