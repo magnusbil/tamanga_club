@@ -54,7 +54,7 @@ class Choice(models.Model):
         return self.choice_title
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="poll_votes")
     poll =  models.ForeignKey('Poll', on_delete=models.CASCADE)
     choice = models.ForeignKey('Choice', on_delete=models.CASCADE)
 
