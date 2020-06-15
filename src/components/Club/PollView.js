@@ -13,7 +13,9 @@ class Poll extends React.Component {
   };
 
   state = {
-    selection: null,
+    selection: {
+      id: -1,
+    },
   };
 
   handleChange(choice) {
@@ -31,11 +33,21 @@ class Poll extends React.Component {
   }
 
   calcProgress(count) {
-    if (this.props.poll_results.poll_total_votes > 0) {
-      var progress = (count / this.props.poll_results.poll_total_votes) * 100;
+    let progress;
+    if (
+      this.props.poll_results &&
+      this.props.poll_results.poll_total_votes > 0
+    ) {
+      progress = (count / this.props.poll_results.poll_total_votes) * 100;
       return progress.toFixed(2);
+    } else {
+      console.log();
+      if (this.props.poll_data.poll_total_votes > 0) {
+        progress = (count / this.props.poll_data.poll_total_votes) * 100;
+        return progress.toFixed(2);
+      }
+      return 0.0;
     }
-    return 0.0;
   }
 
   showResults() {
