@@ -91,11 +91,13 @@ class Poll extends React.Component {
   }
 
   renderResults() {
-    this.state.selection.choice_total_votes +=
-      this.props.poll_results.choice_total_votes != undefined
-        ? this.props.poll_results.choice_total_votes
-        : 0;
-    console.log(this.state.selection);
+    if (this.state.selection) {
+      this.state.selection.choice_total_votes +=
+        this.props.poll_results.choice_total_votes != undefined
+          ? this.props.poll_results.choice_total_votes
+          : 0;
+    }
+
     var results = this.props.poll_data.choices.map(function (choice) {
       var progress = this.calcProgress(choice.choice_total_votes);
       return (
