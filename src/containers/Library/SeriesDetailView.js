@@ -96,7 +96,6 @@ class SeriesDetailView extends React.Component {
   }
 
   render() {
-    console.log('CURRENT_DATA: ' + this.props.series_data);
     return this.props.series_data ? this.renderSeriesDetails() : <Loading />;
   }
 }

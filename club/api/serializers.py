@@ -31,6 +31,11 @@ class PollSerializer(serializers.ModelSerializer):
     def get_poll_total_votes(self, poll):
         return Vote.objects.filter(poll=poll).count()
 
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+      model = Vote
+      fields = ('id','user','poll','choice')
+
 ## BOOK
 class BookSerializer(serializers.ModelSerializer):
     series_title = serializers.SerializerMethodField()
@@ -58,14 +63,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
 # Make sure usernames have to be unique
 User._meta.get_field('username')._unique = True
 
+# Django Auth User Serializer
 class UserSerializer(serializers.ModelSerializer):
     books_on_hold = BookSerializer(many=True)
     books_checked_out = BookSerializer(many=True)
     profile = UserProfileSerializer()
+    poll_votes = VoteSerializer(many=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'books_on_hold', 'books_checked_out', 'profile')
+        fields = ('id', 'username', 'books_on_hold', 'books_checked_out', 'profile', 'poll_votes')
   
     def get_books_on_hold(self, user):
         book_query = Book.objects.filter(loaned_to=user)

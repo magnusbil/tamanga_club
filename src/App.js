@@ -1,16 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap';
+import './App.css';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { Provider as AlertProvider } from 'react-alert';
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import AlertTemplate from 'react-alert-template-basic';
 import BaseRouter from './routes';
 import NavBar from './components/common/NavBar';
 import Alerts from './components/common/Alerts';
-import store from './store';
 import { loadUser } from './actions/auth';
-import './App.css';
 
 // Alert Options
 const alertOptions = {
@@ -20,26 +19,24 @@ const alertOptions = {
 
 class App extends React.Component {
   componentDidMount() {
-    store.dispatch(loadUser());
+    this.props.loadUser();
   }
 
   render() {
     return (
-      <Provider store={store}>
+      <div className="App" data-test="appComponent">
         <AlertProvider template={AlertTemplate} {...alertOptions}>
-          <div className="App">
-            <NavBar />
-            <Alerts />
-            <Router>
-              <Switch>
-                <BaseRouter />
-              </Switch>
-            </Router>
-          </div>
+          <NavBar />
+          <Alerts />
+          <Router>
+            <Switch>
+              <BaseRouter />
+            </Switch>
+          </Router>
         </AlertProvider>
-      </Provider>
+      </div>
     );
   }
 }
 
-export default App;
+export default connect(null, { loadUser })(App);
