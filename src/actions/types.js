@@ -10,9 +10,10 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
-// Poll
+// Club
 export const GET_POLLS = 'POLLS_LOADING';
 export const VOTE_SUCCESS = 'VOTE_SUCCESS';
+export const GET_SHARED_ACCESS = 'GET_SHARED_ACCESS';
 // Library
 export const HOLD_REQUEST_SUCCESS = 'HOLD_REQUEST_SUCCESS';
 export const LOAD_RECENTS = 'LOAD_RECENTS';

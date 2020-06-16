@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import UserProfile, Poll, Choice, Series, Book, Vote
+from .models import UserProfile, Poll, Choice, Series, Book, Vote, SharedAccess
 
-admin.site.register(UserProfile)
-admin.site.register(Poll)
-admin.site.register(Choice)
-admin.site.register(Series)
 admin.site.register(Book)
+admin.site.register(Choice)
+admin.site.register(Poll)
+admin.site.register(Series)
+admin.site.register(SharedAccess)
+admin.site.register(UserProfile)
 admin.site.register(Vote)
 
 class BookInline(admin.StackedInline):

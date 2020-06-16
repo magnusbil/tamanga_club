@@ -6,8 +6,8 @@ from rest_framework import generics, permissions
 import json
 from django.contrib.auth.models import User
 from knox.models import AuthToken
-from club.models import UserProfile, Series, Book, Poll, Choice, Vote
-from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, PollSerializer, SeriesSerializer, BookSerializer
+from club.models import UserProfile, Series, Book, Poll, Choice, Vote, SharedAccess
+from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, PollSerializer, SeriesSerializer, BookSerializer, SharedAccessSerializer
 
 class RegisterAPIView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -20,7 +20,6 @@ class RegisterAPIView(generics.GenericAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
-
 
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -72,6 +71,11 @@ class SeriesByTitleDetailView(RetrieveAPIView):
   queryset = Series.objects.all()
   serializer_class = SeriesSerializer
   lookup_field = 'series_title'
+
+@permission_classes([permissions.IsAuthenticated])
+class SharedAccessListView(ListAPIView):
+  queryset = SharedAccess.objects.all()
+  serializer_class = SharedAccessSerializer
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])

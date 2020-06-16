@@ -5,7 +5,7 @@ import NoData from '../../components/common/NoData';
 import Loading from '../../components/common/Loading';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getPolls } from '../../actions/poll';
+import { getPolls } from '../../actions/club';
 
 class PollListView extends React.Component {
   static propTypes = {
@@ -37,7 +37,7 @@ class PollListView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  poll_list: state.poll.poll_list,
+  poll_list: state.club.poll_list,
 });
 
 export default connect(mapStateToProps, { getPolls })(PollListView);

@@ -2,7 +2,6 @@ import React, { Children } from 'react';
 import Enzyme, { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import EnzymeAdapter from 'enzyme-adapter-react-16';
-import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import PollListView from '../containers/Club/PollListView';
 import NoData from '../components/common/NoData';
