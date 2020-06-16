@@ -1,8 +1,9 @@
-import { GET_POLLS, VOTE_SUCCESS } from '../actions/types';
+import { GET_POLLS, VOTE_SUCCESS, GET_SHARED_ACCESS } from '../actions/types';
 
 const initialState = {
   poll_list: [],
   poll_results: [],
+  shared_access: undefined,
 };
 
 export default function (state = initialState, action) {
@@ -16,6 +17,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         poll_results: action.payload,
+      };
+    case GET_SHARED_ACCESS:
+      return {
+        ...state,
+        shared_access: action.payload,
       };
     default:
       return state;

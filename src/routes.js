@@ -7,15 +7,16 @@ import AuthPage from './containers/Account/AuthPage';
 import SeriesListView from './containers/Library/SeriesListView';
 import SeriesDetailView from './containers/Library/SeriesDetailView';
 import PollListView from './containers/Club/PollListView';
-
+import SharedAccessView from './containers/Club/SharedAccessView';
 
 const BaseRouter = () => (
   <div>
-    <Route exact path='/login' component={AuthPage}/>
-    <PrivateRoute exact path='/' component={HomePage}/>
-    <PrivateRoute exact path='/polls' component={PollListView}/>
-    <PrivateRoute exact path='/series' component={SeriesListView}/>
-    <PrivateRoute exact path='/series/:title' component={SeriesDetailView}/>
+    <Route exact path="/login" component={AuthPage} />
+    <PrivateRoute exact path="/" component={HomePage} />
+    <PrivateRoute exact path="/polls" component={PollListView} />
+    <PrivateRoute exact path="/series" component={SeriesListView} />
+    <PrivateRoute exact path="/series/:title" component={SeriesDetailView} />
+    <PrivateRoute exact path="/shared" component={SharedAccessView} />
   </div>
 );
 

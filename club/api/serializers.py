@@ -85,7 +85,7 @@ class UserSerializer(serializers.ModelSerializer):
         return book_list
 
 ## SHARED ACCESS
-class SharedAccessSerialier(serializers.ModelSerializer):
+class SharedAccessSerializer(serializers.ModelSerializer):
     class Meta:
         model = SharedAccess
         fields = ('resource_name', 'username', 'password')
