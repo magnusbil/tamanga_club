@@ -9,8 +9,6 @@ import reducer from '../reducers/index';
 import { PollView } from '../components/Club/PollView';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
-let getPollsFunction = require('../actions/poll').getPolls;
-getPollsFunction = jest.fn();
 
 const mountRender = (store, props) => {
   return mount(<PollListView {...props} store={store} />);
@@ -22,7 +20,7 @@ describe('<PollListView /> unit test with no data', () => {
     store = createStore(reducer, {});
     store.dispatch = jest.fn();
     props = {
-      getPolls: getPollsFunction,
+      getPolls: jest.fn(),
       poll_list: undefined,
     };
   });
