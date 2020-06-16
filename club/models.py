@@ -33,6 +33,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     interests = ArrayField(models.CharField(max_length=255, choices=INTERESTS, null=True), blank=True, null=True)
     icon = models.ImageField("User Icon", storage=storage, blank=True, null=True)
+    security_question = models.CharField(max_length=255, default="What's your favorite anime?", null=False)
+    security_answer = models.CharField(max_length=255, default="What's your favorite anime?", null=False)
 
     def __str__(self):
         return self.user.username + "'s Profile"

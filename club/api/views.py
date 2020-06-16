@@ -13,9 +13,17 @@ class RegisterAPIView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        data = json_loads(request.body.decode(encoding="utf-8"))
+        user_data = {"username": data['username'], "password": data['password']}
+        serializer = self.get_serializer(data=request.data) # HAVE TO UPDATE THIS
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        
+        #SET SECURITY QUESTION AND ANSWER
+        user.UserProfile.security_question = data['security_question']
+        user.UserProfile.security_answer = data['seurity_answer']
+        user.UserProfile.save()
+
         return JsonResponse({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
@@ -32,6 +40,29 @@ class LoginAPIView(generics.GenericAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
+
+def password_reset(request):
+  if request.method == 'POST':
+    try:
+      data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(username=data['username'])
+      if data['answer'] == user.secret:
+        new_password = make_password(data['password'])
+        user.password = new_password
+        user.save()
+        return JsonRepsonse({
+          "user": UserSerializer(user, context=self.get_serializer_context()).data,
+          "token": AuthToken.objects.create(user)[1]
+        })
+    except(e):
+      error_message = str(e)
+      return JsonRepsonse){"error_message":error_message, status=400}
+
+def get_security_question(request):
+  return
+
+def validate_security_answer(request):
+  return
 
 @permission_classes([permissions.IsAuthenticated])
 class UserAPIView(generics.RetrieveAPIView):
