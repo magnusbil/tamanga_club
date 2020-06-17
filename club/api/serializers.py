@@ -85,7 +85,7 @@ class UserSerializer(serializers.ModelSerializer):
         return book_list
 
 ## SHARED ACCESS
-class SharedAccessSerialier(serializers.ModelSerializer):
+class SharedAccessSerializer(serializers.ModelSerializer):
     class Meta:
         model = SharedAccess
         fields = ('resource_name', 'username', 'password')
@@ -100,6 +100,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             validated_data['username'],
+            "",
             validated_data['password']
         )
         return user

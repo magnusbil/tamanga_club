@@ -1,45 +1,80 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
+from django.contrib.auth.hashers import make_password
 import json
 from django.contrib.auth.models import User
 from knox.models import AuthToken
-from club.models import UserProfile, Series, Book, Poll, Choice, Vote
-from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, PollSerializer, SeriesSerializer, BookSerializer
+from club.models import UserProfile, Series, Book, Poll, Choice, Vote, SharedAccess
+from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, PollSerializer, SeriesSerializer, BookSerializer, SharedAccessSerializer
 
 class RegisterAPIView(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
+  serializer_class = RegisterSerializer
 
-    def post(self, request, *args, **kwargs):
+  def post(self, request, *args, **kwargs):
+      data = json.loads(request.body.decode(encoding="utf-8"))
+      username_taken = User.objects.filter(username=data['username'])
+      if len(username_taken) == 0:
+        user_data = {"username": data['username'], "password": data['password']}
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        
+        #SET SECURITY QUESTION AND ANSWER
+        user.profile.security_question = data['security_question']
+        user.profile.security_answer = data['security_answer']
+        user.profile.save()
+
         return JsonResponse({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
-
+      else:
+        return JsonResponse({"error_message": "Username already taken"}, status=400)
 
 class LoginAPIView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
+  serializer_class = LoginSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
+  def post(self, request, *args, **kwargs):
+      serializer = self.get_serializer(data=request.data)
+      serializer.is_valid(raise_exception=True)
+      user = serializer.validated_data
+      return JsonResponse({
+          "user": UserSerializer(user, context=self.get_serializer_context()).data,
+          "token": AuthToken.objects.create(user)[1]
+      })
+
+class PasswordAPIView(generics.GenericAPIView):
+  def post(self, request):
+    try:
+      data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(username=data['username'])
+      profile = UserProfile.objects.get(user=user)
+      if profile.security_answer == data['answer']:
+        new_password = make_password(data['password'])
+        user.password = new_password
+        user.save()
         return JsonResponse({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
+          "user": UserSerializer(user, context=self.get_serializer_context()).data,
+          "token": AuthToken.objects.create(user)[1]
         })
+      else:
+        return JsonResponse({
+          "error_message": "Incorrect answer to security question"
+        })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message":error_message}, status=400)
 
 @permission_classes([permissions.IsAuthenticated])
 class UserAPIView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
+  serializer_class = UserSerializer
 
-    def get_object(self):
-        return self.request.user
+  def get_object(self):
+      return self.request.user
 
 @permission_classes([permissions.IsAuthenticated])
 class BooksListView(ListAPIView):
@@ -73,6 +108,25 @@ class SeriesByTitleDetailView(RetrieveAPIView):
   serializer_class = SeriesSerializer
   lookup_field = 'series_title'
 
+@permission_classes([permissions.IsAuthenticated])
+class SharedAccessListView(ListAPIView):
+  queryset = SharedAccess.objects.all()
+  serializer_class = SharedAccessSerializer
+
+# Returns a user's secuirty question. THis is used during the password reset process
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def get_security_question(request):
+  try:
+    data = json.loads(request.body.decode(encoding="utf-8"))
+    user = User.objects.get(username=request.data['username'])
+    profile = UserProfile.objects.get(user=user)
+    question = profile.security_question
+    return JsonResponse({"username": data['username'], "question": question})
+  except Exception as e:
+    error_message = str(e)
+    return JsonResponse({"error_message": error_message}, status=400)
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def vote(request):
@@ -87,11 +141,10 @@ def vote(request):
       vote.save()
       choice_total_votes = Vote.objects.filter(choice=choice).count()
       poll_total_votes = Vote.objects.filter(poll=poll).count()
-      result_data = {
+      return JsonResponse({
         'choice_total_votes': choice_total_votes,
         'poll_total_votes': poll_total_votes
-      }
-      return JsonResponse(result_data)
+      })
     else:
       return JsonResponse({"message": "You have already voted on this poll."})
   except Exception as e:

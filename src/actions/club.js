@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { tokenConfig } from './auth';
+import { createMessage } from './message';
 
-import { GET_POLLS, VOTE_SUCCESS } from './types';
+import { GET_POLLS, VOTE_SUCCESS, GET_SHARED_ACCESS } from './types';
 
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export const getPolls = () => (dispatch, getState) => {
-  dispatch({ type: GET_POLLS });
-
   axios
     .get('club/polls', tokenConfig(getState))
     .then((res) => {
@@ -17,7 +16,7 @@ export const getPolls = () => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => createMessage({ message: err }));
 };
 
 export const submitVote = (poll_id, user_id, choice_id) => (
@@ -33,7 +32,14 @@ export const submitVote = (poll_id, user_id, choice_id) => (
         payload: res.data,
       });
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((err) => createMessage({ message: err }));
+};
+
+export const getSharedAccess = () => (dispatch, getState) => {
+  axios.get('/club/shared', tokenConfig(getState)).then((res) => {
+    dispatch({
+      type: GET_SHARED_ACCESS,
+      payload: res.data,
     });
+  });
 };

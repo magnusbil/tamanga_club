@@ -1,14 +1,16 @@
-import { combineReducers } from "redux"
+import { combineReducers } from 'redux';
 import auth from './authReducer';
+import password from './passwordReducer';
 import messages from './messageReducer';
 import errors from './errorsReducer';
-import poll from './pollReducer';
+import club from './clubReducer';
 import library from './libraryReducer';
 
 export default combineReducers({
   auth,
+  password,
   messages,
   errors,
-  poll,
+  club,
   library,
 });

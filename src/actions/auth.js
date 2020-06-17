@@ -23,7 +23,6 @@ export const loadUser = () => (dispatch, getState) => {
     axios
       .get('/club/auth/user', token)
       .then((res) => {
-        console.log();
         dispatch({
           type: USER_LOADED,
           payload: res.data,
@@ -67,7 +66,12 @@ export const login = (username, password) => (dispatch) => {
 };
 
 // REGISTER USER
-export const register = (username, password) => (dispatch) => {
+export const register = (
+  username,
+  password,
+  security_question,
+  security_answer
+) => (dispatch) => {
   // Headers
   const config = {
     headers: {
@@ -76,7 +80,13 @@ export const register = (username, password) => (dispatch) => {
   };
 
   // Request Body
-  const body = { username: username, password: password };
+  const body = {
+    username: username,
+    password: password,
+    security_question: security_question,
+    security_answer: security_answer,
+  };
+
   axios
     .post('/club/auth/register', body, config)
     .then((res) => {
@@ -98,7 +108,6 @@ export const logout = () => (dispatch, getState) => {
   axios
     .post('/club/auth/logout/', null, tokenConfig(getState))
     .then((res) => {
-      dispatch({ type: 'CLEAR_LEADS' });
       dispatch({
         type: LOGOUT_SUCCESS,
       });

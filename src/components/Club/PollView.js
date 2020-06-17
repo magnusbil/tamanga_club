@@ -1,11 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import { Button, Col, Container, ProgressBar, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { submitVote } from '../../actions/poll';
+import { submitVote } from '../../actions/club';
 import Loading from '../common/Loading';
-import { createMessage } from '../../actions/message';
 
 class Poll extends React.Component {
   static propTypes = {
@@ -41,7 +39,6 @@ class Poll extends React.Component {
       progress = (count / this.props.poll_results.poll_total_votes) * 100;
       return progress.toFixed(2);
     } else {
-      console.log();
       if (this.props.poll_data.poll_total_votes > 0) {
         progress = (count / this.props.poll_data.poll_total_votes) * 100;
         return progress.toFixed(2);
@@ -104,7 +101,7 @@ class Poll extends React.Component {
 
   renderResults() {
     if (this.state.selection) {
-      this.state.selection.choice_total_votes +=
+      this.state.selection.choice_total_votes =
         this.props.poll_results.choice_total_votes != undefined
           ? this.props.poll_results.choice_total_votes
           : 0;
@@ -153,7 +150,7 @@ class Poll extends React.Component {
 
 const mapStateToProps = (state, thisProps) => ({
   user: state.auth.user,
-  poll_results: state.poll.poll_results,
+  poll_results: state.club.poll_results,
   poll_data: thisProps.poll_data,
 });
 
