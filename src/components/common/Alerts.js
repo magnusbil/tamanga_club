@@ -11,7 +11,6 @@ export class Alerts extends Component {
 
   componentDidUpdate(prevProps) {
     const { error, alert, message } = this.props;
-
     if (error !== prevProps.error) {
       if (error.msg.message)
         alert.error(`Message: ${error.msg.message.join()}`);
@@ -21,8 +20,12 @@ export class Alerts extends Component {
         alert.error('Username Error: ' + error.msg.username.join());
       if (error.msg.password)
         alert.error('Password Error: ' + error.msg.password.join());
-    } else if (message.state.passwordMismatch) {
-      alert.error(message.state.passwordMismatch);
+    } else if (message) {
+      if (message.state.passwordMismatch) {
+        alert.error(message.state.passwordMismatch);
+      } else if (message.state.message) {
+        alert.error(message.state.message);
+      }
     }
   }
 

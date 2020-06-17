@@ -10,11 +10,6 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  PASSWORD_RESET,
-  PASSWORD_RESET_FAIL,
-  GET_SECURITY_QUESTION,
-  GET_SECURITY_QUESTION_FAIL,
-  VALIDATE_SECURITY_ANSWER,
 } from './types';
 
 // CHECK TOKEN & LOAD USER
@@ -28,7 +23,6 @@ export const loadUser = () => (dispatch, getState) => {
     axios
       .get('/club/auth/user', token)
       .then((res) => {
-        console.log();
         dispatch({
           type: USER_LOADED,
           payload: res.data,
@@ -72,7 +66,12 @@ export const login = (username, password) => (dispatch) => {
 };
 
 // REGISTER USER
-export const register = (username, password) => (dispatch) => {
+export const register = (
+  username,
+  password,
+  security_question,
+  security_answer
+) => (dispatch) => {
   // Headers
   const config = {
     headers: {
@@ -81,7 +80,13 @@ export const register = (username, password) => (dispatch) => {
   };
 
   // Request Body
-  const body = { username: username, password: password };
+  const body = {
+    username: username,
+    password: password,
+    security_question: security_question,
+    security_answer: security_answer,
+  };
+
   axios
     .post('/club/auth/register', body, config)
     .then((res) => {
@@ -109,60 +114,6 @@ export const logout = () => (dispatch, getState) => {
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
-    });
-};
-
-// Retrieve secret question that is associated with the username
-export const get_secret_question = (username) => (dispatch, getState) => {
-  const body = { username: username };
-
-  axios
-    .post('/club/auth/secret_question', body, tokenConfig(getState))
-    .then((res) => {
-      dispatch({
-        type: GET_SECURITY_QUESTION,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: GET_SECURITY_QUESTION_FAIL,
-      });
-    });
-};
-
-// Validate that the answer to the secret question is correct
-export const validate_answer = (answer) => (dispatch, getState) => {
-  const body = { answer: answer };
-
-  axios
-    .post('/club/auth/password_reset', body, tokenConfig(getState))
-    .then((res) => {
-      dispatch({
-        type: VALIDATE_SECURITY_ANSWER,
-        payload: res.data,
-      });
-    });
-};
-
-// Reset the user's password with the new password they have entered
-export const password_reset = (username, password) => (dispatch, getState) => {
-  const body = { username: username, password: password };
-
-  axios
-    .post('/club/auth/password_reset', body, tokenConfig(getState))
-    .then((res) => {
-      dispatch({
-        type: PASSWORD_RESET,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: PASSWORD_RESET_FAIL,
-      });
     });
 };
 

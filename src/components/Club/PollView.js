@@ -39,7 +39,6 @@ class Poll extends React.Component {
       progress = (count / this.props.poll_results.poll_total_votes) * 100;
       return progress.toFixed(2);
     } else {
-      console.log();
       if (this.props.poll_data.poll_total_votes > 0) {
         progress = (count / this.props.poll_data.poll_total_votes) * 100;
         return progress.toFixed(2);
