@@ -93,7 +93,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  get_secret_question,
   password_reset,
   createMessage,
 })(PasswordReset);
