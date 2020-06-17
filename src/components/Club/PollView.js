@@ -101,7 +101,7 @@ class Poll extends React.Component {
 
   renderResults() {
     if (this.state.selection) {
-      this.state.selection.choice_total_votes +=
+      this.state.selection.choice_total_votes =
         this.props.poll_results.choice_total_votes != undefined
           ? this.props.poll_results.choice_total_votes
           : 0;
