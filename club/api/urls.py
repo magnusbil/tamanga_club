@@ -8,6 +8,8 @@ urlpatterns = [
     path('auth/login', LoginAPIView.as_view()),
     path('auth/logout', LogoutView.as_view(), name='knox_logout'),
     path('auth/user', UserAPIView.as_view()),
+    path('auth/password_reset', PasswordAPIView.as_view()),
+    path('auth/security_question', get_security_question, name='get_security_question'),
     path('books', BooksListView.as_view()),
     path('polls', PollListView.as_view()),
     path('poll/vote', vote, name='vote'),

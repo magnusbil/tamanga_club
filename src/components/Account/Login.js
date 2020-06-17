@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
-
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 class Login extends React.Component {
@@ -51,7 +50,7 @@ class Login extends React.Component {
                   Login
                 </Button>
                 <Form.Text>
-                  <Link to="/password_reset">Forgot Password</Link>
+                  <a href="/reset_pwd_get_security">Forgot Password</a>
                 </Form.Text>
               </Form>
             </Col>

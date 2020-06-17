@@ -8,10 +8,14 @@ import SeriesListView from './containers/Library/SeriesListView';
 import SeriesDetailView from './containers/Library/SeriesDetailView';
 import PollListView from './containers/Club/PollListView';
 import SharedAccessView from './containers/Club/SharedAccessView';
+import PasswordResetPage from './containers/Account/PasswordResetPage';
+import GetSecurity from './components/Account/GetSecurity';
 
 const BaseRouter = () => (
   <div>
     <Route exact path="/login" component={AuthPage} />
+    <Route exact path="/reset_pwd_get_security" component={GetSecurity} />
+    <Route exact path="/reset_password" component={PasswordResetPage} />
     <PrivateRoute exact path="/" component={HomePage} />
     <PrivateRoute exact path="/polls" component={PollListView} />
     <PrivateRoute exact path="/series" component={SeriesListView} />
