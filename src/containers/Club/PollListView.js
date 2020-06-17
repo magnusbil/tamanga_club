@@ -13,7 +13,7 @@ class PollListView extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getPolls();
+    this.props.getPolls(this.props.user.profile.club);
   }
 
   renderPolls() {
@@ -37,6 +37,7 @@ class PollListView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  user: state.auth.user,
   poll_list: state.club.poll_list,
 });
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import User
+from django.contrib.auth.base_user import BaseUserManager
 from django_s3_storage.storage import S3Storage
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -29,7 +30,15 @@ SUB_GENRES = [
 
 INTERESTS = GENRES + SUB_GENRES
 
+class BookClub(models.Model):
+    club_name = models.CharField(max_length=255, default="New Group")
+    club_code = models.CharField(max_length=225, default="", unique=True)
+
+    def __str__(self):
+        return self.club_name
+
 class UserProfile(models.Model):
+    club = models.ForeignKey(BookClub, on_delete=models.SET_NULL, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     interests = ArrayField(models.CharField(max_length=255, choices=INTERESTS, null=True), blank=True, null=True)
     icon = models.ImageField("User Icon", storage=storage, blank=True, null=True)
@@ -41,6 +50,7 @@ class UserProfile(models.Model):
 
 # Create your models here.
 class Poll(models.Model):
+    club = models.ForeignKey(BookClub, on_delete=models.CASCADE)
     poll_title = models.CharField(max_length=255)
     poll_start_date = models.DateField(default=datetime.date.today)
     poll_end_date = models.DateField(default=datetime.date.today)
@@ -65,7 +75,7 @@ class Vote(models.Model):
    
 # Model for a Series
 class Series(models.Model):
-    series_title = models.CharField("Title", max_length=255, unique=True, null=False)
+    series_title = models.CharField("Title", max_length=255, unique=True)
     series_author = models.CharField("Author",max_length=255, null=True, blank=True)
     series_artist = models.CharField("artist",max_length=255, null=True, blank=True)
     series_genres = ArrayField(models.CharField("Genre", max_length=30, choices=GENRES, default='misc'))
@@ -78,16 +88,20 @@ class Series(models.Model):
 
 # Model for an individual book in a series
 class Book(models.Model):
-    series = models.ForeignKey(Series, related_name='volumes', on_delete=models.CASCADE, null=True)
+    series = models.ForeignKey(Series, related_name='volumes', on_delete=models.CASCADE)
     volume_number = models.IntegerField("Volume number", default=0)
     cover_image = models.ImageField("Cover Image", storage=storage, blank=True, null=True)
-    loaned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books_checked_out', null=True, blank=True)
-    hold_for = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books_on_hold', null=True, blank=True)
-    
+    loaned_to = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_checked_out', null=True, blank=True)
+    hold_for = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_on_hold', null=True, blank=True)
     def __str__(self):
         return self.series.series_title + " Vol. " + str(self.volume_number)
 
 class SharedAccess(models.Model):
+    club = models.ForeignKey(BookClub, on_delete=models.CASCADE, related_name="shared_access")
     resource_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
+
+    def __str__(self):
+      return self.resource_name + "Access"
+
