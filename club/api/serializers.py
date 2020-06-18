@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from club.models import Poll, Choice, Vote, UserProfile, SharedAccess, Series, Book
+from club.models import Poll, Choice, Vote, UserProfile, SharedAccess, Series, Book, BookClub
 
 ## CHOICE
 class ChoiceSerializer(serializers.ModelSerializer):
@@ -54,11 +54,16 @@ class SeriesSerializer(serializers.ModelSerializer):
         model = Series
         fields = ('id', 'series_title', 'series_author', 'series_artist', 'series_cover_image', 'series_genres', 'series_sub_genres', 'complete', 'volumes')
 
+class BookClubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookClub
+        fields = ('id', 'club_name')
+
 ## USER PROFILE
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('interests', 'icon')
+        fields = ('interests', 'icon', 'club')
 
 # Make sure usernames have to be unique
 User._meta.get_field('username')._unique = True

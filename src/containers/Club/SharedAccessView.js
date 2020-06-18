@@ -11,14 +11,14 @@ class SharedAccessView extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getSharedAccess();
+    this.props.getSharedAccess(this.props.user.profile.club);
   }
 
   generateRows() {
     if (this.props.shared_access && this.props.shared_access.length > 0) {
       let rows = this.props.shared_access.map((access) => {
         return (
-          <Container classname="pb-5">
+          <Container className="pb-5">
             <Row>
               <Col lg={{ span: 4, order: 2, offset: 4 }}>
                 <h4>{access.resource_name}</h4>
@@ -46,6 +46,7 @@ class SharedAccessView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  user: state.auth.user,
   shared_access: state.club.shared_access,
 });
 

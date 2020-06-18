@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import UserProfile, Poll, Choice, Series, Book, Vote, SharedAccess
+from .models import UserProfile, Poll, Choice, Series, Book, Vote, SharedAccess, BookClub
 
+admin.site.register(BookClub)
 admin.site.register(Book)
 admin.site.register(Choice)
 admin.site.register(Poll)

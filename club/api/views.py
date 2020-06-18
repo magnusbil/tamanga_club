@@ -8,13 +8,14 @@ from django.contrib.auth.hashers import make_password
 import json
 from django.contrib.auth.models import User
 from knox.models import AuthToken
-from club.models import UserProfile, Series, Book, Poll, Choice, Vote, SharedAccess
-from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, PollSerializer, SeriesSerializer, BookSerializer, SharedAccessSerializer
+from club.models import *
+from .serializers import *
 
 class RegisterAPIView(generics.GenericAPIView):
   serializer_class = RegisterSerializer
 
   def post(self, request, *args, **kwargs):
+    try:
       data = json.loads(request.body.decode(encoding="utf-8"))
       username_taken = User.objects.filter(username=data['username'])
       if len(username_taken) == 0:
@@ -26,6 +27,8 @@ class RegisterAPIView(generics.GenericAPIView):
         #SET SECURITY QUESTION AND ANSWER
         user.profile.security_question = data['security_question']
         user.profile.security_answer = data['security_answer']
+        club = BookClub.objects.get(club_code=data['club_code'])
+        user.profile.club = club
         user.profile.save()
 
         return JsonResponse({
@@ -34,6 +37,9 @@ class RegisterAPIView(generics.GenericAPIView):
         })
       else:
         return JsonResponse({"error_message": "Username already taken"}, status=400)
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
 class LoginAPIView(generics.GenericAPIView):
   serializer_class = LoginSerializer
@@ -77,19 +83,10 @@ class UserAPIView(generics.RetrieveAPIView):
       return self.request.user
 
 @permission_classes([permissions.IsAuthenticated])
-class BooksListView(ListAPIView):
-  queryset = Book.objects.all()
-  serializer_class = BookSerializer
-
-@permission_classes([permissions.IsAuthenticated])
-class BooksBySeriesListView(ListAPIView):
-  queryset = Book.objects.all()
-  serializer_class = BookSerializer
-  lookup_field = 'series'
-
-@permission_classes([permissions.IsAuthenticated])
 class PollListView(ListAPIView):
-  queryset = Poll.objects.all()
+  def get_queryset(self):
+    club = BookClub.objects.get(id=self.kwargs['club_id'])  
+    return Poll.objects.filter(club=club)
   serializer_class = PollSerializer
 
 @permission_classes([permissions.IsAuthenticated])
@@ -110,7 +107,9 @@ class SeriesByTitleDetailView(RetrieveAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class SharedAccessListView(ListAPIView):
-  queryset = SharedAccess.objects.all()
+  def get_queryset(self):
+    club = BookClub.objects.get(id=self.kwargs['club_id'])
+    return SharedAccess.objects.filter(club=club)
   serializer_class = SharedAccessSerializer
 
 # Returns a user's secuirty question. THis is used during the password reset process
@@ -150,3 +149,18 @@ def vote(request):
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message":error_message}, status=400)
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def reserve(request):
+  try:
+    request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+    user = User.objects.get(id=request_data['user_id'])
+    book = Book.objects.get(id=request_data['book_id'])
+    book.hold_for = user
+    return JsonResponse({
+      "message": "Reservation Completed"
+    })
+  except Exception as e:
+    error_message = str(e)
+    return JsonResponse({"error_message": error_message}, status=400)

@@ -70,7 +70,8 @@ export const register = (
   username,
   password,
   security_question,
-  security_answer
+  security_answer,
+  club_code
 ) => (dispatch) => {
   // Headers
   const config = {
@@ -85,6 +86,7 @@ export const register = (
     password: password,
     security_question: security_question,
     security_answer: security_answer,
+    club_code: club_code,
   };
 
   axios
