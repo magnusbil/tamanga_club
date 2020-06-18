@@ -31,9 +31,9 @@ class GetSecurity extends React.Component {
       return <Redirect push to="/reset_password" />;
     }
     return (
-      <Container>
+      <Container className="col pt-5">
         <Row>
-          <Col sm={{ span: 4, order: 2, offset: 4 }}>
+          <Col lg={{ span: 4, order: 2, offset: 4 }}>
             <Form>
               <Form.Label>Enter Username</Form.Label>
               <Form.Group controlId="username">

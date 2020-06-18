@@ -1,7 +1,7 @@
 import React from 'react';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Dropdown, Navbar, Nav } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
@@ -13,6 +13,16 @@ class NavBar extends React.Component {
 
   onSubmit = (e) => this.props.logout();
 
+  renderProfileNav() {
+    return (
+      <Nav className="ml-auto">
+        <Nav.Link onClick={this.onSubmit}>
+          {/* <FontAwesomeIcon icon={faUser} /> */}
+          Logout
+        </Nav.Link>
+      </Nav>
+    );
+  }
   render() {
     return (
       <Navbar bg="primary" variant="dark">
@@ -25,14 +35,13 @@ class NavBar extends React.Component {
             Meetup
           </Nav.Link>
         </Nav>
-        <Nav className="ml-auto">
-          <Nav.Link active href="/login" id="login" onClick={this.onSubmit}>
-            <FontAwesomeIcon icon={faUser} />
-          </Nav.Link>
-        </Nav>
+        {this.props.user ? this.renderProfileNav() : <Nav></Nav>}
       </Navbar>
     );
   }
 }
 
-export default connect(null, { logout })(NavBar);
+const mapsStateToProps = (state) => ({
+  user: state.auth.user,
+});
+export default connect(mapsStateToProps, { logout })(NavBar);

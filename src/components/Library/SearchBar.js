@@ -36,7 +36,7 @@ class SearchBar extends React.Component {
       <div className="col pt-5">
         <Container>
           <Row>
-            <Col sm={{ span: 8, order: 2, offset: 2 }}>
+            <Col lg={{ span: 8, order: 2, offset: 2 }}>
               <Form onSubmit={this.handleSubmit}>
                 <InputGroup className="mb-2 input-seamless">
                   <InputGroup.Prepend>

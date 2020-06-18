@@ -43,10 +43,10 @@ class PasswordReset extends React.Component {
       return <Redirect push to="/reset_pwd_get_security" />;
     }
     return (
-      <Container>
-        <Banner className="col p-5" message={'DO NOT REFRESH PAGE'} />
+      <Container className="col pt-5">
+        <Banner message={'DO NOT REFRESH PAGE'} />
         <Row>
-          <Col sm={{ span: 4, order: 2, offset: 4 }}>
+          <Col lg={{ span: 4, order: 2, offset: 4 }}>
             <Form>
               <Form.Group controlId="security_answer">
                 <Form.Label>{this.props.security_question}</Form.Label>

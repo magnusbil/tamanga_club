@@ -66,7 +66,7 @@ class Poll extends React.Component {
     const choices = this.props.poll_data.choices.map(function (choice) {
       return (
         <Row key={'choice_' + choice.id}>
-          <Col sm={{ span: 4, order: 2, offset: 4 }}>
+          <Col lg={{ span: 4, order: 2, offset: 4 }}>
             <input
               id={'choice_' + choice.id}
               type="radio"
@@ -84,13 +84,13 @@ class Poll extends React.Component {
       <div className="col pb-5">
         <Container>
           <Row>
-            <Col sm={{ span: 4, order: 2, offset: 4 }}>
+            <Col lg={{ span: 4, order: 2, offset: 4 }}>
               <h3>{this.props.poll_data.poll_title}</h3>
             </Col>
           </Row>
           <form>{choices}</form>
           <Row>
-            <Col sm={{ span: 2, order: 3, offset: 5 }}>
+            <Col lg={{ span: 2, order: 3, offset: 5 }}>
               <Button onClick={this.handleSubmit.bind(this)}>Vote</Button>
             </Col>
           </Row>
@@ -111,7 +111,7 @@ class Poll extends React.Component {
       var progress = this.calcProgress(choice.choice_total_votes);
       return (
         <Row key={'choice_' + choice.id}>
-          <Col sm={{ span: 4, order: 2, offset: 4 }}>
+          <Col lg={{ span: 4, order: 2, offset: 4 }}>
             <p>
               {choice.choice_title}, {progress}%, {choice.choice_total_votes}{' '}
               votes
@@ -125,7 +125,7 @@ class Poll extends React.Component {
       <div className="col pb-5">
         <Container>
           <Row>
-            <Col sm={{ span: 4, order: 2, offset: 4 }}>
+            <Col lg={{ span: 4, order: 2, offset: 4 }}>
               <h3>{this.props.poll_data.poll_title}</h3>
             </Col>
           </Row>

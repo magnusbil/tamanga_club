@@ -14,6 +14,7 @@ class Register extends React.Component {
     passwordMatch: '',
     security_question: '',
     security_answer: '',
+    club_code: '',
   };
 
   static propTypes = {
@@ -25,12 +26,15 @@ class Register extends React.Component {
 
     if (this.state.register_password != this.state.passwordMatch) {
       this.props.createMessage({ passwordMismatch: 'Passwords do not match' });
+    } else if (!this.state.club_code) {
+      this.props.createMessage({ message: 'Must provide Club Code.' });
     } else {
       this.props.register(
         this.state.register_username,
         this.state.register_password,
         this.state.security_question,
-        this.state.security_answer
+        this.state.security_answer,
+        this.state.club_code
       );
     }
   };
@@ -49,7 +53,9 @@ class Register extends React.Component {
               <Form>
                 <Form.Label>Sign up for an account</Form.Label>
                 <Form.Group controlId="register_username">
-                  <Form.Label>Username</Form.Label>
+                  <Form.Label>
+                    Username <sup>*</sup>
+                  </Form.Label>
                   <Form.Control
                     type="username"
                     placeholder="Enter username"
@@ -57,7 +63,9 @@ class Register extends React.Component {
                   />
                 </Form.Group>
                 <Form.Group controlId="register_password">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>
+                    Password <sup>*</sup>
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Password"
@@ -65,7 +73,9 @@ class Register extends React.Component {
                   />
                 </Form.Group>
                 <Form.Group controlId="passwordMatch">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>
+                    Confirm Password <sup>*</sup>
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Confirm password"
@@ -73,7 +83,9 @@ class Register extends React.Component {
                   />
                 </Form.Group>
                 <Form.Group controlId="security_question">
-                  <Form.Label>Security Question</Form.Label>
+                  <Form.Label>
+                    Security Question <sup>*</sup>
+                  </Form.Label>
                   <Form.Control
                     as="select"
                     placeholder="Choose a security question."
@@ -98,8 +110,19 @@ class Register extends React.Component {
                   </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="security_answer">
-                  <Form.Label>Security Answer</Form.Label>
+                  <Form.Label>
+                    Security Answer <sup>*</sup>
+                  </Form.Label>
                   <Form.Control placeholder="Answer" onChange={this.onChange} />
+                </Form.Group>
+                <Form.Group controlId="club_code">
+                  <Form.Label>
+                    Club Code <sup>*</sup>
+                  </Form.Label>
+                  <Form.Control
+                    placeholder="Club code"
+                    onChange={this.onChange}
+                  />
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={this.onSubmit}>
                   Register
