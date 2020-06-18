@@ -13,31 +13,41 @@ class NavBar extends React.Component {
 
   onSubmit = (e) => this.props.logout();
 
-  renderProfileNav() {
+  guestNav() {
     return (
-      <Nav className="ml-auto">
-        <Nav.Link onClick={this.onSubmit}>
-          {/* <FontAwesomeIcon icon={faUser} /> */}
-          Logout
-        </Nav.Link>
-      </Nav>
-    );
-  }
-  render() {
-    return (
-      <Navbar bg="primary" variant="dark">
+      <Navbar id="bg-navbar-pink">
         <Navbar.Brand href="/">TAMC Library club</Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="/series">Library</Nav.Link>
-          <Nav.Link href="/polls">Polls</Nav.Link>
-          <Nav.Link href="/shared">Shared Access</Nav.Link>
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
             Meetup
           </Nav.Link>
         </Nav>
-        {this.props.user ? this.renderProfileNav() : <Nav></Nav>}
+        <Nav className="ml-auto" id="navbar">
+          <Nav.Link href="/login">Sign In</Nav.Link>
+        </Nav>
       </Navbar>
     );
+  }
+  userNav() {
+    return (
+      <Navbar id="bg-navbar-pink">
+        <Navbar.Brand href="/">TAMC Library club</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
+            Meetup
+          </Nav.Link>
+          <Nav.Link href="/series">Library</Nav.Link>
+          <Nav.Link href="/polls">Polls</Nav.Link>
+          <Nav.Link href="/shared">Shared Access</Nav.Link>
+        </Nav>
+        <Nav className="ml-auto" id="navbar">
+          <Nav.Link onClick={this.onSubmit}>Logout</Nav.Link>
+        </Nav>
+      </Navbar>
+    );
+  }
+  render() {
+    return this.props.user ? this.userNav() : this.guestNav();
   }
 }
 
