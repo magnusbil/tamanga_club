@@ -53,6 +53,18 @@ body {
   text-align: center;
 }
 
+#bg-navbar-pink {
+  background-color: #f032a7;
+}
+
+#home-page-banner {
+  font-size: 72px;
+  background: -webkit-linear-gradient(#f032a7, #7e55ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 300;
+}
+
 #loading {
   padding-top: 20em;
 }
