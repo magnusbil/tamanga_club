@@ -16,7 +16,7 @@ class NavBar extends React.Component {
   guestNav() {
     return (
       <Navbar id="bg-navbar-pink">
-        <Navbar.Brand href="/">TAMC Library club</Navbar.Brand>
+        <Navbar.Brand href="/">Triangle Manga Club</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
             Meetup
@@ -31,7 +31,7 @@ class NavBar extends React.Component {
   userNav() {
     return (
       <Navbar id="bg-navbar-pink">
-        <Navbar.Brand href="/">TAMC Library club</Navbar.Brand>
+        <Navbar.Brand href="/">Triangle Manga Club</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
             Meetup
