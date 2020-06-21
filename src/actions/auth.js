@@ -120,9 +120,13 @@ export const logout = () => (dispatch, getState) => {
     });
 };
 
-export const deleteAccount = (username) => (dispatch, getState) => {
+export const deleteAccount = (username, security_answer) => (
+  dispatch,
+  getState
+) => {
   const body = {
     username: username,
+    security_answer: security_answer,
   };
   axios
     .post('/club/auth/delete_account', tokenConfig(getState))

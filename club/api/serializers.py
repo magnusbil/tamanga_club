@@ -63,7 +63,7 @@ class BookClubSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('interests', 'icon', 'club')
+        fields = ('interests', 'icon', 'club', 'security_question')
 
 # Make sure usernames have to be unique
 User._meta.get_field('username')._unique = True
