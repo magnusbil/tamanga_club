@@ -114,18 +114,18 @@ class SharedAccessListView(ListAPIView):
 
 @api_view(['Post'])
 @permission_classes([permissions.IsAuthenticated])
-def deleteAccount(){
+def delete_account():
   try:
     data = json.loads(request.body.decode(encoding='utf-8'))
     user = User.objects.get(id=data['user_id'])
     profile = UserProfile.objects.get(user=user)
-    if profile.security_answer = data['security_answer']:
+    if profile.security_answer == data['security_answer']:
       user.delete()
       return JsonResponse({"message":"All account deleted."})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
-}
+
 
 # Returns a user's secuirty question. THis is used during the password reset process
 @api_view(['POST'])

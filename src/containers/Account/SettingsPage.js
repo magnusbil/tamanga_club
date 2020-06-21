@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteAccount } from '../../actions/auth';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { createMessage } from '../../actions/message';
 
 class SettingsPage extends React.Component {
   state = {
@@ -10,6 +11,7 @@ class SettingsPage extends React.Component {
   };
 
   static propTypes = {
+    createMessage: PropTypes.func.isRequired,
     deleteAccount: PropTypes.func.isRequired,
   };
 
@@ -19,6 +21,8 @@ class SettingsPage extends React.Component {
         this.props.user.username,
         this.state.security_answer
       );
+    } else {
+      this.props.createMessage({ message: 'Security answer required.' });
     }
   }
 
@@ -26,21 +30,23 @@ class SettingsPage extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container className="pt-5">
         <Row>
-          <Col>
+          <Col lg={{ span: 4, order: 2, offset: 4 }}>
             <Form>
               <Form.Label>Delete Account</Form.Label>
               <Form.Group controlId="security_answer">
                 <Form.Label>
-                  {this.props.user.profile.security_answer}
+                  {this.props.user.profile.security_question}
                 </Form.Label>
                 <Form.Control
                   placeholder="Answer"
                   onChange={this.onChange}
                 ></Form.Control>
               </Form.Group>
-              <Button onClick={this.submitDelete}></Button>
+              <Button onClick={this.submitDelete.bind(this)}>
+                Confirm Delete
+              </Button>
             </Form>
           </Col>
         </Row>
@@ -53,4 +59,6 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { deleteAccount })(SettingsPage);
+export default connect(mapStateToProps, { createMessage, deleteAccount })(
+  SettingsPage
+);

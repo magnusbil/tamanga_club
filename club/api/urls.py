@@ -4,7 +4,7 @@ from knox.views import LogoutView
 
 urlpatterns = [
     path('auth/', include('knox.urls')),
-    path('auth/delete_account', delete_account, name='delete_account')
+    path('auth/delete_account', delete_account, name='delete_account'),
     path('auth/login', LoginAPIView.as_view()),
     path('auth/logout', LogoutView.as_view(), name='knox_logout'),
     path('auth/password_reset', PasswordAPIView.as_view()),
