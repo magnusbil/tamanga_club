@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAllSeries, setCurrentSeries } from '../../actions/library';
 import Loading from '../../components/common/Loading';
+import LibraryNav from '../../components/Library/LibraryNav';
 
 const SeriesRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
@@ -51,15 +52,18 @@ class SeriesListView extends React.Component {
       }
     }
 
-    return (
-      <div className="col pt-5">
-        <Container>{rows}</Container>
-      </div>
-    );
+    return <Container className="pt-5">{rows}</Container>;
   }
 
   render() {
-    return this.props.series_list ? this.renderSeries() : <Loading />;
+    return this.props.series_list ? (
+      <div>
+        <LibraryNav currentLink="series" />
+        {this.renderSeries()}
+      </div>
+    ) : (
+      <Loading />
+    );
   }
 }
 
