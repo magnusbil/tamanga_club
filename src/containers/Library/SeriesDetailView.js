@@ -16,6 +16,10 @@ class SeriesDetailView extends React.Component {
     selected_volume: '',
   };
 
+  static propTypes = {
+    getSingleSeries: PropTypes.func.isRequired,
+  };
+
   componentDidMount() {
     if (!this.props.series_data) {
       this.props.getSingleSeries(this.props.title);

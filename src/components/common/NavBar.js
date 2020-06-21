@@ -1,7 +1,7 @@
 import React from 'react';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown, Navbar, Nav } from 'react-bootstrap';
+import { NavDropdown, Navbar, Nav } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
@@ -36,12 +36,23 @@ class NavBar extends React.Component {
           <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
             Meetup
           </Nav.Link>
-          <Nav.Link href="/series">Library</Nav.Link>
+          <Nav.Link href="/search">Library</Nav.Link>
           <Nav.Link href="/polls">Polls</Nav.Link>
           <Nav.Link href="/shared">Shared Access</Nav.Link>
         </Nav>
-        <Nav className="ml-auto" id="navbar">
-          <Nav.Link onClick={this.onSubmit}>Logout</Nav.Link>
+        <Nav className="ml-auto pl-2" id="navbar">
+          <Nav.Link href="/profile" id="profile-link" className="rounded">
+            {
+              <span id="profile-icon">
+                <FontAwesomeIcon icon={faUser} />
+              </span>
+            }
+            {this.props.user.username}
+          </Nav.Link>
+          <NavDropdown id="nav-dropdown" alignRight title="">
+            <Nav.Link href="/profile/settings">Account Settings</Nav.Link>
+            <NavDropdown.Item onClick={this.onSubmit}>Logout</NavDropdown.Item>
+          </NavDropdown>
         </Nav>
       </Navbar>
     );

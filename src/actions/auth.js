@@ -10,6 +10,7 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  DELETE_ACCOUNT,
 } from './types';
 
 // CHECK TOKEN & LOAD USER
@@ -112,6 +113,26 @@ export const logout = () => (dispatch, getState) => {
     .then((res) => {
       dispatch({
         type: LOGOUT_SUCCESS,
+      });
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+export const deleteAccount = (username, security_answer) => (
+  dispatch,
+  getState
+) => {
+  const body = {
+    username: username,
+    security_answer: security_answer,
+  };
+  axios
+    .post('/club/auth/delete_account', body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: DELETE_ACCOUNT,
       });
     })
     .catch((err) => {
