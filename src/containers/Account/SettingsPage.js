@@ -26,7 +26,7 @@ class SettingsPage extends React.Component {
     }
   }
 
-  onChange = (e) => this.setState({ [e.target.id]: [e.target.value] });
+  onChange = (e) => this.setState({ [e.target.id]: e.target.value });
 
   render() {
     return (

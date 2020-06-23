@@ -27,9 +27,6 @@ class GetSecurity extends React.Component {
   onChange = (e) => this.setState({ [e.target.id]: e.target.value });
 
   render() {
-    if (this.props.security_question) {
-      return <Redirect push to="/reset_password" />;
-    }
     return (
       <Container className="col pt-5">
         <Row>

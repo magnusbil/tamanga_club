@@ -129,7 +129,7 @@ export const deleteAccount = (username, security_answer) => (
     security_answer: security_answer,
   };
   axios
-    .post('/club/auth/delete_account', tokenConfig(getState))
+    .post('/club/auth/delete_account', body, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: DELETE_ACCOUNT,
