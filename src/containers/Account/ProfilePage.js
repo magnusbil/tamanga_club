@@ -1,8 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form } from 'react-bootstrap';
 
 class ProfilePage extends React.Component {
+  renderAbout() {
+    return (
+      <div className="pt-2 profile-item-content">
+        <h4>About</h4> <br />
+        <p></p>
+      </div>
+    );
+  }
+
   renderBookCheckedOut() {
     if (this.props.user.books_checked_out.length > 0) {
       const checked_out_cards = this.props.user.books_on_hold.map((book) => {
@@ -10,7 +19,12 @@ class ProfilePage extends React.Component {
       });
       return checked_out_cards;
     }
-    return <h5>You have no books checked out.</h5>;
+    return (
+      <div className="pt-2 profile-item-content">
+        <h4>Books On Loan</h4> <br />
+        <h5>You have no books checked out.</h5>
+      </div>
+    );
   }
 
   renderBooksOnHold() {
@@ -18,28 +32,39 @@ class ProfilePage extends React.Component {
       const hold_cards = this.props.user.books_on_hold.map((book) => {
         return;
       });
-      return hold_cards;
+      return <div className="profile-item-content">{hold_cards}</div>;
     }
     return (
-      <h5>
-        You have no books on hold. Visit the <a href="/seach">library</a> to
-        find your next adventure!
-      </h5>
+      <div className="pt-2 profile-item-content">
+        <h4>Books Reserved</h4> <br />
+        <h5>
+          You have no books on hold. Visit the <a href="/seach">library</a> to
+          find your next adventure!
+        </h5>
+      </div>
     );
   }
 
   rednerDiscussions() {
-    return <Container></Container>;
+    return (
+      <Form className="profile-item-content">
+        <Form.Group>
+          <Form.Control placeholder="Rant, rave, vent, or just say hi ;)" />
+        </Form.Group>
+        <Button className="ml-auto">Post</Button>
+      </Form>
+    );
   }
   render() {
     return (
-      <Container>
+      <Container className="pt-5 profile-group">
         <Row>
           <Col>
-            <div>{this.renderBookCheckedOut()}</div>
-            <div>{this.renderBooksOnHold()}</div>
+            <Row className="profile-item">{this.renderAbout()}</Row>
+            <Row className="profile-item">{this.renderBookCheckedOut()}</Row>
+            <Row className="profile-item">{this.renderBooksOnHold()}</Row>
           </Col>
-          <Col></Col>
+          <Col>{this.rednerDiscussions()}</Col>
           <Col></Col>
         </Row>
       </Container>
