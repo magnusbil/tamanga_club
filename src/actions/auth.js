@@ -53,10 +53,14 @@ export const login = (username, password) => (dispatch) => {
   axios
     .post('/club/auth/login', body, config)
     .then((res) => {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(err.response.data, err.response.status));
+      } else {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: res.data,
+        });
+      }
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
@@ -93,10 +97,14 @@ export const register = (
   axios
     .post('/club/auth/register', body, config)
     .then((res) => {
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        });
+      }
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
@@ -131,9 +139,13 @@ export const deleteAccount = (username, security_answer) => (
   axios
     .post('/club/auth/delete_account', body, tokenConfig(getState))
     .then((res) => {
-      dispatch({
-        type: DELETE_ACCOUNT,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch({
+          type: DELETE_ACCOUNT,
+        });
+      }
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));

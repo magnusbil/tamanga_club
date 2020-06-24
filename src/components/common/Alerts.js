@@ -10,6 +10,7 @@ export class Alerts extends Component {
   };
 
   componentDidUpdate(prevProps) {
+    console.log(this.props);
     const { error, alert, message } = this.props;
     if (error !== prevProps.error) {
       if (error.msg.message) alert.error(`Error: ${error.msg.message.join()}`);
@@ -19,7 +20,13 @@ export class Alerts extends Component {
         alert.error('Username Error: ' + error.msg.username.join());
       if (error.msg.password)
         alert.error('Password Error: ' + error.msg.password.join());
-      if (error.msg.detail) alert.error(`Error: ${error.msg.detail}`);
+      if (error.msg.detail) {
+        if (error.msg.detail == 'Invalid token.') {
+          alert.error('Pleae log back in.');
+        } else {
+          alert.error(`Error: ${error.msg.detail}`);
+        }
+      }
       if (error.msg.error_message)
         alert.error(`Error: ${error.msg.error_message}`);
     } else if (message) {
