@@ -58,7 +58,7 @@ export const setCurrentSeries = (series_data) => (dispatch) => {
   });
 };
 
-export const reserveBook = (book_id, user_id) => (dispatch, getState) => {
+export const reserveBook = (user_id, book_id) => (dispatch, getState) => {
   const body = {
     book_id: book_id,
     user_id: user_id,
@@ -67,7 +67,6 @@ export const reserveBook = (book_id, user_id) => (dispatch, getState) => {
   axios
     .post('/club/reserve', body, tokenConfig(getState))
     .then((res) => {
-      console.log(res.data.message);
       dispatch(createMessage({ message: res.data.message }));
       dispatch({
         type: HOLD_REQUEST_SUCCESS,

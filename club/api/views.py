@@ -185,7 +185,7 @@ def reserve(request):
   try:
     request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
     book = Book.objects.get(id=request_data['book_id'])
-    if book.hold_for == None:
+    if not book.hold_for:
       user = User.objects.get(id=request_data['user_id'])
       book.hold_for = user
       book.save()

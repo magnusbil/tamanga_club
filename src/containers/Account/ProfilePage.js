@@ -12,43 +12,17 @@ class ProfilePage extends React.Component {
     );
   }
 
-  renderBookCheckedOut() {
-    if (this.props.user.books_checked_out.length > 0) {
-      const checked_out_cards = this.props.user.books_on_hold.map((book) => {
-        return (
-          <Card className="img-card">
-            <Card.Img src={book.cover_image} className="book-img" />
-          </Card>
-        );
-      });
-      return (
-        <div className="pt-2 profile-item-content">
-          <h4>Books on Loan</h4> <br />
-          {checked_out_cards}
-        </div>
-      );
-    }
-    return (
-      <div className="pt-2 profile-item-content">
-        <h4>Books On Loan</h4> <br />
-        <h5>You have no books checked out.</h5>
-      </div>
-    );
-  }
-
   renderBooksOnHold() {
     if (this.props.user.books_on_hold.length > 0) {
-      const hold_cards = this.props.user.books_on_hold.map((book) => {
+      const tiles = this.props.user.books_on_hold.map((book) => {
         return (
-          <Card className="img-card">
-            <Card.Img src={book.cover_image} className="book-img" />
-          </Card>
+          <Card.Img src={book.cover_image} className="book-img-profile-small" />
         );
       });
       return (
-        <div className="pt-2 profile-item-content">
-          <h4>Books Reserved</h4> <br />
-          {hold_cards}
+        <div className="pt-2 pb-2 profile-item-content">
+          <h4>Reserved Books</h4> <br />
+          {tiles}
         </div>
       );
     }
@@ -79,7 +53,7 @@ class ProfilePage extends React.Component {
         <Row>
           <Col>
             <Row className="profile-item">{this.renderAbout()}</Row>
-            <Row className="profile-item">{this.renderBookCheckedOut()}</Row>
+            {/* <Row className="profile-item">{this.renderBookCheckedOut()}</Row> */}
             <Row className="profile-item">{this.renderBooksOnHold()}</Row>
           </Col>
           <Col>{this.rednerDiscussions()}</Col>
