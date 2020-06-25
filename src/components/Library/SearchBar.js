@@ -45,6 +45,7 @@ class SearchBar extends React.Component {
                     </InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
+                    className="rounded"
                     onChange={this.handleChange}
                     placeholder="Search for a book series"
                   />
