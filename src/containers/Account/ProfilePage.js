@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Col, Container, Row, Form } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form, Card } from 'react-bootstrap';
 
 class ProfilePage extends React.Component {
   renderAbout() {
@@ -16,12 +16,17 @@ class ProfilePage extends React.Component {
     if (this.props.user.books_checked_out.length > 0) {
       const checked_out_cards = this.props.user.books_on_hold.map((book) => {
         return (
-          <a>
-            <img src={book.book_cover}></img>
-          </a>
+          <Card className="img-card">
+            <Card.Img src={book.cover_image} className="book-img" />
+          </Card>
         );
       });
-      return checked_out_cards;
+      return (
+        <div className="pt-2 profile-item-content">
+          <h4>Books on Loan</h4> <br />
+          {checked_out_cards}
+        </div>
+      );
     }
     return (
       <div className="pt-2 profile-item-content">
@@ -32,11 +37,20 @@ class ProfilePage extends React.Component {
   }
 
   renderBooksOnHold() {
-    if (this.props.user.books_checked_out.length > 0) {
+    if (this.props.user.books_on_hold.length > 0) {
       const hold_cards = this.props.user.books_on_hold.map((book) => {
-        return;
+        return (
+          <Card className="img-card">
+            <Card.Img src={book.cover_image} className="book-img" />
+          </Card>
+        );
       });
-      return <div className="profile-item-content">{hold_cards}</div>;
+      return (
+        <div className="pt-2 profile-item-content">
+          <h4>Books Reserved</h4> <br />
+          {hold_cards}
+        </div>
+      );
     }
     return (
       <div className="pt-2 profile-item-content">
