@@ -67,10 +67,14 @@ export const reserveBook = (user_id, book_id) => (dispatch, getState) => {
   axios
     .post('/club/reserve', body, tokenConfig(getState))
     .then((res) => {
-      dispatch(createMessage({ message: res.data.message }));
-      dispatch({
-        type: HOLD_REQUEST_SUCCESS,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch(createMessage({ message: res.data.message }));
+        dispatch({
+          type: HOLD_REQUEST_SUCCESS,
+        });
+      }
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));

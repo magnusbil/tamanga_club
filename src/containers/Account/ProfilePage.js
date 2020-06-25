@@ -30,7 +30,7 @@ class ProfilePage extends React.Component {
       <div className="pt-2 profile-item-content">
         <h4>Books Reserved</h4> <br />
         <h5>
-          You have no books on hold. Visit the <a href="/seach">library</a> to
+          You have no books on hold. Visit the <a href="/search">library</a> to
           find your next adventure!
         </h5>
       </div>

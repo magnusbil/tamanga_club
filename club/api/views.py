@@ -40,7 +40,7 @@ class RegisterAPIView(generics.GenericAPIView):
             "token": AuthToken.objects.create(user)[1]
         })
       else:
-        return JsonResponse({"error_message": "Username already taken"}, status=400)
+        return JsonResponse({"error_message": "Username already taken"})
     except Exception as e:
       error_message = str(e)
       return JsonResponse({"error_message": error_message}, status=400)
@@ -132,7 +132,7 @@ def delete_account(request):
       user.delete()
       return JsonResponse({"message":"All account information deleted."})
     else:
-      return JsonResponse({"error_message": "Incorrect security answer. Please try again."}, status=400)
+      return JsonResponse({"error_message": "Incorrect security answer. Please try again."})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
@@ -173,7 +173,7 @@ def vote(request):
         'poll_total_votes': poll_total_votes
       })
     else:
-      return JsonResponse({"message": "You have already voted on this poll."})
+      return JsonResponse({"error_message": "You have already voted on this poll."})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message":error_message}, status=400)
@@ -193,7 +193,7 @@ def reserve(request):
         "message": "Reservation Completed"
       })
     else:
-      return JsonResponse({"message": "This book is already reserved"})
+      return JsonResponse({"error_message": "This book is already reserved"})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)

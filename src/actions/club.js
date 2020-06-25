@@ -16,7 +16,9 @@ export const getPolls = (club_id) => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => dispatch(returnErrors({ message: err })));
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const submitVote = (poll_id, user_id, choice_id) => (
@@ -27,12 +29,18 @@ export const submitVote = (poll_id, user_id, choice_id) => (
   axios
     .post('/club/poll/vote', body, tokenConfig(getState))
     .then((res) => {
-      dispatch({
-        type: VOTE_SUCCESS,
-        payload: res.data,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch({
+          type: VOTE_SUCCESS,
+          payload: res.data,
+        });
+      }
     })
-    .catch((err) => dispatch(returnErrors({ message: err })));
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const getSharedAccess = (club_id) => (dispatch, getState) => {
