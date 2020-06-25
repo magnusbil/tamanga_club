@@ -184,12 +184,16 @@ def vote(request):
 def reserve(request):
   try:
     request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
-    user = User.objects.get(id=request_data['user_id'])
     book = Book.objects.get(id=request_data['book_id'])
-    book.hold_for = user
-    return JsonResponse({
-      "message": "Reservation Completed"
-    })
+    if book.hold_for == None:
+      user = User.objects.get(id=request_data['user_id'])
+      book.hold_for = user
+      book.save()
+      return JsonResponse({
+        "message": "Reservation Completed"
+      })
+    else:
+      return JsonResponse({"message": "This book is already reserved"})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)

@@ -15,7 +15,11 @@ class ProfilePage extends React.Component {
   renderBookCheckedOut() {
     if (this.props.user.books_checked_out.length > 0) {
       const checked_out_cards = this.props.user.books_on_hold.map((book) => {
-        return;
+        return (
+          <a>
+            <img src={book.book_cover}></img>
+          </a>
+        );
       });
       return checked_out_cards;
     }
