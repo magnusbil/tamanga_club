@@ -6,6 +6,7 @@ import { Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { createMessage } from '../../actions/message';
 import { Redirect } from 'react-router-dom';
 import Banner from '../../components/common/Banner';
+import GetSecurity from '../../components/Account/GetSecurity';
 
 class PasswordReset extends React.Component {
   state = {
@@ -39,10 +40,12 @@ class PasswordReset extends React.Component {
   onChange = (e) => this.setState({ [e.target.id]: e.target.value });
 
   render() {
-    if (!this.props.security_question) {
-      return <Redirect push to="/reset_pwd_get_security" />;
+    if (this.props.user) {
+      return <Redirect push to="/" />;
     }
-    return (
+    return !this.props.security_question ? (
+      <GetSecurity />
+    ) : (
       <Container className="col pt-5">
         <Banner message={'DO NOT REFRESH PAGE'} />
         <Row>
@@ -88,6 +91,7 @@ class PasswordReset extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  user: state.auth.user,
   username: state.password.username,
   security_question: state.password.security_question,
 });

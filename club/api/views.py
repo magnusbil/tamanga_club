@@ -17,26 +17,30 @@ class RegisterAPIView(generics.GenericAPIView):
   def post(self, request, *args, **kwargs):
     try:
       data = json.loads(request.body.decode(encoding="utf-8"))
-      username_taken = User.objects.filter(username=data['username'])
-      if len(username_taken) == 0:
+      existing_user = User.objects.filter(username=data['username'])
+      if len(existing_user) == 0:
+        # get the club object (if it doesn't exist it will throw an exception)
+        club = BookClub.objects.get(club_code=data['club_code'])
+
+        # create user with provided username and password
         user_data = {"username": data['username'], "password": data['password']}
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         
-        #SET SECURITY QUESTION AND ANSWER
+        #Set the security question and answer on the user profile
         user.profile.security_question = data['security_question']
         user.profile.security_answer = data['security_answer']
-        club = BookClub.objects.get(club_code=data['club_code'])
         user.profile.club = club
         user.profile.save()
 
+        # return the serialized user object and an auth token
         return JsonResponse({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
       else:
-        return JsonResponse({"error_message": "Username already taken"}, status=400)
+        return JsonResponse({"error_message": "Username already taken"})
     except Exception as e:
       error_message = str(e)
       return JsonResponse({"error_message": error_message}, status=400)
@@ -56,13 +60,18 @@ class LoginAPIView(generics.GenericAPIView):
 class PasswordAPIView(generics.GenericAPIView):
   def post(self, request):
     try:
+      # grab associated objects
       data = json.loads(request.body.decode(encoding='utf-8'))
       user = User.objects.get(username=data['username'])
       profile = UserProfile.objects.get(user=user)
+
+      # Assert that provided security answer matches the security answer on the user profile.
+      # Then set the password to a hashed version of the provided password
       if profile.security_answer == data['answer']:
         new_password = make_password(data['password'])
         user.password = new_password
         user.save()
+        # Return serialized user object and auth token
         return JsonResponse({
           "user": UserSerializer(user, context=self.get_serializer_context()).data,
           "token": AuthToken.objects.create(user)[1]
@@ -112,6 +121,23 @@ class SharedAccessListView(ListAPIView):
     return SharedAccess.objects.filter(club=club)
   serializer_class = SharedAccessSerializer
 
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def delete_account(request):
+  try:
+    data = json.loads(request.body.decode(encoding='utf-8'))
+    user = User.objects.get(username=data['username'])
+    profile = UserProfile.objects.get(user=user)
+    if profile.security_answer == data['security_answer']:
+      user.delete()
+      return JsonResponse({"message":"All account information deleted."})
+    else:
+      return JsonResponse({"error_message": "Incorrect security answer. Please try again."})
+  except Exception as e:
+    error_message = str(e)
+    return JsonResponse({"error_message": error_message}, status=400)
+
+
 # Returns a user's secuirty question. THis is used during the password reset process
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
@@ -126,6 +152,8 @@ def get_security_question(request):
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
 
+# Creates a vote object to record a vote made 
+# by a user on a specific poll with a specific choice.
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def vote(request):
@@ -145,22 +173,27 @@ def vote(request):
         'poll_total_votes': poll_total_votes
       })
     else:
-      return JsonResponse({"message": "You have already voted on this poll."})
+      return JsonResponse({"error_message": "You have already voted on this poll."})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message":error_message}, status=400)
 
+# Reserve a book for a user
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def reserve(request):
   try:
     request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
-    user = User.objects.get(id=request_data['user_id'])
     book = Book.objects.get(id=request_data['book_id'])
-    book.hold_for = user
-    return JsonResponse({
-      "message": "Reservation Completed"
-    })
+    if not book.hold_for:
+      user = User.objects.get(id=request_data['user_id'])
+      book.hold_for = user
+      book.save()
+      return JsonResponse({
+        "message": "Reservation Completed"
+      })
+    else:
+      return JsonResponse({"error_message": "This book is already reserved"})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)

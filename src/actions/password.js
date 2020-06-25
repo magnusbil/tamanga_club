@@ -12,10 +12,14 @@ export const get_security_question = (username) => (dispatch) => {
   axios
     .post('/club/auth/security_question', body)
     .then((res) => {
-      dispatch({
-        type: GET_SECURITY_QUESTION,
-        payload: res.data,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch({
+          type: GET_SECURITY_QUESTION,
+          payload: res.data,
+        });
+      }
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
@@ -28,10 +32,14 @@ export const password_reset = (username, answer, password) => (dispatch) => {
   axios
     .post('/club/auth/password_reset', body)
     .then((res) => {
-      dispatch({
-        type: PASSWORD_RESET,
-        payload: res.data,
-      });
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch({
+          type: PASSWORD_RESET,
+          payload: res.data,
+        });
+      }
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
