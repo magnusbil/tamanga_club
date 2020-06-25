@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { tokenConfig } from './auth';
-import { returnErrors } from './message';
+import { createMessage } from './message';
 
 import { GET_POLLS, VOTE_SUCCESS, GET_SHARED_ACCESS } from './types';
 
@@ -16,7 +16,7 @@ export const getPolls = (club_id) => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => dispatch(returnErrors({ message: err })));
+    .catch((err) => createMessage({ message: err }));
 };
 
 export const submitVote = (poll_id, user_id, choice_id) => (
@@ -32,7 +32,7 @@ export const submitVote = (poll_id, user_id, choice_id) => (
         payload: res.data,
       });
     })
-    .catch((err) => dispatch(returnErrors({ message: err })));
+    .catch((err) => createMessage({ message: err }));
 };
 
 export const getSharedAccess = (club_id) => (dispatch, getState) => {

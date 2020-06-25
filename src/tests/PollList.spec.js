@@ -49,6 +49,7 @@ describe('<PollListView /> unit test with no data', () => {
 
   it('Should render NoData', () => {
     wrapper = mountRender(store, props);
+    // console.log(wrapper.debug());
     expect(wrapper.contains(NoData)).toBe(true);
   });
 });

@@ -3,7 +3,6 @@ import {
   GET_ALL_SERIES,
   GET_SINGLE_SERIES,
   GET_SINGLE_SERIES_FAIL,
-  HOLD_REQUEST_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -34,7 +33,6 @@ export default function (state = initialState, action) {
         ...state,
         current_series_data: [],
       };
-    case HOLD_REQUEST_SUCCESS:
     default:
       return state;
   }

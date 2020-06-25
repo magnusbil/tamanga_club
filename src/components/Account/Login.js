@@ -50,7 +50,7 @@ class Login extends React.Component {
                   Login
                 </Button>
                 <Form.Text>
-                  <a href="/reset_password">Forgot Password</a>
+                  <a href="/reset_pwd_get_security">Forgot Password</a>
                 </Form.Text>
               </Form>
             </Col>

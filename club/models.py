@@ -97,8 +97,7 @@ class Book(models.Model):
         return self.series.series_title + " Vol. " + str(self.volume_number)
 
 class SharedAccess(models.Model):
-    club = models.ForeignKey(BookClub, on_delete=models.CASCADE, related_name="group_shared_access")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_shared_access")
+    club = models.ForeignKey(BookClub, on_delete=models.CASCADE, related_name="shared_access")
     resource_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)

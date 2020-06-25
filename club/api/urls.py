@@ -4,13 +4,12 @@ from knox.views import LogoutView
 
 urlpatterns = [
     path('auth/', include('knox.urls')),
-    path('auth/delete_account', delete_account, name='delete_account'),
+    path('auth/register', RegisterAPIView.as_view()),
     path('auth/login', LoginAPIView.as_view()),
     path('auth/logout', LogoutView.as_view(), name='knox_logout'),
-    path('auth/password_reset', PasswordAPIView.as_view()),
-    path('auth/register', RegisterAPIView.as_view()),
-    path('auth/security_question', get_security_question, name='get_security_question'),
     path('auth/user', UserAPIView.as_view()),
+    path('auth/password_reset', PasswordAPIView.as_view()),
+    path('auth/security_question', get_security_question, name='get_security_question'),
     path('polls/<club_id>', PollListView.as_view()),
     path('poll/vote', vote, name='vote'),
     path('recents', RecentBooksView.as_view()),

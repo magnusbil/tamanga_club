@@ -1,7 +1,7 @@
 import React from 'react';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavDropdown, Navbar, Nav } from 'react-bootstrap';
+import { Dropdown, Navbar, Nav } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
@@ -13,52 +13,31 @@ class NavBar extends React.Component {
 
   onSubmit = (e) => this.props.logout();
 
-  guestNav() {
+  renderProfileNav() {
     return (
-      <Navbar id="bg-navbar-pink">
-        <Navbar.Brand href="/">Triangle Manga Club</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
-            Meetup
-          </Nav.Link>
-        </Nav>
-        <Nav className="ml-auto" id="navbar">
-          <Nav.Link href="/login">Sign In</Nav.Link>
-        </Nav>
-      </Navbar>
-    );
-  }
-  userNav() {
-    return (
-      <Navbar id="bg-navbar-pink">
-        <Navbar.Brand href="/">Triangle Manga Club</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
-            Meetup
-          </Nav.Link>
-          <Nav.Link href="/search">Library</Nav.Link>
-          <Nav.Link href="/polls">Polls</Nav.Link>
-          <Nav.Link href="/shared">Shared Access</Nav.Link>
-        </Nav>
-        <Nav className="ml-auto pl-2" id="navbar">
-          <Nav.Link href="/profile" id="profile-link" className="rounded">
-            {
-              <span id="profile-icon">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-            }
-            {this.props.user.username}
-          </Nav.Link>
-          <NavDropdown id="nav-dropdown" alignRight title="">
-            <Nav.Link href="/profile/settings">Account Settings</Nav.Link>
-            <NavDropdown.Item onClick={this.onSubmit}>Logout</NavDropdown.Item>
-          </NavDropdown>
-        </Nav>
-      </Navbar>
+      <Nav className="ml-auto">
+        <Nav.Link onClick={this.onSubmit}>
+          {/* <FontAwesomeIcon icon={faUser} /> */}
+          Logout
+        </Nav.Link>
+      </Nav>
     );
   }
   render() {
-    return this.props.user ? this.userNav() : this.guestNav();
+    return (
+      <Navbar bg="primary" variant="dark">
+        <Navbar.Brand href="/">TAMC Library club</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="/series">Library</Nav.Link>
+          <Nav.Link href="/polls">Polls</Nav.Link>
+          <Nav.Link href="/shared">Shared Access</Nav.Link>
+          <Nav.Link href="https://www.meetup.com/TriangleAnime" target="_blank">
+            Meetup
+          </Nav.Link>
+        </Nav>
+        {this.props.user ? this.renderProfileNav() : <Nav></Nav>}
+      </Navbar>
+    );
   }
 }
 

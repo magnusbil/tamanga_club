@@ -5,9 +5,8 @@ import {
   GET_SINGLE_SERIES,
   GET_ALL_SERIES,
   GET_SINGLE_SERIES_FAIL,
-  HOLD_REQUEST_SUCCESS,
 } from './types';
-import { createMessage, returnErrors } from './message';
+import { returnErrors } from './message';
 
 // get recenet library book additions
 export const getRecents = () => (dispatch, getState) => {
@@ -19,7 +18,7 @@ export const getRecents = () => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => dispatch(createMessage({ message: err })));
+    .catch((err) => createMessage({ message: err }));
 };
 
 // Get all series for the SeriesDetailView
@@ -56,23 +55,4 @@ export const setCurrentSeries = (series_data) => (dispatch) => {
     type: GET_SINGLE_SERIES,
     payload: series_data,
   });
-};
-
-export const reserveBook = (user_id, book_id) => (dispatch, getState) => {
-  const body = {
-    book_id: book_id,
-    user_id: user_id,
-  };
-
-  axios
-    .post('/club/reserve', body, tokenConfig(getState))
-    .then((res) => {
-      dispatch(createMessage({ message: res.data.message }));
-      dispatch({
-        type: HOLD_REQUEST_SUCCESS,
-      });
-    })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
 };

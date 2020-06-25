@@ -1,10 +1,5 @@
 body {
   background-color: rgb(243, 243, 243);
-  height: 100vh;
-}
-
-.App {
-  height: 100%;
 }
 
 .book-img {
@@ -14,12 +9,6 @@ body {
 
 .book-img:hover {
   opacity: 0.7;
-}
-
-.book-img-profile-small {
-  height: 150px;
-  width: 100px;
-  margin-left: 5px;
 }
 
 .display-row {
@@ -60,68 +49,10 @@ body {
   padding-left: 5px;
 }
 
-.profile-group {
-  overflow: hidden;
-}
-
-.profile-item {
-  background-color: lightgray;
-  border-radius: 10px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-.profile-item-content {
-  margin: 0px 5px;
-}
-
-.rounded {
-  border-radius: 30px !important;
-}
-
 .text-center {
   text-align: center;
 }
 
-#bg-navbar-pink {
-  background-color: #f032a7;
-}
-
-#footer {
-  width: 100%;
-  border-top: 1px solid black;
-  position: absolute;
-  bottom: 0;
-  background-color: #f032a7;
-}
-
-#home-page-banner {
-  font-size: 72px;
-  background: -webkit-linear-gradient(#f032a7, #7e55ed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 300;
-}
-
 #loading {
   padding-top: 20em;
-}
-
-#nav-dropdown :hover {
-  color: black;
-}
-
-#profile-icon {
-  border-radius: 50%;
-  margin: 0px 10px 0px 5px;
-}
-
-#profile-link {
-  background-color: #f032a7;
-  margin-right: 1em;
-}
-
-#profile-link:hover {
-  background-color: #7e55ed;
-  opacity: 85%;
 }
