@@ -10,7 +10,6 @@ export class Alerts extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    console.log(this.props);
     const { error, alert, message } = this.props;
     if (error !== prevProps.error) {
       if (error.msg.message) alert.error(`Error: ${error.msg.message.join()}`);
