@@ -5,8 +5,10 @@ import Enzyme, { mount } from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
 import { Provider as AlertProvider } from 'react-alert';
-import App from './App';
-import { Alerts } from './components/common/Alerts';
+import App from '../App';
+import { Alerts } from '../components/common/Alerts';
+import NavBar from '../components/common/NavBar';
+import * as Auth from '../actions/auth';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);
@@ -19,8 +21,16 @@ const mountRender = (store, props) => {
   );
 };
 
+const mockLoadUser = jest.fn();
+
+jest.mock('../actions/auth.js', () => ({
+  ...jest.requireActual('../actions/auth.js'),
+  loadUser: () => mockLoadUser,
+}));
+
 describe('<App/> unit Test', () => {
-  let props, store, wrapper;
+  let store, props, wrapper;
+
   beforeEach(() => {
     store = mockStore({
       auth: {
@@ -30,13 +40,19 @@ describe('<App/> unit Test', () => {
       messages: {},
     });
     props = {
-      loadUser: jest.fn(),
+      loadUser: mockLoadUser,
     };
   });
 
-  it('Should have an Alerter components', () => {
+  it('Should have an rendered components', () => {
     wrapper = mountRender(store, props);
-    expect(wrapper.containsMatchingElement(AlertProvider)).toBe(true);
-    expect(wrapper.containsMatchingElement(Alerts));
+    expect(
+      wrapper.containsAllMatchingElements([AlertProvider, Alerts, <NavBar />])
+    ).toBe(true);
+  });
+
+  it('Should have called loadUser', () => {
+    wrapper = mountRender(store, props);
+    expect(mockLoadUser).toHaveBeenCalled();
   });
 });

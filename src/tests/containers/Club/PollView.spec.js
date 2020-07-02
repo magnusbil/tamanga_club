@@ -4,9 +4,9 @@ import EnzymeAdapter from 'enzyme-adapter-react-16';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import Poll from '../components/Club/PollView';
+import Poll from '../../../components/Club/PollView';
 import { Container, Row } from 'react-bootstrap';
-import Loading from '../components/common/Loading';
+import Loading from '../../../components/common/Loading';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);

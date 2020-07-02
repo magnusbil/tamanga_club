@@ -4,11 +4,11 @@ import EnzymeAdapter from 'enzyme-adapter-react-16';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import NoData from '../components/common/NoData';
-import SeriesByTitleView from '../containers/Library/SeriesByTitleView';
+import NoData from '../../../components/common/NoData';
+import SeriesByTitleView from '../../../containers/Library/SeriesByTitleView';
 import { Card } from 'react-bootstrap';
-import Loading from '../components/common/Loading';
-import LibraryNav from '../components/Library/LibraryNav';
+import Loading from '../../../components/common/Loading';
+import LibraryNav from '../../../components/Library/LibraryNav';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);

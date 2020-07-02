@@ -5,9 +5,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import SeriesDetailView from '../containers/Library/SeriesDetailView';
+import SeriesDetailView from '../../../containers/Library/SeriesDetailView';
 import { Card, Modal } from 'react-bootstrap';
-import Loading from '../components/common/Loading';
+import Loading from '../../../components/common/Loading';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);

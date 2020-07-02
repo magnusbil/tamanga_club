@@ -107,8 +107,8 @@ class SeriesByGenreView extends React.Component {
   }
 }
 
-const mapPropsToState = (state, thisProps) => ({
-  genre: thisProps.match.params.genre,
+const mapPropsToState = (state, ownProps) => ({
+  genre: ownProps.match.params.genre,
   series_list: state.library.series_list,
 });
 
