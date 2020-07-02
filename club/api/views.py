@@ -109,6 +109,12 @@ class SeriesListView(ListAPIView):
   serializer_class = SeriesSerializer
 
 @permission_classes([permissions.IsAuthenticated])
+class SeriesByGenreView(ListAPIView):
+  def get_queryset(self):
+    return Series.objects.filter(series_genres__contains = [self.kwargs['series_genre']])
+  serializer_class = SeriesSerializer
+
+@permission_classes([permissions.IsAuthenticated])
 class SeriesByTitleDetailView(RetrieveAPIView):
   queryset = Series.objects.all()
   serializer_class = SeriesSerializer

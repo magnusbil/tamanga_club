@@ -5,7 +5,8 @@ import PrivateRoute from './components/common/PrivateRoute';
 import SearchPage from './containers/Library/SearchPage';
 import HomePage from './containers/Club/HomePage';
 import AuthPage from './containers/Account/AuthPage';
-import SeriesListView from './containers/Library/SeriesListView';
+import SeriesByTitleView from './containers/Library/SeriesByTitleView';
+import SeriesByGenreView from './containers/Library/SeriesByGenreView';
 import SeriesDetailView from './containers/Library/SeriesDetailView';
 import PollListView from './containers/Club/PollListView';
 import SharedAccessView from './containers/Club/SharedAccessView';
@@ -20,9 +21,10 @@ const BaseRouter = () => (
     <Route exact path="/reset_password" component={PasswordResetPage} />
     <PrivateRoute exact path="/profile" component={ProfilePage} />
     <PrivateRoute exact path="/profile/settings" component={SettingsPage} />
-    <PrivateRoute exact path="/search" component={SearchPage} />
     <PrivateRoute exact path="/polls" component={PollListView} />
-    <PrivateRoute exact path="/series" component={SeriesListView} />
+    <PrivateRoute exact path="/search" component={SearchPage} />
+    <PrivateRoute exact path="/search/by_title" component={SeriesByTitleView} />
+    <PrivateRoute exact path="/search/by_genre/:genre" component={SeriesByGenreView} />
     <PrivateRoute exact path="/series/:title" component={SeriesDetailView} />
     <PrivateRoute exact path="/shared" component={SharedAccessView} />
   </div>

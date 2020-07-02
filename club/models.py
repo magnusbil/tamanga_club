@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+# from django.contrib.postgres.fields import ArrayField
+from django_better_admin_arrayfield.models.fields import ArrayField
 from django.contrib.auth.models import User
 from django.contrib.auth.base_user import BaseUserManager
 from django_s3_storage.storage import S3Storage
@@ -12,23 +13,19 @@ if settings.DEBUG == True:
 else:
   storage = S3Storage(aws_s3_bucket_name=settings.AWS_S3_BUCKET_NAME)
 
-GENRES = [
-    ('action', 'Action'),
-    ('comedy', 'Comedy'),
-    ('drama', 'Drama'),
-    ('horror', 'Horror'),
-    ('misc', 'Miscellaneous'),
-    ('slice_of_life', 'Slice of Life'),
-    ('yoai', 'Yoai'),
-    ('yuri', 'Yuri'),
-]
-SUB_GENRES = [
-    ('boys_love', 'Boys Love'),
-    ('girls_love', 'Girls Love'),
-    ('isekai', 'Isekai')
-]
-
-INTERESTS = GENRES + SUB_GENRES
+# GENRES = (
+#     ('action', 'Action'),
+#     ('comedy', 'Comedy'),
+#     ('drama', 'Drama'),
+#     ('horror', 'Horror'),
+#     ('misc', 'Miscellaneous'),
+#     ('slice_of_life', 'Slice of Life'),
+#     ('yoai', 'Yoai'),
+#     ('yuri', 'Yuri'),
+#     ('boys_love', 'Boys Love'),
+#     ('girls_love', 'Girls Love'),
+#     ('isekai', 'Isekai'),
+# )
 
 class BookClub(models.Model):
     club_name = models.CharField(max_length=255, default="New Group")
@@ -40,7 +37,7 @@ class BookClub(models.Model):
 class UserProfile(models.Model):
     club = models.ForeignKey(BookClub, on_delete=models.SET_NULL, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    interests = ArrayField(models.CharField(max_length=255, choices=INTERESTS, null=True), blank=True, null=True)
+    interests = ArrayField(models.CharField(max_length=255), default=list, blank=True, null=True)
     icon = models.ImageField("User Icon", storage=storage, blank=True, null=True)
     security_question = models.CharField(max_length=255, default="What's your favorite anime?", null=False)
     security_answer = models.CharField(max_length=255, default="Is it wrong to put random defaults in a dungeon?", null=False)
@@ -78,8 +75,7 @@ class Series(models.Model):
     series_title = models.CharField("Title", max_length=255, unique=True)
     series_author = models.CharField("Author",max_length=255, null=True, blank=True)
     series_artist = models.CharField("artist",max_length=255, null=True, blank=True)
-    series_genres = ArrayField(models.CharField("Genre", max_length=30, choices=GENRES, default='misc'))
-    series_sub_genres = models.CharField("Sub Genre", max_length=30, choices=SUB_GENRES, blank=True, null=True)
+    series_genres = ArrayField(models.CharField(max_length=30), blank=True, null=True)
     series_cover_image = models.ImageField("Series Cover Image", storage=storage, blank=True, null=True)
     complete = models.BooleanField("Is this series completed?", default=False)
 

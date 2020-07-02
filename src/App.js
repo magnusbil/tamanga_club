@@ -9,6 +9,7 @@ import AlertTemplate from 'react-alert-template-basic';
 import BaseRouter from './routes';
 import NavBar from './components/common/NavBar';
 import Alerts from './components/common/Alerts';
+import store from './store';
 import { loadUser } from './actions/auth';
 
 // Alert Options

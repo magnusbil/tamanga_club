@@ -16,6 +16,7 @@ urlpatterns = [
     path('recents', RecentBooksView.as_view()),
     path('reserve', reserve, name="reserve"),
     path('series', SeriesListView.as_view()),
+    path('series/genre/<series_genre>', SeriesByGenreView.as_view()),
     path('series/<series_title>', SeriesByTitleDetailView.as_view()),
     path('shared/<club_id>', SharedAccessListView.as_view()),
 ]

@@ -52,7 +52,7 @@ class SeriesSerializer(serializers.ModelSerializer):
     volumes = BookSerializer(many=True)
     class Meta:
         model = Series
-        fields = ('id', 'series_title', 'series_author', 'series_artist', 'series_cover_image', 'series_genres', 'series_sub_genres', 'complete', 'volumes')
+        fields = ('id', 'series_title', 'series_author', 'series_artist', 'series_cover_image', 'series_genres', 'complete', 'volumes')
 
 class BookClubSerializer(serializers.ModelSerializer):
     class Meta:
