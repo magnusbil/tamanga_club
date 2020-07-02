@@ -20,7 +20,9 @@ export const getRecents = () => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => dispatch(createMessage({ message: err })));
+    .catch((err) => {
+      dispatch(createMessage({ message: err }));
+    });
 };
 
 // Get all series for the SeriesDetailView

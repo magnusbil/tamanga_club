@@ -43,7 +43,7 @@ class SeriesByGenreView extends React.Component {
       return (
         <Nav.Item key={genre}>
           <Nav.Link
-            eventKey={genre}
+            eventKey={genre.toLowerCase()}
             href={'/search/by_genre/' + genre.toLowerCase()}
           >
             {genre}
