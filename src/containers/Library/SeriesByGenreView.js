@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Container, Row, Nav } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAllSeries, setCurrentSeries } from '../../actions/library';
+import { getGenreSeries, setCurrentSeries } from '../../actions/library';
 import Loading from '../../components/common/Loading';
 import LibraryNav from '../../components/Library/LibraryNav';
 import NoData from '../../components/common/NoData';
@@ -11,18 +11,52 @@ const SeriesRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
 };
 
-class SeriesListView extends React.Component {
+const GENRES = [
+  ('action', 'Action'),
+  ('comedy', 'Comedy'),
+  ('drama', 'Drama'),
+  ('horror', 'Horror'),
+  ('misc', 'Miscellaneous'),
+  ('slice_of_life', 'Slice of Life'),
+  ('yoai', 'Yoai'),
+  ('yuri', 'Yuri'),
+];
+
+class SeriesByGenreView extends React.Component {
   static propTypes = {
-    getAllSeries: PropTypes.func.isRequired,
+    getGenreSeries: PropTypes.func.isRequired,
     setCurrentSeries: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.getAllSeries();
+    if (!this.props.series_list) {
+      this.props.getGenreSeries(this.props.genre);
+    }
   }
 
   onSubmit(series_data) {
     this.setCurrentSeries(series_data);
+  }
+
+  renderGenreNav() {
+    const links = GENRES.map((genre) => {
+      return (
+        <Nav.Item>
+          <Nav.Link
+            eventKey={genre}
+            href={'/search/by_genre/' + genre.toLowerCase()}
+          >
+            {genre}
+          </Nav.Link>
+        </Nav.Item>
+      );
+    });
+
+    return (
+      <Nav variant="tabs" defaultActiveKey={this.props.genre} href>
+        {links}
+      </Nav>
+    );
   }
 
   renderSeries() {
@@ -64,6 +98,7 @@ class SeriesListView extends React.Component {
     return this.props.series_list ? (
       <div>
         <LibraryNav currentLink="series" />
+        {this.renderGenreNav()}
         {this.renderSeries()}
       </div>
     ) : (
@@ -72,10 +107,11 @@ class SeriesListView extends React.Component {
   }
 }
 
-const mapPropsToState = (state) => ({
+const mapPropsToState = (state, thisProps) => ({
+  genre: thisProps.match.params.genre,
   series_list: state.library.series_list,
 });
 
-export default connect(mapPropsToState, { getAllSeries, setCurrentSeries })(
-  SeriesListView
+export default connect(mapPropsToState, { getGenreSeries, setCurrentSeries })(
+  SeriesByGenreView
 );

@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import NoData from '../components/common/NoData';
-import SeriesListView from '../containers/Library/SeriesListView';
+import SeriesByTitleView from '../containers/Library/SeriesByTitleView';
 import { Card } from 'react-bootstrap';
 import Loading from '../components/common/Loading';
 import LibraryNav from '../components/Library/LibraryNav';
@@ -16,12 +16,12 @@ const mockStore = configureMockStore([thunk]);
 const mountRender = (store, props) => {
   return mount(
     <Provider store={store}>
-      <SeriesListView {...props} />
+      <SeriesByTitleView {...props} />
     </Provider>
   );
 };
 
-describe('<SeriesListView /> in loading phase', () => {
+describe('<SeriesByTitleView /> in loading phase', () => {
   let store, props, wrapper;
   beforeEach(() => {
     store = mockStore({
@@ -44,7 +44,7 @@ describe('<SeriesListView /> in loading phase', () => {
   });
 });
 
-describe('<SeriesListView /> with no data', () => {
+describe('<SeriesByTitleView /> with no data', () => {
   let store, props, wrapper;
   beforeEach(() => {
     store = mockStore({
@@ -67,7 +67,7 @@ describe('<SeriesListView /> with no data', () => {
   });
 });
 
-describe('<SeriesListView /> with data', () => {
+describe('<SeriesByTitleView /> with data', () => {
   let store, props, wrapper;
   beforeEach(() => {
     store = mockStore({
