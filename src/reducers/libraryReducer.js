@@ -1,6 +1,7 @@
 import {
   LOAD_RECENTS,
   GET_ALL_SERIES,
+  GET_GENRE_SERIES,
   GET_SINGLE_SERIES,
   GET_SINGLE_SERIES_FAIL,
   HOLD_REQUEST_SUCCESS,
@@ -8,7 +9,8 @@ import {
 
 const initialState = {
   recent_additions: [],
-  series_list: [],
+  genre: 'action',
+  series_list: undefined,
   current_series_data: undefined,
 };
 
@@ -23,6 +25,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         series_list: action.payload,
+      };
+    case GET_GENRE_SERIES:
+      return {
+        ...state,
+        genre: action.payload.genre,
+        series_list: action.payload.data,
       };
     case GET_SINGLE_SERIES:
       return {

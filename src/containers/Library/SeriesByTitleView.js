@@ -11,7 +11,7 @@ const SeriesRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
 };
 
-class SeriesListView extends React.Component {
+class SeriesByTitleView extends React.Component {
   static propTypes = {
     getAllSeries: PropTypes.func.isRequired,
     setCurrentSeries: PropTypes.func.isRequired,
@@ -77,5 +77,5 @@ const mapPropsToState = (state) => ({
 });
 
 export default connect(mapPropsToState, { getAllSeries, setCurrentSeries })(
-  SeriesListView
+  SeriesByTitleView
 );

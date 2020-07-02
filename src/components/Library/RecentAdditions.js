@@ -3,6 +3,7 @@ import { Card, Carousel, Container, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getRecents } from '../../actions/library';
+import NoData from '../common/NoData';
 
 class RecentAdditions extends React.Component {
   static propTypes = {
@@ -15,6 +16,7 @@ class RecentAdditions extends React.Component {
 
   generateItems(cards) {
     let items = [];
+    cards = cards.reverse();
     for (var i = 0; i < cards.length; i += 4) {
       let start = i == 0 ? 0 : cards.length - (cards.length - 4);
       let end = i + 4 < cards.length ? i + 4 : cards.length;
@@ -50,7 +52,7 @@ class RecentAdditions extends React.Component {
         </div>
       );
     } else {
-      return <Container></Container>;
+      return <NoData />;
     }
   }
 }

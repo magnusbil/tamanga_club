@@ -11,8 +11,13 @@ class LibraryNav extends React.Component {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="series" href="/series">
-            Series
+          <Nav.Link eventKey="by_title" href="/search/by_title">
+            Alphabetical
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="genre" href="/search/by_genre/action">
+            Genre
           </Nav.Link>
         </Nav.Item>
       </Nav>
