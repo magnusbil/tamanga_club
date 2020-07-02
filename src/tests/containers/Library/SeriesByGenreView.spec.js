@@ -4,11 +4,10 @@ import EnzymeAdapter from 'enzyme-adapter-react-16';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import SeriesByGenreView from '../../../containers/Library/SeriesByGenreView';
 import NoData from '../../../components/common/NoData';
-import SeriesByTitleView from '../../../containers/Library/SeriesByTitleView';
-import { Card } from 'react-bootstrap';
-import Loading from '../../../components/common/Loading';
 import LibraryNav from '../../../components/Library/LibraryNav';
+import { Card } from 'react-bootstrap';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);
@@ -16,72 +15,53 @@ const mockStore = configureMockStore([thunk]);
 const mountRender = (store, props) => {
   return mount(
     <Provider store={store}>
-      <SeriesByTitleView {...props} />
+      <SeriesByGenreView {...props} />
     </Provider>
   );
 };
-
-const mockGetAllSeries = jest.fn();
+const mockGetGenreSeries = jest.fn();
 
 jest.mock('axios');
 jest.mock('../../../actions/library.js', () => ({
   ...jest.requireActual('../../../actions/library.js'),
-  getAllSeries: () => mockGetAllSeries,
+  getGenreSeries: () => mockGetGenreSeries,
 }));
 
-describe('<SeriesByTitleView /> in loading phase', () => {
+describe('<SeriesByGenre /> unit test with no data', () => {
   let store, props, wrapper;
+
   beforeEach(() => {
     store = mockStore({
-      auth: {
-        token: null,
-      },
       library: {
         series_list: undefined,
       },
     });
     props = {
-      getAllSeries: mockGetAllSeries,
-      setCurrentSeries: jest.fn(),
+      getGenreSeries: mockGetGenreSeries,
+      match: {
+        params: {
+          genre: null,
+        },
+      },
     };
   });
 
-  it('Should render Loading', () => {
+  it('Should call getGenreSeries', () => {
     wrapper = mountRender(store, props);
-    expect(wrapper.containsMatchingElement(Loading)).toBe(true);
+    expect(mockGetGenreSeries).toHaveBeenCalled();
+  });
+
+  it('Should render Nodata', () => {
+    wrapper = mountRender(store, props);
+    expect(wrapper.contains(NoData));
   });
 });
 
-describe('<SeriesByTitleView /> with no data', () => {
+describe('<SeriesByGenre /> unit test with data', () => {
   let store, props, wrapper;
+
   beforeEach(() => {
     store = mockStore({
-      auth: {
-        token: null,
-      },
-      library: {
-        series_list: [],
-      },
-    });
-    props = {
-      getAllSeries: mockGetAllSeries,
-      setCurrentSeries: jest.fn(),
-    };
-  });
-
-  it('Should render NoData', () => {
-    wrapper = mountRender(store, props);
-    expect(wrapper.containsMatchingElement(NoData)).toBe(true);
-  });
-});
-
-describe('<SeriesByTitleView /> with data', () => {
-  let store, props, wrapper;
-  beforeEach(() => {
-    store = mockStore({
-      auth: {
-        token: null,
-      },
       library: {
         series_list: [
           {
@@ -98,12 +78,21 @@ describe('<SeriesByTitleView /> with data', () => {
       },
     });
     props = {
-      getAllSeries: jest.fn(),
-      setCurrentSeries: jest.fn(),
+      getGenreSeries: mockGetGenreSeries,
+      match: {
+        params: {
+          genre: null,
+        },
+      },
     };
   });
 
-  it('Should render NoData', () => {
+  it('Should call getGenreSeries', () => {
+    wrapper = mountRender(store, props);
+    expect(mockGetGenreSeries).toHaveBeenCalled();
+  });
+
+  it('Should render Nodata', () => {
     wrapper = mountRender(store, props);
     expect(wrapper.containsMatchingElement(LibraryNav)).toBe(true);
     expect(wrapper.containsMatchingElement(Card)).toBe(true);

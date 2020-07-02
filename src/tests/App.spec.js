@@ -8,7 +8,7 @@ import { Provider as AlertProvider } from 'react-alert';
 import App from '../App';
 import { Alerts } from '../components/common/Alerts';
 import NavBar from '../components/common/NavBar';
-import * as Auth from '../actions/auth';
+import axios from 'axios';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);
@@ -22,6 +22,7 @@ const mountRender = (store, props) => {
 };
 
 const mockLoadUser = jest.fn();
+jest.mock('axios');
 
 jest.mock('../actions/auth.js', () => ({
   ...jest.requireActual('../actions/auth.js'),

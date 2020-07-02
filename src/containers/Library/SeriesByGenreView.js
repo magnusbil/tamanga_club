@@ -12,14 +12,14 @@ const SeriesRow = (props) => {
 };
 
 const GENRES = [
-  ('action', 'Action'),
-  ('comedy', 'Comedy'),
-  ('drama', 'Drama'),
-  ('horror', 'Horror'),
-  ('misc', 'Miscellaneous'),
-  ('slice_of_life', 'Slice of Life'),
-  ('yoai', 'Yoai'),
-  ('yuri', 'Yuri'),
+  'Action',
+  'Comedy',
+  'Drama',
+  'Horror',
+  'Miscellaneous',
+  'Slice of Life',
+  'Yoai',
+  'Yuri',
 ];
 
 class SeriesByGenreView extends React.Component {
@@ -41,7 +41,7 @@ class SeriesByGenreView extends React.Component {
   renderGenreNav() {
     const links = GENRES.map((genre) => {
       return (
-        <Nav.Item>
+        <Nav.Item key={genre}>
           <Nav.Link
             eventKey={genre}
             href={'/search/by_genre/' + genre.toLowerCase()}
@@ -53,7 +53,7 @@ class SeriesByGenreView extends React.Component {
     });
 
     return (
-      <Nav variant="tabs" defaultActiveKey={this.props.genre} href>
+      <Nav variant="tabs" defaultActiveKey={this.props.genre}>
         {links}
       </Nav>
     );
