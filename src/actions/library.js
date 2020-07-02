@@ -6,6 +6,7 @@ import {
   GET_ALL_SERIES,
   GET_SINGLE_SERIES_FAIL,
   HOLD_REQUEST_SUCCESS,
+  GET_GENRE_SERIES,
 } from './types';
 import { createMessage, returnErrors } from './message';
 
@@ -19,7 +20,9 @@ export const getRecents = () => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => dispatch(createMessage({ message: err })));
+    .catch((err) => {
+      dispatch(createMessage({ message: err }));
+    });
 };
 
 // Get all series for the SeriesDetailView
@@ -30,6 +33,18 @@ export const getAllSeries = () => (dispatch, getState) => {
       payload: res.data,
     });
   });
+};
+
+export const getGenreSeries = (genre) => (dispatch, getState) => {
+  axios
+    .get('/club/series/genre/' + genre, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_GENRE_SERIES,
+        payload: { genre: genre, data: res.data },
+      });
+    })
+    .catch((err) => dispatch(createMessage({ message: err })));
 };
 
 // This is used when you go directly to the SeriesDetailView
@@ -50,7 +65,7 @@ export const getSingleSeries = (title) => (dispatch, getState) => {
     });
 };
 
-// This is used when you click on a series in the SeriesListView
+// This is used when you click on a series in the SeriesByTitleView
 export const setCurrentSeries = (series_data) => (dispatch) => {
   dispatch({
     type: GET_SINGLE_SERIES,

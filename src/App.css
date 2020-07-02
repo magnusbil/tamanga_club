@@ -22,6 +22,10 @@ body {
   margin-left: 5px;
 }
 
+.col .book {
+  flex-grow: 0;
+}
+
 .display-row {
   margin-top: 1em;
 }

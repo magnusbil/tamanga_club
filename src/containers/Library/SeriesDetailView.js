@@ -49,7 +49,7 @@ class SeriesDetailView extends React.Component {
     // Creates an array of Cards that contain individual book data
     var book_cards = this.props.series_data.volumes.map(function (book) {
       return (
-        <Col lg={{ size: 3, order: 1, offset: 0 }} key={book.volume_number}>
+        <Col className="book" key={book.volume_number}>
           <Card className="img-card">
             <Card.Img
               src={book.cover_image}
@@ -111,9 +111,9 @@ class SeriesDetailView extends React.Component {
   }
 }
 
-const mapStateToProps = (state, thisProps) => ({
+const mapStateToProps = (state, ownProps) => ({
   user: state.auth.user,
-  title: thisProps.match.params.title,
+  title: ownProps.match.params.title,
   series_data: state.library.current_series_data,
 });
 

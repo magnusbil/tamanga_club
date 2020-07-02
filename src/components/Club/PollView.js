@@ -148,10 +148,10 @@ class Poll extends React.Component {
   }
 }
 
-const mapStateToProps = (state, thisProps) => ({
+const mapStateToProps = (state, ownProps) => ({
   user: state.auth.user,
   poll_results: state.club.poll_results,
-  poll_data: thisProps.poll_data,
+  poll_data: ownProps.poll_data,
 });
 
 export default connect(mapStateToProps, { submitVote })(Poll);

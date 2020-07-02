@@ -105,7 +105,13 @@ class RecentBooksView(ListAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class SeriesListView(ListAPIView):
-  queryset = Series.objects.all()
+  queryset = Series.objects.all().order_by('series_title')
+  serializer_class = SeriesSerializer
+
+@permission_classes([permissions.IsAuthenticated])
+class SeriesByGenreView(ListAPIView):
+  def get_queryset(self):
+    return Series.objects.filter(series_genres__contains = [self.kwargs['series_genre']])
   serializer_class = SeriesSerializer
 
 @permission_classes([permissions.IsAuthenticated])
