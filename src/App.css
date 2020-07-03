@@ -55,6 +55,24 @@ body {
   padding-left: 40px;
 }
 
+.interest {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 5px;
+  margin: 2px;
+}
+
+.interest:hover {
+  cursor: pointer;
+}
+
+.interest.selected {
+  background-color: #4a7dff;
+}
+
 .nav-link {
   padding: 0.625rem 1.125rem;
 }

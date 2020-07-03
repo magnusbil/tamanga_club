@@ -31,13 +31,24 @@ class ProfilePage extends React.Component {
   };
 
   renderAbout() {
-    // const interests = this.props.user.profile.interests.map((interest) => {
-    //   return <a href={'/search/by_genre/' + interest}>#{interest} </a>;
-    // });
+    const interests = this.props.user.profile.interests.map((interest) => {
+      return (
+        <a key={interest} href={'/search/by_genre/' + interest}>
+          #{interest}{' '}
+        </a>
+      );
+    });
+    const noInterests = (
+      <p>
+        You have no current interests. Pick your interests through your{' '}
+        <a href="/profile/settings">Account Settings</a>
+      </p>
+    );
     return (
       <div className="pt-2 profile-item-content">
         <h4>About</h4>
-        {/* <p>Interests: {interests}</p>  */}
+        <p>Interests:</p>
+        {interests.length > 0 ? interests : noInterests}
       </div>
     );
   }

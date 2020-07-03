@@ -11,6 +11,7 @@ urlpatterns = [
     path('auth/register', RegisterAPIView.as_view()),
     path('auth/security_question', get_security_question, name='get_security_question'),
     path('auth/user', UserAPIView.as_view()),
+    path('auth/user/update/profile', updateProfile, name='updateProfile'),
     path('polls/<club_id>', PollListView.as_view()),
     path('poll/vote', vote, name='vote'),
     path('recents', RecentBooksView.as_view()),
