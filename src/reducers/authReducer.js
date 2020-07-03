@@ -10,6 +10,8 @@ import {
   PASSWORD_RESET,
   PASSWORD_RESET_FAIL,
   DELETE_ACCOUNT,
+  PROFILE_CHANGE,
+  BOOK_HOLD_DELETE_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -42,6 +44,12 @@ export default function (state = initialState, action) {
         ...action.payload,
         isAuthenticated: true,
         isLoading: false,
+      };
+    case PROFILE_CHANGE:
+    case BOOK_HOLD_DELETE_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:

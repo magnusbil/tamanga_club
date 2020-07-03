@@ -39,7 +39,10 @@ class SeriesByTitleView extends React.Component {
             key={series.series_title}
           >
             <Card className="img-card">
-              <Card.Img src={series.series_cover_image} className="book-img" />
+              <Card.Img
+                src={series.series_cover_image}
+                className="book-img-select"
+              />
             </Card>
           </a>
         );

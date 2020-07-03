@@ -30,9 +30,9 @@ export class Alerts extends Component {
         alert.error(`Error: ${error.msg.error_message}`);
     } else if (message) {
       if (message.state.passwordMismatch) {
-        alert.error(message.state.passwordMismatch);
+        alert.show(message.state.passwordMismatch);
       } else if (message.state.message) {
-        alert.error(message.state.message);
+        alert.show(message.state.message);
       }
     }
   }

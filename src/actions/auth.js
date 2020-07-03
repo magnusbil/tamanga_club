@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { returnErrors } from './message';
+import { returnErrors, createMessage } from './message';
 
 import {
   USER_LOADED,
@@ -11,6 +11,8 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   DELETE_ACCOUNT,
+  PROFILE_CHANGE,
+  PROFILE_SAVE_SUCCESS,
 } from './types';
 
 // CHECK TOKEN & LOAD USER
@@ -128,6 +130,32 @@ export const logout = () => (dispatch, getState) => {
     });
 };
 
+// UPDATE USER PROFILE OBJECT
+export const updateProfile = (user) => (dispatch) => {
+  dispatch({
+    type: PROFILE_CHANGE,
+    payload: user,
+  });
+};
+
+// SAVE USER PROFILE UPDATES TO DATABASE
+export const saveProfile = (user) => (dispatch, getState) => {
+  const body = {
+    user_id: user.id,
+    profile: user.profile,
+  };
+
+  axios
+    .post('/club/auth/user/update/profile', body, tokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ message: res.data.message }));
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+// DELETE USER ACCOUNT
 export const deleteAccount = (username, security_answer) => (
   dispatch,
   getState

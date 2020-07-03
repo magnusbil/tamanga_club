@@ -75,13 +75,14 @@ describe('<SeriesByGenre /> unit test with data', () => {
             volumes: [],
           },
         ],
+        genre_list: { action: 'Action' },
       },
     });
     props = {
       getGenreSeries: mockGetGenreSeries,
       match: {
         params: {
-          genre: null,
+          genre: 'action',
         },
       },
     };

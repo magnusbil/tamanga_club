@@ -7,16 +7,16 @@ body {
   height: 100%;
 }
 
-.book-img {
+.series-detail-book {
   height: 400px;
   width: 280px;
 }
 
-.book-img:hover {
+.book-img-select:hover {
   opacity: 0.7;
 }
 
-.book-img-profile-small {
+.profile-detail-book {
   height: 150px;
   width: 100px;
   margin-left: 5px;
@@ -28,6 +28,10 @@ body {
 
 .display-row {
   margin-top: 1em;
+}
+
+.dropdown-item:hover {
+  background-color: lightpink;
 }
 
 .img-card {
@@ -51,6 +55,24 @@ body {
   padding-left: 40px;
 }
 
+.interest {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 5px;
+  margin: 2px;
+}
+
+.interest:hover {
+  cursor: pointer;
+}
+
+.interest.selected {
+  background-color: #4a7dff;
+}
+
 .nav-link {
   padding: 0.625rem 1.125rem;
 }
@@ -66,13 +88,6 @@ body {
 
 .profile-group {
   overflow: hidden;
-}
-
-.profile-item {
-  background-color: lightgray;
-  border-radius: 10px;
-  overflow-y: auto;
-  margin-bottom: 10px;
 }
 
 .profile-item-content {
@@ -126,6 +141,5 @@ body {
 }
 
 #profile-link:hover {
-  background-color: #7e55ed;
-  opacity: 85%;
+  background-color: hotpink;
 }
