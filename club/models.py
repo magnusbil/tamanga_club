@@ -1,5 +1,4 @@
 from django.db import models
-# from django.contrib.postgres.fields import ArrayField
 from django_better_admin_arrayfield.models.fields import ArrayField
 from django.contrib.auth.models import User
 from django.contrib.auth.base_user import BaseUserManager
@@ -89,6 +88,8 @@ class Book(models.Model):
     cover_image = models.ImageField("Cover Image", storage=storage, blank=True, null=True)
     loaned_to = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_checked_out', null=True, blank=True)
     hold_for = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_on_hold', null=True, blank=True)
+    added_on = models.DateField(default=datetime.date.today)
+    
     def __str__(self):
         return self.series.series_title + " Vol. " + str(self.volume_number)
 
@@ -101,4 +102,3 @@ class SharedAccess(models.Model):
 
     def __str__(self):
       return self.resource_name + "Access"
-

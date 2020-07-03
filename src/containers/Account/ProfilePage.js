@@ -1,13 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Col, Container, Row, Form, Card } from 'react-bootstrap';
+import { Button, Col, Container, Modal, Row, Card } from 'react-bootstrap';
+import { removeReservation } from '../../actions/library';
 
 class ProfilePage extends React.Component {
+  state = {
+    show_modal: false,
+    selected_reservation: {
+      series_title: '',
+    },
+  };
+
+  // Toggles the reservation modal
+  toggle(book_reservation) {
+    this.setState({
+      selected_reservation: book_reservation,
+      show_modal: !this.state.show_modal,
+    });
+  }
+
+  reserve = (e) => {
+    e.preventDefault();
+    this.props.removeReservation(
+      this.props.user.id,
+      this.state.selected_reservation.id
+    );
+    this.setState({
+      show_modal: false,
+    });
+  };
+
   renderAbout() {
+    const interests = this.props.user.profile.interests.map((interest) => {
+      return (
+        <a key={interest} href={'/search/by_genre/' + interest}>
+          #{interest}{' '}
+        </a>
+      );
+    });
+    const noInterests = (
+      <p>
+        You have no current interests. Pick your interests through your{' '}
+        <a href="/profile/settings">Account Settings</a>
+      </p>
+    );
     return (
       <div className="pt-2 profile-item-content">
-        <h4>About</h4> <br />
-        <p></p>
+        <h4>About</h4>
+        <p>Interests:</p>
+        {interests.length > 0 ? interests : noInterests}
       </div>
     );
   }
@@ -16,7 +57,12 @@ class ProfilePage extends React.Component {
     if (this.props.user.books_on_hold.length > 0) {
       const tiles = this.props.user.books_on_hold.map((book) => {
         return (
-          <Card.Img src={book.cover_image} className="book-img-profile-small" />
+          <Card.Img
+            src={book.cover_image}
+            className="book-img-select profile-detail-book"
+            onClick={() => this.toggle(book)}
+            key={book.volume_number}
+          />
         );
       });
       return (
@@ -37,28 +83,33 @@ class ProfilePage extends React.Component {
     );
   }
 
-  rednerDiscussions() {
-    return (
-      <Form className="profile-item-content">
-        <Form.Group>
-          <Form.Control placeholder="Rant, rave, vent, or just say hi ;)" />
-        </Form.Group>
-        <Button className="ml-auto">Post</Button>
-      </Form>
-    );
-  }
   render() {
+    const { show_modal } = this.state;
     return (
       <Container className="pt-5 profile-group">
         <Row>
-          <Col>
-            <Row className="profile-item">{this.renderAbout()}</Row>
-            {/* <Row className="profile-item">{this.renderBookCheckedOut()}</Row> */}
-            <Row className="profile-item">{this.renderBooksOnHold()}</Row>
-          </Col>
-          <Col>{this.rednerDiscussions()}</Col>
-          <Col></Col>
+          <Col>{this.renderAbout()}</Col>
+          <Col>{this.renderBooksOnHold()}</Col>
         </Row>
+        <Modal
+          centered={true}
+          show={show_modal}
+          onHide={() => this.toggle.bind(this)}
+        >
+          <Modal.Header>
+            Delete reservation for{' '}
+            {this.state.selected_reservation.series_title}{' '}
+            {this.state.selected_reservation.volume_number}?
+          </Modal.Header>
+          <Modal.Body>
+            <Button onClick={this.reserve.bind(this)}>Delete</Button>
+            <Button
+              onClick={() => this.toggle(this.state.selected_reservation)}
+            >
+              Nevermind
+            </Button>
+          </Modal.Body>
+        </Modal>
       </Container>
     );
   }
@@ -68,4 +119,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, {})(ProfilePage);
+export default connect(mapStateToProps, { removeReservation })(ProfilePage);

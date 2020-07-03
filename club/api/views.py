@@ -100,7 +100,9 @@ class PollListView(ListAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  queryset = Book.objects.all()[:8]
+  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  end = len(books)-8
+  queryset = books[end:]
   serializer_class = BookSerializer
 
 @permission_classes([permissions.IsAuthenticated])
@@ -179,7 +181,7 @@ def vote(request):
         'poll_total_votes': poll_total_votes
       })
     else:
-      return JsonResponse({"error_message": "You have already voted on this poll."})
+      return JsonResponse({"error_message": "You have already voted on this poll"})
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message":error_message}, status=400)
@@ -203,3 +205,19 @@ def reserve(request):
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
+
+# Update User Profile
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def updateProfile(request):
+  try:
+    request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+    profile = UserProfile.objects.get(user=request_data['user_id'])
+    profile.interests = request_data['profile']['interests']
+    profile.save()
+    return JsonResponse({
+      "message": "Profile Updated Successfully"
+    })
+  except Exception as e:
+    error_message = str(e)
+    return JsonResponse({"error:message": error_message}, status=200)

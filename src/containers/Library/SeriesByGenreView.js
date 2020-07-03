@@ -11,17 +11,6 @@ const SeriesRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
 };
 
-const GENRES = [
-  'Action',
-  'Comedy',
-  'Drama',
-  'Horror',
-  'Miscellaneous',
-  'Slice of Life',
-  'Yoai',
-  'Yuri',
-];
-
 class SeriesByGenreView extends React.Component {
   static propTypes = {
     getGenreSeries: PropTypes.func.isRequired,
@@ -30,7 +19,7 @@ class SeriesByGenreView extends React.Component {
 
   componentDidMount() {
     if (!this.props.series_list) {
-      this.props.getGenreSeries(this.props.genre);
+      this.props.getGenreSeries(this.props.current_genre);
     }
   }
 
@@ -39,21 +28,18 @@ class SeriesByGenreView extends React.Component {
   }
 
   renderGenreNav() {
-    const links = GENRES.map((genre) => {
+    const links = Object.keys(this.props.genre_list).map((key, index) => {
       return (
-        <Nav.Item key={genre}>
-          <Nav.Link
-            eventKey={genre.toLowerCase()}
-            href={'/search/by_genre/' + genre.toLowerCase()}
-          >
-            {genre}
+        <Nav.Item key={key}>
+          <Nav.Link eventKey={key} href={'/search/by_genre/' + key}>
+            {this.props.genre_list[key]}
           </Nav.Link>
         </Nav.Item>
       );
     });
 
     return (
-      <Nav variant="tabs" defaultActiveKey={this.props.genre}>
+      <Nav variant="tabs" defaultActiveKey={this.props.current_genre}>
         {links}
       </Nav>
     );
@@ -108,7 +94,8 @@ class SeriesByGenreView extends React.Component {
 }
 
 const mapPropsToState = (state, ownProps) => ({
-  genre: ownProps.match.params.genre,
+  genre_list: state.library.genre_list,
+  current_genre: ownProps.match.params.genre,
   series_list: state.library.series_list,
 });
 

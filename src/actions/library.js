@@ -87,7 +87,30 @@ export const reserveBook = (user_id, book_id) => (dispatch, getState) => {
       } else {
         dispatch(createMessage({ message: res.data.message }));
         dispatch({
-          type: HOLD_REQUEST_SUCCESS,
+          type: BOOK_HOLD_REQUEST_SUCCESS,
+        });
+      }
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+export const removeReservation = (user_id, book_id) => (dispatch, getState) => {
+  const body = {
+    user_id: user_id,
+    book_id: book_id,
+  };
+
+  axios
+    .post('/club/reserve/delete', body, tokenConfig(getState))
+    .then((res) => {
+      if (res.data.error_message) {
+        dispatch(returnErrors(res.data, res.status));
+      } else {
+        dispatch(createMessage({ message: res.data.message }));
+        dispatch({
+          type: BOOK_HOLD_DELETE_SUCCESS,
         });
       }
     })

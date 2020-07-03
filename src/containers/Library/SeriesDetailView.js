@@ -53,7 +53,7 @@ class SeriesDetailView extends React.Component {
           <Card className="img-card">
             <Card.Img
               src={book.cover_image}
-              className="book-img"
+              className="book-img-select series-detail-book"
               onClick={() => this.toggle(book)}
             />
           </Card>
