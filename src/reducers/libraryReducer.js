@@ -4,7 +4,8 @@ import {
   GET_GENRE_SERIES,
   GET_SINGLE_SERIES,
   GET_SINGLE_SERIES_FAIL,
-  HOLD_REQUEST_SUCCESS,
+  BOOK_HOLD_REQUEST_SUCCESS,
+  BOOK_HOLD_DELETE_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -42,7 +43,8 @@ export default function (state = initialState, action) {
         ...state,
         current_series_data: [],
       };
-    case HOLD_REQUEST_SUCCESS:
+    case BOOK_HOLD_REQUEST_SUCCESS:
+    case BOOK_HOLD_DELETE_SUCCESS:
     default:
       return state;
   }

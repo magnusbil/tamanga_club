@@ -28,28 +28,45 @@ class SettingsPage extends React.Component {
 
   onChange = (e) => this.setState({ [e.target.id]: e.target.value });
 
+  renderSettings() {
+    return (
+      <Row>
+        <Col lg={{ span: 4, order: 2, offset: 4 }}>
+          <Form>
+            <Form.Label>Delete Account</Form.Label>
+            <Form.Group controlId="security_answer">
+              <Form.Label>
+                {this.props.user.profile.security_question}
+              </Form.Label>
+              <Form.Control
+                placeholder="Answer"
+                onChange={this.onChange}
+              ></Form.Control>
+            </Form.Group>
+            <Button onClick={this.submitDelete.bind(this)}>
+              Confirm Delete
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    );
+  }
+
+  renderEditProfile() {
+    <Form>
+      <Form.Label>Edit Profile</Form.Label>
+      <Form.Group controlId="interests">
+        <Form.Label>Edit Interests</Form.Label>
+        <Form.Control placeholder="" />
+      </Form.Group>
+    </Form>;
+  }
+
   render() {
     return (
       <Container className="pt-5">
-        <Row>
-          <Col lg={{ span: 4, order: 2, offset: 4 }}>
-            <Form>
-              <Form.Label>Delete Account</Form.Label>
-              <Form.Group controlId="security_answer">
-                <Form.Label>
-                  {this.props.user.profile.security_question}
-                </Form.Label>
-                <Form.Control
-                  placeholder="Answer"
-                  onChange={this.onChange}
-                ></Form.Control>
-              </Form.Group>
-              <Button onClick={this.submitDelete.bind(this)}>
-                Confirm Delete
-              </Button>
-            </Form>
-          </Col>
-        </Row>
+        <Col>{this.renderSettings()}</Col>
+        <Col>{this.renderEditProfile()}</Col>
       </Container>
     );
   }
