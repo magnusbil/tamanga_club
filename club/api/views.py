@@ -100,7 +100,7 @@ class PollListView(ListAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  queryset = Books.objects.all()
+  queryset = Book.objects.all()
   serializer_class = BookSerializer
 
 @permission_classes([permissions.IsAuthenticated])
