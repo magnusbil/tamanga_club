@@ -100,7 +100,7 @@ class PollListView(ListAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  books = Book.objects.all()
   end = len(books)-8
   queryset = books[end:]
   serializer_class = BookSerializer
