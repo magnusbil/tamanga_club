@@ -88,7 +88,6 @@ class Book(models.Model):
     cover_image = models.ImageField("Cover Image", storage=storage, blank=True, null=True)
     loaned_to = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_checked_out', null=True, blank=True)
     hold_for = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_on_hold', null=True, blank=True)
-    added_on = models.DateField(default=datetime.date.today)
     
     def __str__(self):
         return self.series.series_title + " Vol. " + str(self.volume_number)
