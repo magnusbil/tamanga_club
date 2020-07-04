@@ -11,6 +11,7 @@ const GENRES = {
   comedy: 'Comedy',
   drama: 'Drama',
   horror: 'Horror',
+  fantasy: 'Fantasy',
   misc: 'Miscellaneous',
   slice_of_life: 'Slice of Life',
   yoai: 'Yoai',
