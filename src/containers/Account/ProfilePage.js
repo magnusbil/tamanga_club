@@ -19,16 +19,15 @@ class ProfilePage extends React.Component {
     });
   }
 
-  reserve = (e) => {
-    e.preventDefault();
+  deleteReserve() {
+    this.setState({
+      show_modal: false,
+    });
     this.props.removeReservation(
       this.props.user.id,
       this.state.selected_reservation.id
     );
-    this.setState({
-      show_modal: false,
-    });
-  };
+  }
 
   renderAbout() {
     const interests = this.props.user.profile.interests.map((interest) => {
@@ -102,7 +101,7 @@ class ProfilePage extends React.Component {
             {this.state.selected_reservation.volume_number}?
           </Modal.Header>
           <Modal.Body>
-            <Button onClick={this.reserve.bind(this)}>Delete</Button>
+            <Button onClick={this.deleteReserve.bind(this)}>Delete</Button>
             <Button
               onClick={() => this.toggle(this.state.selected_reservation)}
             >

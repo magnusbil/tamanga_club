@@ -130,6 +130,7 @@ export const logout = () => (dispatch, getState) => {
     });
 };
 
+// UPDATE USER PROFILE OBJECT
 export const updateProfile = (user) => (dispatch) => {
   dispatch({
     type: PROFILE_CHANGE,
@@ -137,6 +138,7 @@ export const updateProfile = (user) => (dispatch) => {
   });
 };
 
+// SAVE USER PROFILE UPDATES TO DATABASE
 export const saveProfile = (user) => (dispatch, getState) => {
   const body = {
     user_id: user.id,
@@ -153,6 +155,7 @@ export const saveProfile = (user) => (dispatch, getState) => {
     });
 };
 
+// DELETE USER ACCOUNT
 export const deleteAccount = (username, security_answer) => (
   dispatch,
   getState

@@ -4,8 +4,6 @@ import {
   GET_GENRE_SERIES,
   GET_SINGLE_SERIES,
   GET_SINGLE_SERIES_FAIL,
-  BOOK_HOLD_REQUEST_SUCCESS,
-  BOOK_HOLD_DELETE_SUCCESS,
 } from '../actions/types';
 
 const GENRES = {
@@ -57,8 +55,6 @@ export default function (state = initialState, action) {
         ...state,
         current_series_data: [],
       };
-    case BOOK_HOLD_REQUEST_SUCCESS:
-    case BOOK_HOLD_DELETE_SUCCESS:
     default:
       return state;
   }

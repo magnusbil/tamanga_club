@@ -11,6 +11,7 @@ import {
   PASSWORD_RESET_FAIL,
   DELETE_ACCOUNT,
   PROFILE_CHANGE,
+  BOOK_HOLD_DELETE_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -45,6 +46,7 @@ export default function (state = initialState, action) {
         isLoading: false,
       };
     case PROFILE_CHANGE:
+    case BOOK_HOLD_DELETE_SUCCESS:
       return {
         ...state,
         user: action.payload,

@@ -206,6 +206,24 @@ def reserve(request):
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
 
+@permission_classes([permissions.IsAuthenticated])
+class ReserveDelete(generics.GenericAPIView):
+  def post(self, request, *args, **kwargs):
+    try:
+      request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+      book = Book.objects.get(id=request_data['book_id'])
+      book.hold_for = None
+      book.save()
+      user = User.objects.get(id=request_data['user_id'])
+      return JsonResponse({
+        "message": "Reservation successfully removed",
+        "user": UserSerializer(user, context=self.get_serializer_context()).data
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
+
+
 # Update User Profile
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
@@ -216,7 +234,7 @@ def updateProfile(request):
     profile.interests = request_data['profile']['interests']
     profile.save()
     return JsonResponse({
-      "message": "Profile Updated Successfully"
+      "message": "Profile Updated Successfully",
     })
   except Exception as e:
     error_message = str(e)

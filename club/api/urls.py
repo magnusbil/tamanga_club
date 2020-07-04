@@ -16,6 +16,7 @@ urlpatterns = [
     path('poll/vote', vote, name='vote'),
     path('recents', RecentBooksView.as_view()),
     path('reserve', reserve, name="reserve"),
+    path('reserve/delete', ReserveDelete.as_view()),
     path('series', SeriesListView.as_view()),
     path('series/genre/<series_genre>', SeriesByGenreView.as_view()),
     path('series/<series_title>', SeriesByTitleDetailView.as_view()),

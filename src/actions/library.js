@@ -5,7 +5,8 @@ import {
   GET_SINGLE_SERIES,
   GET_ALL_SERIES,
   GET_SINGLE_SERIES_FAIL,
-  HOLD_REQUEST_SUCCESS,
+  BOOK_HOLD_DELETE_SUCCESS,
+  BOOK_HOLD_REQUEST_SUCCESS,
   GET_GENRE_SERIES,
 } from './types';
 import { createMessage, returnErrors } from './message';
@@ -108,9 +109,9 @@ export const removeReservation = (user_id, book_id) => (dispatch, getState) => {
       if (res.data.error_message) {
         dispatch(returnErrors(res.data, res.status));
       } else {
-        dispatch(createMessage({ message: res.data.message }));
         dispatch({
           type: BOOK_HOLD_DELETE_SUCCESS,
+          payload: res.data.user,
         });
       }
     })

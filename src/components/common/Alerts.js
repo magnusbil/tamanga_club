@@ -32,7 +32,6 @@ export class Alerts extends Component {
       if (message.state.passwordMismatch) {
         alert.show(message.state.passwordMismatch);
       } else if (message.state.message) {
-        console.log(message);
         alert.show(message.state.message);
       }
     }
