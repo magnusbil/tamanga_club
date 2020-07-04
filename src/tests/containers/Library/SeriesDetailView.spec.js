@@ -89,7 +89,7 @@ describe('<SeriesDetailView /> unit test with data', () => {
     wrapper = mountRender(store, props);
     expect(
       wrapper.containsAllMatchingElements([
-        <img className="card-img book-img-select series-detail-book" src="" />,
+        <img className="card-img book-img-select book-img" src="" />,
       ])
     ).toBe(true);
   });
