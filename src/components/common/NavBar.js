@@ -50,7 +50,9 @@ class NavBar extends React.Component {
             {this.props.user.username}
           </Nav.Link>
           <NavDropdown id="nav-dropdown" alignRight title="">
-            <Nav.Link href="/profile/settings">Account Settings</Nav.Link>
+            <NavDropdown.Item href="/profile/settings">
+              Account Settings
+            </NavDropdown.Item>
             <NavDropdown.Item onClick={this.onSubmit}>Logout</NavDropdown.Item>
           </NavDropdown>
         </Nav>

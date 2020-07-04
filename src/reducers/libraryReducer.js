@@ -4,12 +4,25 @@ import {
   GET_GENRE_SERIES,
   GET_SINGLE_SERIES,
   GET_SINGLE_SERIES_FAIL,
-  HOLD_REQUEST_SUCCESS,
 } from '../actions/types';
+
+const GENRES = {
+  action: 'Action',
+  comedy: 'Comedy',
+  drama: 'Drama',
+  horror: 'Horror',
+  misc: 'Miscellaneous',
+  slice_of_life: 'Slice of Life',
+  yoai: 'Yoai',
+  yuri: 'Yuri',
+  boys_love: 'Boys Love',
+  girls_love: 'Girls Love',
+  isekai: 'Isekai',
+};
 
 const initialState = {
   recent_additions: [],
-  genre: 'action',
+  genre_list: GENRES,
   series_list: undefined,
   current_series_data: undefined,
 };
@@ -42,7 +55,6 @@ export default function (state = initialState, action) {
         ...state,
         current_series_data: [],
       };
-    case HOLD_REQUEST_SUCCESS:
     default:
       return state;
   }
