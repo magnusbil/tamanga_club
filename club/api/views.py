@@ -106,6 +106,7 @@ class RecentBooksView(ListAPIView):
     queryset = books[end:]
   else:
     queryset = books
+  # queryset = Book.objects.all()
   serializer_class = BookSerializer
 
 @permission_classes([permissions.IsAuthenticated])
@@ -116,7 +117,7 @@ class SeriesListView(ListAPIView):
 @permission_classes([permissions.IsAuthenticated])
 class SeriesByGenreView(ListAPIView):
   def get_queryset(self):
-    return Series.objects.filter(series_genres__contains = [self.kwargs['series_genre']])
+    return Series.objects.filter(series_genres__contains = [self.kwargs['series_genre']]).order_by('series_title')
   serializer_class = SeriesSerializer
 
 @permission_classes([permissions.IsAuthenticated])

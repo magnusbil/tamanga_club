@@ -39,14 +39,15 @@ class ProfilePage extends React.Component {
     });
     const noInterests = (
       <p>
-        You have no current interests. Pick your interests through your{' '}
+        You have no current interests. <br />
+        Pick your interests through your{' '}
         <a href="/profile/settings">Account Settings</a>
       </p>
     );
     return (
       <div className="pt-2 profile-item-content">
         <h4>About</h4>
-        <p>Interests:</p>
+        <h5>Interests:</h5>
         {interests.length > 0 ? interests : noInterests}
       </div>
     );
@@ -73,11 +74,12 @@ class ProfilePage extends React.Component {
     }
     return (
       <div className="pt-2 profile-item-content">
-        <h4>Books Reserved</h4> <br />
-        <h5>
-          You have no books on hold. Visit the <a href="/search">library</a> to
-          find your next adventure!
-        </h5>
+        <h4>Reserved Books</h4>
+        <p>
+          You have no books on hold.
+          <br />
+          Visit the <a href="/search">library</a> to find your next adventure!
+        </p>
       </div>
     );
   }

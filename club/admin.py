@@ -5,6 +5,7 @@ from .models import UserProfile, Poll, Choice, Series, Book, Vote, SharedAccess,
 class BookInline(admin.StackedInline):
     model = Book
     extra=0
+    ordering = ('volume_number',)
 
 class ChoiceInline(admin.StackedInline):
     model=Choice
@@ -14,6 +15,7 @@ class SeriesAdmin(admin.ModelAdmin, DynamicArrayMixin):
     inlines = [ BookInline ]
     fields = ('series_title', 'series_author', 'series_artist', 'series_genres', 'current_genres', 'series_cover_image', 'complete')
     readonly_fields = ('current_genres',)
+    ordering = ('series_title',)
 
     def current_genres(self, obj):
         if obj.series_genres != None:
@@ -27,7 +29,7 @@ class PollAdmin(admin.ModelAdmin):
 
 class UserProfileAdmin(admin.ModelAdmin, DynamicArrayMixin):
     fields = ('club', 'user', 'user_interests', 'icon', 'security_question', 'security_answer',)
-    readonly_fields = ('club', 'user', 'user_interests', 'icon', 'security_question', 'security_answer',)
+    readonly_fields = ('user', 'user_interests', 'icon', 'security_question', 'security_answer',)
 
     def user_interests(self, obj):
         if obj.interests != None:

@@ -49,11 +49,14 @@ class BookSerializer(serializers.ModelSerializer):
 
 ## SERIES 
 class SeriesSerializer(serializers.ModelSerializer):
-    volumes = BookSerializer(many=True)
+    volumes = serializers.SerializerMethodField()
     class Meta:
         model = Series
         fields = ('id', 'series_title', 'series_author', 'series_artist', 'series_cover_image', 'series_genres', 'complete', 'volumes')
 
+    def get_volumes(self, obj):
+      ordered_queryset = Book.objects.filter(series=obj).order_by('volume_number')
+      return BookSerializer(ordered_queryset, many=True, context={"request": self.context['request']}).data
 class BookClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookClub
@@ -92,7 +95,7 @@ class UserSerializer(serializers.ModelSerializer):
         return book_list
   
     def get_books_checked_out(self, user):
-        book_query = Book.objects.filter(hold_for=user)
+        book_query = Book.objects.filter(hold_for=user).order_by('series', 'volume_number')
         book_list = BookSerializer(book_query, many=True, context={"request": self.context['request']}).data
         return book_list
 

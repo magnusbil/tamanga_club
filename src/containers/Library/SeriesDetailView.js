@@ -53,7 +53,7 @@ class SeriesDetailView extends React.Component {
           <Card className="img-card">
             <Card.Img
               src={book.cover_image}
-              className="book-img-select series-detail-book"
+              className="book-img-select book-img"
               onClick={() => this.toggle(book)}
             />
           </Card>
@@ -102,7 +102,7 @@ class SeriesDetailView extends React.Component {
         </div>
       );
     } else {
-      return <Redirect to="/" />;
+      return <Redirect to="/search" />;
     }
   }
 

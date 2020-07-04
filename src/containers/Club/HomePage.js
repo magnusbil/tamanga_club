@@ -13,9 +13,13 @@ class HomePage extends React.Component {
             </h1>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <p></p>
+        <Row className="pt-5">
+          <Col lg={{ span: 6, offset: 3 }}>
+            <h2>About</h2>
+            <p id="home-description">
+              A group of fun loving people who love to read manga. We meet every
+              other week and read, discuss, and share manga.
+            </p>
           </Col>
         </Row>
       </Container>

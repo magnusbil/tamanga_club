@@ -35,7 +35,10 @@ class RecentAdditions extends React.Component {
         return (
           <a href={'/series/' + book.series_title} key={book.volume}>
             <Card className="img-card">
-              <Card.Img src={book.cover_image} className="book-img" />
+              <Card.Img
+                src={book.cover_image}
+                className="book-img book-img-select"
+              />
             </Card>
           </a>
         );
