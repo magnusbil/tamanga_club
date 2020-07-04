@@ -100,12 +100,7 @@ class PollListView(ListAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
-  end = len(books)-8 # I only want the last 8 books
-  if end > 0:
-    queryset = books[end:]
-  else:
-    queryset = books
+  queryset = Book.objects.all()[:8]
   serializer_class = BookSerializer
 
 @permission_classes([permissions.IsAuthenticated])
