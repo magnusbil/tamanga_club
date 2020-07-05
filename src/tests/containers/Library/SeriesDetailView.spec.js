@@ -73,6 +73,14 @@ describe('<SeriesDetailView /> unit test with data', () => {
               loaned_to: null,
               hold_for: null,
             },
+            {
+              id: 2,
+              series: 1,
+              volume_number: 2,
+              cover_image: '',
+              loaned_to: null,
+              hold_for: 1,
+            },
           ],
         },
       },
@@ -89,7 +97,12 @@ describe('<SeriesDetailView /> unit test with data', () => {
     wrapper = mountRender(store, props);
     expect(
       wrapper.containsAllMatchingElements([
-        <img className="card-img book-img-select book-img" src="" />,
+        <img className="card-img book-img book-img-select" src="" />,
+      ])
+    ).toBe(true);
+    expect(
+      wrapper.containsAllMatchingElements([
+        <img className="card-img reserved book-img" src="" />,
       ])
     ).toBe(true);
   });

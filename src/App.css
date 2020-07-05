@@ -12,8 +12,9 @@ body {
   width: 280px;
 }
 
-.book-img-select:hover {
-  opacity: 0.7;
+.book-img-select:hover,
+.reserved {
+  opacity: 0.5;
 }
 
 .profile-detail-book {

@@ -17,8 +17,8 @@ class HomePage extends React.Component {
           <Col lg={{ span: 6, offset: 3 }}>
             <h2>About</h2>
             <p id="home-description">
-              A group of fun loving people who love to read manga. We meet every
-              other week and read, discuss, and share manga.
+              Just a fun group of people who love to read manga. We meet every
+              other week to read, discuss and share manga.
             </p>
           </Col>
         </Row>

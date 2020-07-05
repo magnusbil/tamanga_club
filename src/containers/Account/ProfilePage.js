@@ -61,7 +61,7 @@ class ProfilePage extends React.Component {
             src={book.cover_image}
             className="book-img-select profile-detail-book"
             onClick={() => this.toggle(book)}
-            key={book.volume_number}
+            key={book.series + '_' + book.volume_number}
           />
         );
       });
