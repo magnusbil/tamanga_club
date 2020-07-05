@@ -199,11 +199,15 @@ def reserve(request):
     book = Book.objects.get(id=request_data['book_id'])
     if not book.hold_for:
       user = User.objects.get(id=request_data['user_id'])
-      book.hold_for = user
-      book.save()
-      return JsonResponse({
-        "message": "Reservation Completed"
-      })
+      hold_count = Book.objects.filter(hold_for=user).count()
+      if hold_count == 3:
+        return JsonResponse({"error_message": "You cannot reserve more than 3 books at a time"})
+      else:
+        book.hold_for = user
+        book.save()
+        return JsonResponse({
+          "message": "Reservation Completed"
+        })
     else:
       return JsonResponse({"error_message": "This book is already reserved"})
   except Exception as e:
