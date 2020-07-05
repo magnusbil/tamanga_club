@@ -31,7 +31,7 @@ class Poll extends React.Component {
   }
 
   calcProgress(count) {
-    let progress;
+    var progress;
     if (
       this.props.poll_results &&
       this.props.poll_results.poll_total_votes > 0

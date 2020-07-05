@@ -36,8 +36,8 @@ class SeriesDetailView extends React.Component {
   }
 
   reserve = (e) => {
-    e.preventDefault();
     this.props.reserveBook(this.props.user.id, this.state.selection.id);
+    this.state.selection.hold_for = this.props.user.id;
     this.setState({
       show_modal: false,
     });
@@ -51,11 +51,15 @@ class SeriesDetailView extends React.Component {
       return (
         <Col className="book" key={book.volume_number}>
           <Card className="img-card">
-            <Card.Img
-              src={book.cover_image}
-              className="book-img-select book-img"
-              onClick={() => this.toggle(book)}
-            />
+            {book.hold_for ? (
+              <Card.Img src={book.cover_image} className="reserved book-img" />
+            ) : (
+              <Card.Img
+                src={book.cover_image}
+                className="book-img book-img-select"
+                onClick={() => this.toggle(book)}
+              />
+            )}
           </Card>
         </Col>
       );
