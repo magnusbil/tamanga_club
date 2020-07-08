@@ -84,23 +84,23 @@ class PasswordAPIView(generics.GenericAPIView):
       error_message = str(e)
       return JsonResponse({"error_message":error_message}, status=400)
 
-@permission_classes([permissions.IsAuthenticated])
+# @permission_classes([permissions.IsAuthenticated])
 class UserAPIView(generics.RetrieveAPIView):
-  serializer_class = UserSerializer
-
   def get_object(self):
       return self.request.user
+  serializer_class = UserSerializer
 
 @permission_classes([permissions.IsAuthenticated])
 class PollListView(ListAPIView):
   def get_queryset(self):
-    club = BookClub.objects.get(id=self.kwargs['club_id'])  
-    return Poll.objects.filter(club=club)
+    club = BookClub.objects.get(id=self.kwargs['club_id'])
+    return Poll.objects.filter(club=club).order_by('-poll_start_date')
   serializer_class = PollSerializer
 
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  # books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  books = Book.objects.all().order_by('series', 'volume_number')
   end = len(books)-8 # I only want the last 8 books
   if end > 0:
     queryset = books[end:]
@@ -132,6 +132,24 @@ class SharedAccessListView(ListAPIView):
     club = BookClub.objects.get(id=self.kwargs['club_id'])
     return SharedAccess.objects.filter(club=club)
   serializer_class = SharedAccessSerializer
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def request_access(request):
+    try:
+      data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(username=data['username'])
+      request_access_user = User.objects.get(username=data['username'])
+      requested_shared_access = data['shared_access_id']
+      new_request = AccessRequest.create(
+        request_from = user,
+        request_to = request_access_user,
+        request_for = requested_shared_access
+      )
+      return JsonResponse({"message": "Your request has been submitted."})
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])

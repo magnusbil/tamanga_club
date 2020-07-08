@@ -1,7 +1,6 @@
 from django.db import models
 from django_better_admin_arrayfield.models.fields import ArrayField
 from django.contrib.auth.models import User
-from django.contrib.auth.base_user import BaseUserManager
 from django_s3_storage.storage import S3Storage
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -11,20 +10,6 @@ if settings.DEBUG == True:
   storage = FileSystemStorage()
 else:
   storage = S3Storage(aws_s3_bucket_name=settings.AWS_S3_BUCKET_NAME)
-
-# GENRES = (
-#     ('action', 'Action'),
-#     ('comedy', 'Comedy'),
-#     ('drama', 'Drama'),
-#     ('horror', 'Horror'),
-#     ('misc', 'Miscellaneous'),
-#     ('slice_of_life', 'Slice of Life'),
-#     ('yoai', 'Yoai'),
-#     ('yuri', 'Yuri'),
-#     ('boys_love', 'Boys Love'),
-#     ('girls_love', 'Girls Love'),
-#     ('isekai', 'Isekai'),
-# )
 
 class BookClub(models.Model):
     club_name = models.CharField(max_length=255, default="New Group")
@@ -38,8 +23,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     interests = ArrayField(models.CharField(max_length=255), default=list, blank=True, null=True)
     icon = models.ImageField("User Icon", storage=storage, blank=True, null=True)
-    security_question = models.CharField(max_length=255, default="What's your favorite anime?", null=False)
-    security_answer = models.CharField(max_length=255, default="Is it wrong to put random defaults in a dungeon?", null=False)
+    security_question = models.CharField(max_length=255, default="What's your favorite anime?")
+    security_answer = models.CharField(max_length=255, default="Is it wrong to put random defaults in a dungeon?")
 
     def __str__(self):
         return self.user.username + "'s Profile"
@@ -77,18 +62,19 @@ class Series(models.Model):
     series_genres = ArrayField(models.CharField(max_length=30), blank=True, null=True)
     series_cover_image = models.ImageField("Series Cover Image", storage=storage, blank=True, null=True)
     complete = models.BooleanField("Is this series completed?", default=False)
-
+    
     def __str__(self):
         return self.series_title
 
 # Model for an individual book in a series
 class Book(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owned_books")
     series = models.ForeignKey(Series, related_name='volumes', on_delete=models.CASCADE)
     volume_number = models.IntegerField("Volume number", default=0)
     cover_image = models.ImageField("Cover Image", storage=storage, blank=True, null=True)
-    loaned_to = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_checked_out', null=True, blank=True)
     hold_for = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_on_hold', null=True, blank=True)
-    added_on = models.DateField(default=datetime.date.today, null=False)
+    added_on = models.DateField(default=datetime.date.today)
+
     def __str__(self):
         return self.series.series_title + " Vol. " + str(self.volume_number)
 
@@ -98,6 +84,15 @@ class SharedAccess(models.Model):
     resource_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
+    allowed_list = ArrayField(models.IntegerField(), null=True)
 
     def __str__(self):
       return self.resource_name + "Access"
+
+class AccessRequest(models.Model):
+    request_from = models.ForeignKey(User, related_name="requests_made", on_delete=models.CASCADE)
+    request_to = models.ForeignKey(User, related_name="requests_received", on_delete=models.CASCADE)
+    request_for = models.ForeignKey(SharedAccess, on_delete=models.CASCADE)
+
+    def __str__(self):
+      return self. self.request_from.username + "requested access to " + self.request_for.resource_name +  " from " + self.request_to.username

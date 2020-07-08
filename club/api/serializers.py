@@ -66,39 +66,45 @@ class BookClubSerializer(serializers.ModelSerializer):
 class SharedAccessSerializer(serializers.ModelSerializer):
     class Meta:
         model = SharedAccess
-        fields = ('resource_name', 'username', 'password')
+        fields = ('resource_name', 'username', 'password', 'allowed_list')
 
 ## USER PROFILE
 class UserProfileSerializer(serializers.ModelSerializer):
+    books_on_hold = serializers.SerializerMethodField()
+    books_checked_out = serializers.SerializerMethodField()
+    poll_votes = serializers.SerializerMethodField()
+    user_shared_access = serializers.SerializerMethodField()
+
     class Meta:
         model = UserProfile
-        fields = ('interests', 'icon', 'club', 'security_question')
+        fields = ('interests', 'icon', 'club', 'books_on_hold', 'security_question')
+
+    def get_books_on_hold(self, profile):
+        book_query = Book.objects.filter(loaned_to=profile.user)
+        book_list = BookSerializer(book_query, many=True, context={"request": self.context['request']}).data
+        return book_list
+
+    def get_poll_total_votes(self, profile):
+        poll_query = Poll.objects.filter(user=profile.user)
+        poll_list = PollSerializer(poll_query, many=True, context={"request": self.context['request']}).data
+        return poll_list
+
+    def get_user_shared_access(self, profile):
+        shared_access_query = SharedAccess.objects.filter(user=profile.user)
+        shared_access_list = SharedAccessSerializer(shared_access_query, many=True, context={"request": self.context['request']}).data
+        return shared_access_list
 
 # Make sure usernames have to be unique
 User._meta.get_field('username')._unique = True
 
 # Django Auth User Serializer
 class UserSerializer(serializers.ModelSerializer):
-    books_on_hold = BookSerializer(many=True)
-    books_checked_out = BookSerializer(many=True)
     profile = UserProfileSerializer()
-    poll_votes = VoteSerializer(many=True)
-    user_shared_access = SharedAccessSerializer(many=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'books_on_hold', 'books_checked_out', 'profile', 'poll_votes', 'user_shared_access')
+        fields = ('id', 'username', 'profile', 'poll_votes', 'user_shared_access')
   
-    def get_books_on_hold(self, user):
-        book_query = Book.objects.filter(loaned_to=user)
-        book_list = BookSerializer(book_query, many=True, context={"request": self.context['request']}).data
-        return book_list
-  
-    def get_books_checked_out(self, user):
-        book_query = Book.objects.filter(hold_for=user).order_by('series', 'volume_number')
-        book_list = BookSerializer(book_query, many=True, context={"request": self.context['request']}).data
-        return book_list
-
 ## REGISTER
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
