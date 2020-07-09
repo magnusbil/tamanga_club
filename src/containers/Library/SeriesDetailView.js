@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getSingleSeries, reserveBook } from '../../actions/library';
 import Loading from '../../components/common/Loading';
+import LibraryNav from '../../components/Library/LibraryNav';
 
 const BookRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
@@ -111,7 +112,14 @@ class SeriesDetailView extends React.Component {
   }
 
   render() {
-    return this.props.series_data ? this.renderSeriesDetails() : <Loading />;
+    return this.props.series_data ? (
+      <div>
+        <LibraryNav />
+        {this.renderSeriesDetails()}
+      </div>
+    ) : (
+      <Loading />
+    );
   }
 }
 
