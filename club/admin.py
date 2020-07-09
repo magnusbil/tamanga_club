@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
-from .models import UserProfile, Poll, Choice, Series, Book, Vote, SharedAccess, BookClub
+from .models import *
 
 class BookInline(admin.StackedInline):
     model = Book
@@ -46,5 +46,6 @@ admin.site.register(Choice)
 admin.site.register(Poll, PollAdmin)
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(SharedAccess)
+admin.site.register(AccessRequest)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Vote, VoteAdmin)
