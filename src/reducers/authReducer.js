@@ -12,6 +12,8 @@ import {
   DELETE_ACCOUNT,
   PROFILE_CHANGE,
   BOOK_HOLD_DELETE_SUCCESS,
+  ACCESS_REQUEST_SUCCESS,
+  ACCESS_REQUEST_RESPONSE_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -47,6 +49,9 @@ export default function (state = initialState, action) {
       };
     case PROFILE_CHANGE:
     case BOOK_HOLD_DELETE_SUCCESS:
+    case ACCESS_REQUEST_SUCCESS:
+    case ACCESS_REQUEST_RESPONSE_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         user: action.payload,

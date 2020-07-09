@@ -70,7 +70,6 @@ describe('<SeriesDetailView /> unit test with data', () => {
               series: 1,
               volume_number: 1,
               cover_image: '',
-              loaned_to: null,
               hold_for: null,
             },
             {
@@ -78,7 +77,6 @@ describe('<SeriesDetailView /> unit test with data', () => {
               series: 1,
               volume_number: 2,
               cover_image: '',
-              loaned_to: null,
               hold_for: 1,
             },
           ],

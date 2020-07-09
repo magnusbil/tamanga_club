@@ -1,21 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Button, Col, Container, Modal, Row, Card } from 'react-bootstrap';
 import { removeReservation } from '../../actions/library';
+import { respondToAccessRequest } from '../../actions/club';
 
 class ProfilePage extends React.Component {
   state = {
-    show_modal: false,
+    show_delete_reservation_modal: false,
+    show_handle_request_modal: false,
     selected_reservation: {
       series_title: '',
     },
+    selected_request: {},
+  };
+
+  static propTypes = {
+    removeReservation: PropTypes.func.isRequired,
+    respondToAccessRequest: PropTypes.func.isRequired,
   };
 
   // Toggles the reservation modal
   toggle(book_reservation) {
     this.setState({
       selected_reservation: book_reservation,
-      show_modal: !this.state.show_modal,
+      show_modal: !this.state.show_delete_reservation_modal,
+    });
+  }
+
+  toggleHandleRequest(request) {
+    this.setState({
+      selected_request: request,
+      show_handle_request_modal: !this.state.show_handle_request_modal,
+    });
+  }
+
+  handleRequest(decision) {
+    this.props.respondToAccessRequest(this.state.selected_request, decision);
+    this.setState({
+      show_handle_request_modal: !this.state.show_handle_request_modal,
     });
   }
 
@@ -53,9 +76,33 @@ class ProfilePage extends React.Component {
     );
   }
 
+  renderAccessRequests() {
+    const requests = this.props.user.profile.access_requests_received.map(
+      (request) => {
+        return (
+          <div className="access-request">
+            <p>
+              {request.requesters_name} requested access to{' '}
+              {request.account_name}{' '}
+            </p>
+            <Button onClick={() => this.toggleHandleRequest(request)}>
+              Handle Request
+            </Button>
+          </div>
+        );
+      }
+    );
+    return (
+      <div className="pt-2 profile-item-content">
+        <h4>Access Requests</h4>
+        {requests}
+      </div>
+    );
+  }
+
   renderBooksOnHold() {
-    if (this.props.user.books_on_hold.length > 0) {
-      const tiles = this.props.user.books_on_hold.map((book) => {
+    if (this.props.user.profile.books_on_hold.length > 0) {
+      const tiles = this.props.user.profile.books_on_hold.map((book) => {
         return (
           <Card.Img
             src={book.cover_image}
@@ -85,16 +132,22 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    const { show_modal } = this.state;
+    const {
+      show_delete_reservation_modal,
+      show_handle_request_modal,
+    } = this.state;
     return (
       <Container className="pt-5 profile-group">
         <Row>
           <Col>{this.renderAbout()}</Col>
           <Col>{this.renderBooksOnHold()}</Col>
         </Row>
+        <Row>
+          <Col lg={{ span: 4 }}>{this.renderAccessRequests()}</Col>
+        </Row>
         <Modal
           centered={true}
-          show={show_modal}
+          show={show_delete_reservation_modal}
           onHide={() => this.toggle.bind(this)}
         >
           <Modal.Header>
@@ -111,6 +164,22 @@ class ProfilePage extends React.Component {
             </Button>
           </Modal.Body>
         </Modal>
+        <Modal
+          centered={true}
+          show={show_handle_request_modal}
+          onHide={() => this.toggleHandleRequest.bind(this)}
+        >
+          <Modal.Header>
+            Grant {this.state.selected_request.requesters_name} access to{' '}
+            {this.state.selected_request.account_name}?{' '}
+            {this.state.selected_reservation.series_title}{' '}
+            {this.state.selected_reservation.volume_number}?
+          </Modal.Header>
+          <Modal.Body>
+            <Button onClick={() => this.handleRequest(true)}>Confirm</Button>
+            <Button onClick={() => this.handleRequest(false)}>Decline</Button>
+          </Modal.Body>
+        </Modal>
       </Container>
     );
   }
@@ -120,4 +189,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { removeReservation })(ProfilePage);
+export default connect(mapStateToProps, {
+  removeReservation,
+  respondToAccessRequest,
+})(ProfilePage);

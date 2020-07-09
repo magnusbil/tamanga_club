@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getSharedAccess } from '../../actions/club';
 import NoData from '../../components/common/NoData';
 import { Container, Row, Col } from 'react-bootstrap';
+import SharedAccess from '../../components/Club/SharedAccess';
 
 class SharedAccessView extends React.Component {
   static propTypes = {
@@ -17,19 +18,7 @@ class SharedAccessView extends React.Component {
   generateRows() {
     if (this.props.shared_access && this.props.shared_access.length > 0) {
       let rows = this.props.shared_access.map((access) => {
-        return (
-          <Container className="pb-5">
-            <Row>
-              <Col lg={{ span: 4, order: 2, offset: 4 }}>
-                <h4>{access.resource_name}</h4>
-                <p>
-                  username: {access.username} <br />
-                  password: {access.password}
-                </p>
-              </Col>
-            </Row>
-          </Container>
-        );
+        return <SharedAccess data={access} />;
       });
       return rows;
     }

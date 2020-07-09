@@ -69,7 +69,8 @@ describe('<PollListView /> unit test with data', () => {
       auth: {
         user: {
           profile: {
-            club: 1,
+            //     club: 1,
+            //     poll_votes: [],
           },
         },
       },
