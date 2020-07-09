@@ -9,28 +9,30 @@ class SharedAccess extends React.Component {
     requestAccess: PropTypes.func.isRequired,
   };
 
-  handleSubmit() {
-    this.props.requestAccess(this.props.user, this.props.data);
-  }
+  /* This code is for a feature and will be added back in later */
+  // handleSubmit() {
+  //   this.props.requestAccess(this.props.user, this.props.data);
+  // }
 
-  renderAccessRequest() {
-    return (
-      <Container className="pb-5">
-        <Row>
-          <Col lg={{ span: 4, order: 2, offset: 4 }}>
-            <h4>{this.props.data.resource_name}</h4>
-            <Row>
-              <Col>
-                <Button onClick={this.handleSubmit.bind(this)}>
-                  Request Access
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+  /* This code is for a feature and will be added back in later */
+  // renderAccessRequest() {
+  //   return (
+  //     <Container className="pb-5">
+  //       <Row>
+  //         <Col lg={{ span: 4, order: 2, offset: 4 }}>
+  //           <h4>{this.props.data.resource_name}</h4>
+  //           <Row>
+  //             <Col>
+  //               <Button onClick={this.handleSubmit.bind(this)}>
+  //                 Request Access
+  //               </Button>
+  //             </Col>
+  //           </Row>
+  //         </Col>
+  //       </Row>
+  //     </Container>
+  //   );
+  // }
 
   renderSharedAccess() {
     return (
@@ -49,10 +51,12 @@ class SharedAccess extends React.Component {
   }
 
   render() {
-    return this.props.data.allowed_list &&
-      this.props.data.allowed_list.includes(this.props.user.id)
-      ? this.renderSharedAccess()
-      : this.renderAccessRequest();
+    return this.renderSharedAccess();
+    /* This code is for a feature and will be added back in later */
+    // return this.props.data.allowed_list &&
+    //   this.props.data.allowed_list.includes(this.props.user.id)
+    //   ? this.renderSharedAccess()
+    //   : this.renderAccessRequest();
   }
 }
 

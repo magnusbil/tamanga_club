@@ -51,7 +51,6 @@ export default function (state = initialState, action) {
     case BOOK_HOLD_DELETE_SUCCESS:
     case ACCESS_REQUEST_SUCCESS:
     case ACCESS_REQUEST_RESPONSE_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         user: action.payload,
