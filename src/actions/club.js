@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { tokenConfig } from './auth';
-import { returnErrors } from './message';
+import { returnErrors, createMessage } from './message';
 
-import { GET_POLLS, VOTE_SUCCESS, GET_SHARED_ACCESS } from './types';
+import {
+  GET_POLLS,
+  VOTE_SUCCESS,
+  GET_SHARED_ACCESS,
+  ACCESS_REQUEST_SUCCESS,
+  ACCESS_REQUEST_RESPONSE_SUCCESS,
+} from './types';
 
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -34,7 +40,7 @@ export const submitVote = (poll_id, user_id, choice_id) => (
       } else {
         dispatch({
           type: VOTE_SUCCESS,
-          payload: res.data,
+          payload: res.data.user,
         });
       }
     })
@@ -50,4 +56,50 @@ export const getSharedAccess = (club_id) => (dispatch, getState) => {
       payload: res.data,
     });
   });
+};
+
+export const requestAccess = (user, shared_access) => (dispatch, getState) => {
+  const body = {
+    requester_id: user.id,
+    owner_id: shared_access.owner,
+    shared_access_id: shared_access.id,
+  };
+
+  console.log(body);
+  axios
+    .post('/club/request_shared_access', body, tokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ message: res.data.message }));
+      if (res.status == 201) {
+        dispatch({
+          type: ACCESS_REQUEST_SUCCESS,
+          payload: res.data.user,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+export const respondToAccessRequest = (request, decision) => (
+  dispatch,
+  getState
+) => {
+  const body = {
+    decision: decision,
+    access_request_id: request.id,
+  };
+  axios
+    .post('/club/access_request_respond', body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ACCESS_REQUEST_RESPONSE_SUCCESS,
+        payload: res.data.user,
+      });
+    })
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };

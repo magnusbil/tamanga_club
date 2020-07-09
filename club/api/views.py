@@ -133,23 +133,56 @@ class SharedAccessListView(ListAPIView):
     return SharedAccess.objects.filter(club=club)
   serializer_class = SharedAccessSerializer
 
-@api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
-def request_access(request):
+class SharedAccessRequest(generics.GenericAPIView):
+  def post(self, request):
     try:
       data = json.loads(request.body.decode(encoding='utf-8'))
-      user = User.objects.get(username=data['username'])
-      request_access_user = User.objects.get(username=data['username'])
-      requested_shared_access = data['shared_access_id']
-      new_request = AccessRequest.create(
-        request_from = user,
-        request_to = request_access_user,
-        request_for = requested_shared_access
-      )
-      return JsonResponse({"message": "Your request has been submitted."})
+      requesting_user = User.objects.get(id=data['requester_id'])
+      access_owner = User.objects.get(id=data['owner_id'])
+      requested_shared_access = SharedAccess.objects.get(id=data['shared_access_id'])
+      existing_request = AccessRequest.objects.filter(request_from=requesting_user, request_to=access_owner, request_for=requested_shared_access)
+      if len(existing_request) == 0:
+        new_request = AccessRequest.objects.create(
+          request_from = requesting_user,
+          request_to = access_owner,
+          request_for = requested_shared_access
+        )
+        return JsonResponse({
+          "message": "Access request submitted.",
+          "user": UserSerializer(requesting_user, context=self.get_serializer_context()).data,
+        }, status=201)
+      else:
+        return JsonResponse({"message": "You have already submitted a request for this access account."})
     except Exception as e:
       error_message = str(e)
       return JsonResponse({"error_message": error_message}, status=400)
+
+@permission_classes([permissions.IsAuthenticated])
+class SharedAccessRequestResponse(generics.GenericAPIView):
+  def post(self, request):
+    try:
+      data = json.loads(request.body.decode(encoding='utf-8'))
+      access_request = AccessRequest.objects.get(id=data['access_request_id'])
+      requested_shared_access = access_request.request_for
+      requester = access_request.request_from
+      access_owner = access_request.request_to
+      if data['decision'] == True:
+        if requested_shared_access.allowed_list != None:
+          requested_shared_access.allowed_list += [requester.id]
+        else:
+          requested_shared_access.allowed_list = [requester.id]
+        requested_shared_access.save()
+        access_request.delete()
+      else:
+        access_request.delete()
+      return JsonResponse({
+        "message": "Response processed successfully.",
+        "user": UserSerializer(access_owner, context=self.get_serializer_context()).data,
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, 400)
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
@@ -253,7 +286,7 @@ class ReserveDelete(generics.GenericAPIView):
 # Update User Profile
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
-def updateProfile(request):
+def update_profile(request):
   try:
     request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
     profile = UserProfile.objects.get(user=request_data['user_id'])

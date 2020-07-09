@@ -51,8 +51,8 @@ class Poll extends React.Component {
     var end_date = new Date(this.props.poll_data.poll_end_date);
     if (end_date < Date.Now || this.props.poll_results.poll_total_votes) {
       return true;
-    } else {
-      let vote_list = this.props.user.poll_votes;
+    } else if (this.props.user.profile) {
+      let vote_list = this.props.user.profile.poll_votes;
       for (var vote in vote_list) {
         if (vote_list[vote].poll == this.props.poll_data.id) {
           return true;

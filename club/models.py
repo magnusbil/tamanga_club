@@ -80,19 +80,19 @@ class Book(models.Model):
 
 class SharedAccess(models.Model):
     club = models.ForeignKey(BookClub, on_delete=models.CASCADE, related_name="group_shared_access")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_shared_access")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_shared_access")
     resource_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
-    allowed_list = ArrayField(models.IntegerField(), null=True)
+    allowed_list = ArrayField(models.IntegerField(), blank=True, null=True)
 
     def __str__(self):
       return self.resource_name + "Access"
 
 class AccessRequest(models.Model):
-    request_from = models.ForeignKey(User, related_name="requests_made", on_delete=models.CASCADE)
-    request_to = models.ForeignKey(User, related_name="requests_received", on_delete=models.CASCADE)
+    request_from = models.ForeignKey(User, related_name="access_requests_made", on_delete=models.CASCADE)
+    request_to = models.ForeignKey(User, related_name="access_requests_received", on_delete=models.CASCADE)
     request_for = models.ForeignKey(SharedAccess, on_delete=models.CASCADE)
 
     def __str__(self):
-      return self. self.request_from.username + "requested access to " + self.request_for.resource_name +  " from " + self.request_to.username
+      return self.request_from.username + " requested access to " + self.request_for.resource_name +  " from " + self.request_to.username

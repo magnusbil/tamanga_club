@@ -11,7 +11,7 @@ urlpatterns = [
     path('auth/register', RegisterAPIView.as_view()),
     path('auth/security_question', get_security_question, name='get_security_question'),
     path('auth/user', UserAPIView.as_view()),
-    path('auth/user/update/profile', updateProfile, name='updateProfile'),
+    path('auth/user/update/profile', update_profile, name='update_profile'),
     path('polls/<club_id>', PollListView.as_view()),
     path('poll/vote', vote, name='vote'),
     path('recents', RecentBooksView.as_view()),
@@ -21,4 +21,6 @@ urlpatterns = [
     path('series/genre/<series_genre>', SeriesByGenreView.as_view()),
     path('series/<series_title>', SeriesByTitleDetailView.as_view()),
     path('shared/<club_id>', SharedAccessListView.as_view()),
+    path('request_shared_access', SharedAccessRequest.as_view()),
+    path('access_request_respond', SharedAccessRequestResponse.as_view())
 ]
