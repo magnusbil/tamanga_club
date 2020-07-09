@@ -142,9 +142,9 @@ class ProfilePage extends React.Component {
           <Col>{this.renderAbout()}</Col>
           <Col>{this.renderBooksOnHold()}</Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col lg={{ span: 4 }}>{this.renderAccessRequests()}</Col>
-        </Row>
+        </Row> */}
         <Modal
           centered={true}
           show={show_delete_reservation_modal}
