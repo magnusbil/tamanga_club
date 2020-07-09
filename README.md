@@ -9,7 +9,7 @@ Website for the Triangle Anime Manga Club
 - Python
   - Django
     - Knox
-    - AS-Storage
+    - AWS-Storage
 - Javascript
   - React
     - React-redux
