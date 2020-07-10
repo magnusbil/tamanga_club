@@ -49,13 +49,21 @@ export const submitVote = (poll_id, user_id, choice_id) => (
     );
 };
 
-export const getSharedAccess = (club_id) => (dispatch, getState) => {
-  axios.get('/club/shared/' + club_id, tokenConfig(getState)).then((res) => {
-    dispatch({
-      type: GET_SHARED_ACCESS,
-      payload: res.data,
+export const getSharedAccess = (club_id, page_number) => (
+  dispatch,
+  getState
+) => {
+  axios
+    .get('/club/shared/' + club_id + '/' + page_number, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_SHARED_ACCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
     });
-  });
 };
 
 export const requestAccess = (user, shared_access) => (dispatch, getState) => {

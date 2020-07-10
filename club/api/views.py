@@ -105,6 +105,7 @@ class PollListView(generics.GenericAPIView):
       else:
         poll_list = poll_list[start:]
       return JsonResponse({
+        "page_number": int(page_number),
         "poll_list": PollSerializer(poll_list, many=True, context=self.get_serializer_context()).data,
         "total_polls": total_count
       })
@@ -141,10 +142,25 @@ class SeriesByTitleDetailView(RetrieveAPIView):
 
 @permission_classes([permissions.IsAuthenticated])
 class SharedAccessListView(ListAPIView):
-  def get_queryset(self):
-    club = BookClub.objects.get(id=self.kwargs['club_id'])
-    return SharedAccess.objects.filter(club=club)
-  serializer_class = SharedAccessSerializer
+  def get(self, request, club_id, page_number):
+    try:
+      club = BookClub.objects.get(id=self.kwargs['club_id'])
+      shared_access_list = SharedAccess.objects.filter(club=club)
+      total_count = shared_access_list.count()
+      start = int(page_number) * 5
+      end = start + 5
+      if total_count > end:
+        shared_access_list = shared_access_list[start:end]
+      else:
+        shared_access_list = shared_access_list[start:]
+      return JsonResponse({
+        "page_number": int(page_number),
+        "shared_access_list": SharedAccessSerializer(shared_access_list, many=True, context=self.get_serializer_context()).data,
+        "total_shared_access": total_count
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
 @permission_classes([permissions.IsAuthenticated])
 class SharedAccessRequest(generics.GenericAPIView):

@@ -20,7 +20,7 @@ urlpatterns = [
     path('series', SeriesListView.as_view()),
     path('series/genre/<series_genre>', SeriesByGenreView.as_view()),
     path('series/<series_title>', SeriesByTitleDetailView.as_view()),
-    path('shared/<club_id>', SharedAccessListView.as_view()),
+    path('shared/<club_id>/<page_number>', SharedAccessListView.as_view()),
     path('request_shared_access', SharedAccessRequest.as_view()),
     path('access_request_respond', SharedAccessRequestResponse.as_view())
 ]
