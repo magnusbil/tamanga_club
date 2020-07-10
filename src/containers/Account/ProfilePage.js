@@ -24,7 +24,7 @@ class ProfilePage extends React.Component {
   toggle(book_reservation) {
     this.setState({
       selected_reservation: book_reservation,
-      show_modal: !this.state.show_delete_reservation_modal,
+      show_delete_reservation_modal: !this.state.show_delete_reservation_modal,
     });
   }
 
@@ -139,8 +139,12 @@ class ProfilePage extends React.Component {
     return (
       <Container className="pt-5 profile-group">
         <Row>
-          <Col>{this.renderAbout()}</Col>
-          <Col>{this.renderBooksOnHold()}</Col>
+          <Col className="profile-item" lg={{ span: 4 }}>
+            {this.renderAbout()}
+          </Col>
+          <Col className="profile-item" lg={{ span: 5 }}>
+            {this.renderBooksOnHold()}
+          </Col>
         </Row>
         {/* <Row>
           <Col lg={{ span: 4 }}>{this.renderAccessRequests()}</Col>

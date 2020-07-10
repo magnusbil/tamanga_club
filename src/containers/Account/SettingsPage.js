@@ -52,7 +52,7 @@ class SettingsPage extends React.Component {
 
   renderSettings() {
     return (
-      <Col lg={{ span: 4, order: 2, offset: 4 }}>
+      <Col className="settings-item" lg={{ span: 4, order: 2, offset: 4 }}>
         <Form>
           <Form.Label as={'h5'}>Delete Account</Form.Label>
           <Form.Group controlId="security_answer">
@@ -89,7 +89,7 @@ class SettingsPage extends React.Component {
     );
 
     return (
-      <Col lg={{ span: 4, order: 2, offset: 4 }}>
+      <Col className="settings-item" lg={{ span: 4, order: 2, offset: 4 }}>
         <h5>Edit Interests:</h5>
         {interest_list}
         <div className="pt-3">
@@ -103,7 +103,7 @@ class SettingsPage extends React.Component {
     return (
       <Container className="pt-5">
         <Row>{this.renderEditProfile()}</Row>
-        <Row className="pt-5">{this.renderSettings()}</Row>
+        <Row className="pt-4">{this.renderSettings()}</Row>
       </Container>
     );
   }

@@ -21,12 +21,6 @@ body {
   opacity: 0.5;
 }
 
-.profile-detail-book {
-  height: 150px;
-  width: 100px;
-  margin-left: 5px;
-}
-
 .col .book {
   flex-grow: 0;
 }
@@ -91,8 +85,20 @@ body {
   padding-left: 5px;
 }
 
+.profile-detail-book {
+  height: 150px;
+  width: 100px;
+  margin-left: 5px;
+}
+
 .profile-group {
   overflow: hidden;
+}
+
+.profile-item {
+  background-color: white;
+  border-radius: 10px;
+  margin-left: 10px;
 }
 
 .profile-item-content {
@@ -101,6 +107,12 @@ body {
 
 .rounded {
   border-radius: 30px !important;
+}
+
+.settings-item {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .text-center {
