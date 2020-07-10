@@ -82,6 +82,18 @@ class AccessRequestSerializer(serializers.ModelSerializer):
     def get_account_name(self, request):
         return request.request_for.resource_name
 
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('id', 'creator', 'content', 'reply_to')
+
+class ThreadSerializer(serializers.ModelSerializer):
+    comments = MessageSerializer()
+    
+    class Meta:
+        model = Thread
+        fields = ('id', 'creator', 'title', 'description', 'comments')
+
 ## USER PROFILE
 class UserProfileSerializer(serializers.ModelSerializer):
     books_on_hold = serializers.SerializerMethodField()

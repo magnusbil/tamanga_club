@@ -14,6 +14,7 @@ else:
 class BookClub(models.Model):
     club_name = models.CharField(max_length=255, default="New Group")
     club_code = models.CharField(max_length=225, default="", unique=True)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.club_name
@@ -25,6 +26,7 @@ class UserProfile(models.Model):
     icon = models.ImageField("User Icon", storage=storage, blank=True, null=True)
     security_question = models.CharField(max_length=255, default="What's your favorite anime?")
     security_answer = models.CharField(max_length=255, default="Is it wrong to put random defaults in a dungeon?")
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.user.username + "'s Profile"
@@ -35,6 +37,7 @@ class Poll(models.Model):
     poll_title = models.CharField(max_length=255)
     poll_start_date = models.DateField(default=datetime.date.today)
     poll_end_date = models.DateField(default=datetime.date.today)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.poll_title
@@ -42,7 +45,7 @@ class Poll(models.Model):
 class Choice(models.Model):
     poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name='choices')
     choice_title = models.CharField(max_length=255)
- 
+
     def __str__(self): 
         return self.choice_title
 
@@ -50,6 +53,7 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="poll_votes")
     poll =  models.ForeignKey('Poll', on_delete=models.CASCADE)
     choice = models.ForeignKey('Choice', on_delete=models.CASCADE)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
       return self.user.username + "'s vote on " + self.poll.poll_title
@@ -73,7 +77,7 @@ class Book(models.Model):
     volume_number = models.IntegerField("Volume number", default=0)
     cover_image = models.ImageField("Cover Image", storage=storage, blank=True, null=True)
     hold_for = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='books_on_hold', null=True, blank=True)
-    added_on = models.DateField(default=datetime.date.today)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.series.series_title + " Vol. " + str(self.volume_number)
@@ -85,6 +89,7 @@ class SharedAccess(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     allowed_list = ArrayField(models.IntegerField(), blank=True, null=True)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
       return self.resource_name + "Access"
@@ -93,6 +98,7 @@ class AccessRequest(models.Model):
     request_from = models.ForeignKey(User, related_name="access_requests_made", on_delete=models.CASCADE)
     request_to = models.ForeignKey(User, related_name="access_requests_received", on_delete=models.CASCADE)
     request_for = models.ForeignKey(SharedAccess, on_delete=models.CASCADE)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
       return self.request_from.username + " requested access to " + self.request_for.resource_name +  " from " + self.request_to.username
@@ -101,6 +107,7 @@ class Thread(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="threads_created")
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.title
@@ -109,9 +116,11 @@ class Message(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    reply_to =models.ForeignKey("Message", on_delete=models.CASCADE, related_name="replies")
+    reply_to = models.ForeignKey("Message", on_delete=models.CASCADE, related_name="replies", null=True)
+    created_on = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         name = self.poster.username + " comment #" + self.id + " on " + self.thread.title
         if self.reply_to != None:
-          return  name + "  in reply to comment #" + self.id + " made by " + self.reply_to.creator.username
+          name += "  in reply to comment #" + self.id + " made by " + self.reply_to.creator.username
+        return name

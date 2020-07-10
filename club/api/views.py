@@ -121,7 +121,7 @@ class PollListView(generics.GenericAPIView):
 # API view that returns that 8 most recently added books
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  books = Book.objects.all().order_by('-created_on', 'series', 'volume_number')
   end = books.count()-8 # I only want the last 8 books
   if end > 0:
     queryset = books[end:]
