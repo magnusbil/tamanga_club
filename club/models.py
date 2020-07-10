@@ -96,3 +96,22 @@ class AccessRequest(models.Model):
 
     def __str__(self):
       return self.request_from.username + " requested access to " + self.request_for.resource_name +  " from " + self.request_to.username
+
+class Thread(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="threads_created")
+
+    def __str__(self):
+        return self.title
+
+class Message(models.Model):
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField()
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    reply_to =models.ForeignKey("Message", on_delete=models.CASCADE, related_name="replies")
+
+    def __str__(self):
+        name = self.poster.username + " comment #" + self.id + " on " + self.thread.title
+        if self.reply_to != None:
+          return  name + "  in reply to comment #" + self.id + " made by " + self.reply_to.creator.username
