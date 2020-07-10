@@ -13,18 +13,18 @@ import {
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
-export const getPolls = (club_id) => (dispatch, getState) => {
+export const getPolls = (club_id, page_number) => (dispatch, getState) => {
   axios
-    .get('club/polls/' + club_id, tokenConfig(getState))
+    .get('club/polls/' + club_id + '/' + page_number, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_POLLS,
         payload: res.data,
       });
     })
-    .catch((err) =>
-      dispatch(returnErrors(err.response.data, err.response.status))
-    );
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
 };
 
 export const submitVote = (poll_id, user_id, choice_id) => (
@@ -33,7 +33,7 @@ export const submitVote = (poll_id, user_id, choice_id) => (
 ) => {
   const body = JSON.stringify({ poll_id, choice_id, user_id });
   axios
-    .post('/club/poll/vote', body, tokenConfig(getState))
+    .post('/club/polls/vote', body, tokenConfig(getState))
     .then((res) => {
       if (res.data.error_message) {
         dispatch(returnErrors(res.data, res.status));

@@ -1,6 +1,7 @@
 body {
   background-color: rgb(243, 243, 243);
   height: 100vh;
+  overflow: auto;
 }
 
 .App {
@@ -31,6 +32,12 @@ body {
 
 .dropdown-item:hover {
   background-color: lightpink;
+}
+
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
 
 .img-card {
@@ -120,14 +127,6 @@ body {
 }
 
 #bg-navbar-pink {
-  background-color: #f032a7;
-}
-
-#footer {
-  width: 100%;
-  border-top: 1px solid black;
-  position: absolute;
-  bottom: 0;
   background-color: #f032a7;
 }
 

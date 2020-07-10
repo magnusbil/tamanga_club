@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
 from django.contrib.auth.hashers import make_password
 import json
+import datetime
 from django.contrib.auth.models import User
 from knox.models import AuthToken
 from club.models import *
@@ -91,22 +92,34 @@ class UserAPIView(generics.RetrieveAPIView):
   serializer_class = UserSerializer
 
 @permission_classes([permissions.IsAuthenticated])
-class PollListView(ListAPIView):
-  def get_queryset(self):
-    club = BookClub.objects.get(id=self.kwargs['club_id'])
-    return Poll.objects.filter(club=club).order_by('-poll_start_date')
-  serializer_class = PollSerializer
+class PollListView(generics.GenericAPIView):
+  def get(self, request, club_id, page_number):
+    try:
+      club = BookClub.objects.get(id=club_id)
+      poll_list  = Poll.objects.filter(club=club).order_by('-poll_start_date')
+      start = int(page_number) * 5
+      end = start + 5
+      total_count = poll_list.count()
+      if total_count > end:
+        poll_list = poll_list[start:end]
+      else:
+        poll_list = poll_list[start:]
+      return JsonResponse({
+        "poll_list": PollSerializer(poll_list, many=True, context=self.get_serializer_context()).data,
+        "total_polls": total_count
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  # books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
-  books = Book.objects.all().order_by('series', 'volume_number')
-  end = len(books)-8 # I only want the last 8 books
+  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  end = books.count()-8 # I only want the last 8 books
   if end > 0:
     queryset = books[end:]
   else:
     queryset = books
-  # queryset = Book.objects.all()
   serializer_class = BookSerializer
 
 @permission_classes([permissions.IsAuthenticated])
@@ -298,3 +311,48 @@ def update_profile(request):
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error:message": error_message}, status=200)
+
+@permission_classes([permissions.IsAuthenticated])
+class CreateThread(generics.GenericAPIView):
+  def post(self, request):
+    try:
+      request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(id=request_data['user_id'])
+      new_thread = Thread.objects.create(
+        creator = user,
+        title = request_data['thread_title'],
+        description = request_data['thread_description'],
+      )
+      new_thread.save()
+      threads = Thread.objects.all().order_by('-created_on')
+      if threads.count() > 20:
+        current_threads = thread[:20]
+      else:
+        current_threads = threads
+      return JsonResponse({
+        "message": "Thread created successfully",
+        "threads": ThreadSerializer(current_threads, many=True, context=self.get_serializer_context())
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, 400)
+
+@permission_classes([permissions.IsAuthenticated])
+class PostComment(generics.GenericAPIView):
+  def post(self, request):
+    try:
+      request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(id=request_data['user_id'])
+      thread = Thread.objects.get(id=request_data['thread_id'])
+      reply = None
+      if request_data['reply_to']:
+        reply = Message.objects.get(id=request_data['reply_to'])
+      new_comment = Message.objects.create(
+        thread = thread,
+        creator = user,
+        content = request_data['message_content'],
+        reply_to = reply,
+      )
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
