@@ -55,7 +55,7 @@ class ProfilePage extends React.Component {
   renderAbout() {
     const interests = this.props.user.profile.interests.map((interest) => {
       return (
-        <a key={interest} href={'/search/by_genre/' + interest}>
+        <a key={interest} href={'/search/by_genre/' + interest + '/page=1'}>
           #{interest}{' '}
         </a>
       );
