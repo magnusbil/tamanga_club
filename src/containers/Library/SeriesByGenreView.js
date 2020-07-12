@@ -31,10 +31,6 @@ class SeriesByGenreView extends React.Component {
     this.setCurrentSeries(series_data);
   }
 
-  setPage(page_number) {
-    this.props.getGenreSeries(this.props.user.profile.club, page_number);
-  }
-
   renderGenreNav() {
     const links = Object.keys(this.props.genre_list).map((key, index) => {
       return (
@@ -99,7 +95,7 @@ class SeriesByGenreView extends React.Component {
         {this.renderSeries()}
         <Paginator
           split_by={21}
-          setPage={this.setPage.bind(this)}
+          base_url={'search/by_genre/' + this.props.current_genre + '/page='}
           page_number={this.props.page_number}
           total={this.props.total_polls}
         />
@@ -114,7 +110,7 @@ const mapPropsToState = (state, ownProps) => ({
   genre_list: state.library.genre_list,
   current_genre: ownProps.match.params.genre,
   series_list: state.library.series_list,
-  page_number: state.library.page_number,
+  page_number: ownProps.match.params.page_number - 1,
   total_series: state.library.total_series,
 });
 

@@ -111,7 +111,6 @@ class PollListView(generics.GenericAPIView):
       else:
         poll_list = poll_list[start:]
       return JsonResponse({
-        "page_number": int(page_number),
         "poll_list": PollSerializer(poll_list, many=True, context=self.get_serializer_context()).data,
         "total_polls": total_count
       })
@@ -144,7 +143,6 @@ class SeriesListView(ListAPIView):
       else:
         series_list = series_list[start:]
       return JsonResponse({
-        "page_number": int(page_number),
         "series_list": SeriesSerializer(series_list, many=True, context=self.get_serializer_context()).data,
         "total_series": total_series
       })
@@ -168,7 +166,6 @@ class SeriesByGenreView(ListAPIView):
       else:
         series_list = series_list[start:]
       return JsonResponse({
-        "page_number": int(page_number),
         "series_list": SeriesSerializer(series_list, many=True, context=self.get_serializer_context()).data,
         "total_series": total_series
       })
@@ -199,7 +196,6 @@ class SharedAccessListView(ListAPIView):
       else:
         shared_access_list = shared_access_list[start:]
       return JsonResponse({
-        "page_number": int(page_number),
         "shared_access_list": SharedAccessSerializer(shared_access_list, many=True, context=self.get_serializer_context()).data,
         "total_shared_access": total_count
       })

@@ -17,10 +17,6 @@ class PollListView extends React.Component {
     this.props.getPolls(this.props.user.profile.club, this.props.page_number);
   }
 
-  setPage(page_number) {
-    this.props.getPolls(this.props.user.profile.club, page_number);
-  }
-
   renderPolls() {
     if (this.props.poll_list.length > 0) {
       var poll_rows = this.props.poll_list.map(function (poll) {
@@ -35,7 +31,7 @@ class PollListView extends React.Component {
           {poll_rows}
           <Paginator
             split_by={5}
-            setPage={this.setPage.bind(this)}
+            base_url="/polls/page="
             page_number={this.props.page_number}
             total={this.props.total_polls}
           />
@@ -51,11 +47,11 @@ class PollListView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   user: state.auth.user,
   poll_list: state.club.poll_list,
   total_polls: state.club.total_polls,
-  page_number: state.club.poll_page_number,
+  page_number: ownProps.match.params.page_number - 1,
 });
 
 export default connect(mapStateToProps, { getPolls })(PollListView);

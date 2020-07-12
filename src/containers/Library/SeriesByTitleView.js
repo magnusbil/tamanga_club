@@ -26,10 +26,6 @@ class SeriesByTitleView extends React.Component {
     this.setCurrentSeries(series_data);
   }
 
-  setPage(page_number) {
-    this.props.getAllSeries(this.props.user.profile.club, page_number);
-  }
-
   renderSeries() {
     if (this.props.series_list.length > 0) {
       var rows = [];
@@ -75,7 +71,7 @@ class SeriesByTitleView extends React.Component {
         {this.renderSeries()}
         <Paginator
           split_by={21}
-          setPage={this.setPage.bind(this)}
+          base_url="/series/by_title/page="
           page_number={this.props.page_number}
           total={this.props.total_polls}
         />
@@ -86,9 +82,9 @@ class SeriesByTitleView extends React.Component {
   }
 }
 
-const mapPropsToState = (state) => ({
+const mapPropsToState = (state, ownProps) => ({
   series_list: state.library.series_list,
-  page_number: state.library.page_number,
+  page_number: ownProps.match.params.page_number - 1,
   total_series: state.library.total_series,
 });
 

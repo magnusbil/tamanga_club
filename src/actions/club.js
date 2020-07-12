@@ -15,7 +15,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 
 export const getPolls = (club_id, page_number) => (dispatch, getState) => {
   axios
-    .get('club/polls/' + club_id + '/' + page_number, tokenConfig(getState))
+    .get('/club/polls/' + club_id + '/' + page_number, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_POLLS,

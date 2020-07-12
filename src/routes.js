@@ -21,12 +21,12 @@ const BaseRouter = () => (
     <Route exact path="/reset_password" component={PasswordResetPage} />
     <PrivateRoute exact path="/profile" component={ProfilePage} />
     <PrivateRoute exact path="/profile/settings" component={SettingsPage} />
-    <PrivateRoute exact path="/polls" component={PollListView} />
+    <PrivateRoute exact path="/polls/page=:page_number" component={PollListView} />
     <PrivateRoute exact path="/search" component={SearchPage} />
-    <PrivateRoute exact path="/search/by_title" component={SeriesByTitleView} />
-    <PrivateRoute exact path="/search/by_genre/:genre" component={SeriesByGenreView} />
+    <PrivateRoute exact path="/search/by_title/page=:page_number" component={SeriesByTitleView} />
+    <PrivateRoute exact path="/search/by_genre/:genre/page=:page_number" component={SeriesByGenreView} />
     <PrivateRoute exact path="/series/:title" component={SeriesDetailView} />
-    <PrivateRoute exact path="/shared" component={SharedAccessView} />
+    <PrivateRoute exact path="/shared/page=:page_number" component={SharedAccessView} />
   </div>
 );
 

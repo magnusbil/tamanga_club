@@ -19,10 +19,6 @@ class SharedAccessView extends React.Component {
     );
   }
 
-  setPage(page_number) {
-    this.props.getSharedAccess(this.props.user.profile.club, page_number);
-  }
-
   generateRows() {
     if (this.props.shared_access && this.props.shared_access.length > 0) {
       let rows = this.props.shared_access.map((access) => {
@@ -45,7 +41,7 @@ class SharedAccessView extends React.Component {
         {access_rows}
         <Paginator
           split_by={5}
-          setPage={this.setPage.bind(this)}
+          base_url="/shared/page="
           page_number={this.props.page_number}
           total={this.props.total_shared_access}
         />
@@ -56,10 +52,10 @@ class SharedAccessView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   user: state.auth.user,
   shared_access: state.club.shared_access,
-  page_number: state.club.shared_access_page_number,
+  page_number: ownProps.match.params.page_number - 1,
   total_shared_access: state.club.total_shared_access,
 });
 
