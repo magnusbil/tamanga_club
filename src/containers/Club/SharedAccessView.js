@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getSharedAccess } from '../../actions/club';
 import NoData from '../../components/common/NoData';
-import { Container, Row, Col, Pagination } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import SharedAccess from '../../components/Club/SharedAccess';
+import Paginator from '../../components/common/Paginator';
 
 class SharedAccessView extends React.Component {
   static propTypes = {
@@ -20,30 +21,6 @@ class SharedAccessView extends React.Component {
 
   setPage(page_number) {
     this.props.getSharedAccess(this.props.user.profile.club, page_number);
-  }
-
-  generatePagination() {
-    let items = [];
-    for (let i = 0; i < this.props.total_shared_access / 5; i++) {
-      items.push(
-        <Pagination.Item
-          key={'page_item_' + (i + 1)}
-          active={this.props.page_number === i}
-          onClick={() => this.setPage(i)}
-        >
-          {i + 1}
-        </Pagination.Item>
-      );
-    }
-    return (
-      <footer>
-        <Row>
-          <Col lg={{ span: 3, offset: 5 }}>
-            <Pagination>{items}</Pagination>
-          </Col>
-        </Row>
-      </footer>
-    );
   }
 
   generateRows() {
@@ -66,7 +43,12 @@ class SharedAccessView extends React.Component {
     return access_rows ? (
       <Container className="col pt-5">
         {access_rows}
-        {this.generatePagination()}
+        <Paginator
+          split_by={5}
+          setPage={this.setPage.bind(this)}
+          page_number={this.props.page_number}
+          total={this.props.total_shared_access}
+        />
       </Container>
     ) : (
       <NoData />

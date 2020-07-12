@@ -56,7 +56,7 @@ export const getGenreSeries = (genre, page_number) => (dispatch, getState) => {
 // This is used when you go directly to the SeriesDetailView
 export const getSingleSeries = (title) => (dispatch, getState) => {
   axios
-    .get('/club/series/' + title, tokenConfig(getState))
+    .get('/club/series/detail/' + title, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_SINGLE_SERIES,

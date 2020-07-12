@@ -158,8 +158,6 @@ class SeriesListView(ListAPIView):
 @permission_classes([permissions.IsAuthenticated])
 class SeriesByGenreView(ListAPIView):
   def get(self, request, series_genre, page_number):
-    print(series_genre)
-    print(page_number)
     try:
       start = int(page_number) * 21 # Going with 21 here because the frontend displays the books in rows of 3.
       end = start + 21

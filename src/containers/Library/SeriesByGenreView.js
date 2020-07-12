@@ -1,11 +1,12 @@
 import React from 'react';
-import { Card, Container, Col, Row, Nav, Pagination } from 'react-bootstrap';
+import { Card, Container, Row, Nav } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getGenreSeries, setCurrentSeries } from '../../actions/library';
 import Loading from '../../components/common/Loading';
 import LibraryNav from '../../components/Library/LibraryNav';
 import NoData from '../../components/common/NoData';
+import Paginator from '../../components/common/Paginator';
 
 const SeriesRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
@@ -32,30 +33,6 @@ class SeriesByGenreView extends React.Component {
 
   setPage(page_number) {
     this.props.getGenreSeries(this.props.user.profile.club, page_number);
-  }
-
-  generatePagination() {
-    let items = [];
-    for (let i = 0; i < this.props.total_series / 21; i++) {
-      items.push(
-        <Pagination.Item
-          key={'page_item_' + (i + 1)}
-          active={this.props.page_number === i}
-          onClick={() => this.setPage(i)}
-        >
-          {i + 1}
-        </Pagination.Item>
-      );
-    }
-    return (
-      <footer>
-        <Row>
-          <Col lg={{ span: 3, offset: 5 }}>
-            <Pagination>{items}</Pagination>
-          </Col>
-        </Row>
-      </footer>
-    );
   }
 
   renderGenreNav() {
@@ -120,7 +97,12 @@ class SeriesByGenreView extends React.Component {
         <LibraryNav currentLink="series" />
         {this.renderGenreNav()}
         {this.renderSeries()}
-        {this.generatePagination()}
+        <Paginator
+          split_by={21}
+          setPage={this.setPage.bind(this)}
+          page_number={this.props.page_number}
+          total={this.props.total_polls}
+        />
       </div>
     ) : (
       <Loading />
@@ -133,6 +115,7 @@ const mapPropsToState = (state, ownProps) => ({
   current_genre: ownProps.match.params.genre,
   series_list: state.library.series_list,
   page_number: state.library.page_number,
+  total_series: state.library.total_series,
 });
 
 export default connect(mapPropsToState, { getGenreSeries, setCurrentSeries })(
