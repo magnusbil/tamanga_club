@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
+import { Row, Pagination, Col } from 'react-bootstrap';
 import Poll from '../../components/Club/PollView';
 import NoData from '../../components/common/NoData';
 import Loading from '../../components/common/Loading';
@@ -13,7 +13,35 @@ class PollListView extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getPolls(this.props.user.profile.club);
+    this.props.getPolls(this.props.user.profile.club, this.props.page_number);
+  }
+
+  setPage(page_number) {
+    this.props.getPolls(this.props.user.profile.club, page_number);
+  }
+
+  generatePagination() {
+    let items = [];
+    for (let i = 0; i < this.props.total_polls / 5; i++) {
+      items.push(
+        <Pagination.Item
+          key={'page_item_' + (i + 1)}
+          active={this.props.page_number === i}
+          onClick={() => this.setPage(i)}
+        >
+          {i + 1}
+        </Pagination.Item>
+      );
+    }
+    return (
+      <footer>
+        <Row>
+          <Col lg={{ span: 3, offset: 5 }}>
+            <Pagination>{items}</Pagination>
+          </Col>
+        </Row>
+      </footer>
+    );
   }
 
   renderPolls() {
@@ -25,7 +53,12 @@ class PollListView extends React.Component {
           </Row>
         );
       });
-      return <div className="col pt-5">{poll_rows}</div>;
+      return (
+        <div className="pt-5">
+          {poll_rows}
+          {this.generatePagination()}
+        </div>
+      );
     } else {
       return <NoData />;
     }
@@ -39,6 +72,8 @@ class PollListView extends React.Component {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   poll_list: state.club.poll_list,
+  total_polls: state.club.total_polls,
+  page_number: state.club.poll_page_number,
 });
 
 export default connect(mapStateToProps, { getPolls })(PollListView);

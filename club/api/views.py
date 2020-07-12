@@ -6,11 +6,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
 from django.contrib.auth.hashers import make_password
 import json
+import datetime
 from django.contrib.auth.models import User
 from knox.models import AuthToken
 from club.models import *
 from .serializers import *
 
+# API view that that allows a user to register an account
 class RegisterAPIView(generics.GenericAPIView):
   serializer_class = RegisterSerializer
 
@@ -45,6 +47,7 @@ class RegisterAPIView(generics.GenericAPIView):
       error_message = str(e)
       return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that allows a user to login to their account
 class LoginAPIView(generics.GenericAPIView):
   serializer_class = LoginSerializer
 
@@ -57,6 +60,7 @@ class LoginAPIView(generics.GenericAPIView):
           "token": AuthToken.objects.create(user)[1]
       })
 
+# API view that resets a user's password
 class PasswordAPIView(generics.GenericAPIView):
   def post(self, request):
     try:
@@ -84,55 +88,129 @@ class PasswordAPIView(generics.GenericAPIView):
       error_message = str(e)
       return JsonResponse({"error_message":error_message}, status=400)
 
-# @permission_classes([permissions.IsAuthenticated])
+# API view that returns a specific user account object
+@permission_classes([permissions.IsAuthenticated])
 class UserAPIView(generics.RetrieveAPIView):
   def get_object(self):
       return self.request.user
   serializer_class = UserSerializer
 
+# API view that returns a subset of Polls
+# the subset is filter by Club association
 @permission_classes([permissions.IsAuthenticated])
-class PollListView(ListAPIView):
-  def get_queryset(self):
-    club = BookClub.objects.get(id=self.kwargs['club_id'])
-    return Poll.objects.filter(club=club).order_by('-poll_start_date')
-  serializer_class = PollSerializer
+class PollListView(generics.GenericAPIView):
+  def get(self, request, club_id, page_number):
+    try:
+      club = BookClub.objects.get(id=club_id)
+      poll_list  = Poll.objects.filter(club=club).order_by('-poll_start_date')
+      start = int(page_number) * 5
+      end = start + 5
+      total_count = poll_list.count()
+      if total_count > end:
+        poll_list = poll_list[start:end]
+      else:
+        poll_list = poll_list[start:]
+      return JsonResponse({
+        "page_number": int(page_number),
+        "poll_list": PollSerializer(poll_list, many=True, context=self.get_serializer_context()).data,
+        "total_polls": total_count
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that returns that 8 most recently added books
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
-  # books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
-  books = Book.objects.all().order_by('series', 'volume_number')
-  end = len(books)-8 # I only want the last 8 books
+  books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
+  end = books.count()-8 # I only want the last 8 books
   if end > 0:
     queryset = books[end:]
   else:
     queryset = books
-  # queryset = Book.objects.all()
   serializer_class = BookSerializer
 
+# API view that returns a subset of all Series objects
 @permission_classes([permissions.IsAuthenticated])
 class SeriesListView(ListAPIView):
-  queryset = Series.objects.all().order_by('series_title')
-  serializer_class = SeriesSerializer
+  def get(self, request, page_number):
+    try:
+      start = int(page_number) * 21 # Going with 21 here because the frontend displays the books in rows of 3.
+      end = start + 21
+      series_list = Series.objects.all().order_by('series_title')
+      total_series = series_list.count()
+      if total_series > end:
+        series_list = series_list[start:end]
+      else:
+        series_list = series_list[start:]
+      return JsonResponse({
+        "page_number": int(page_number),
+        "series_list": SeriesSerializer(series_list, many=True, context=self.get_serializer_context()).data,
+        "total_series": total_series
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that return a list of Series objects,
+# the list is filtered by the specified series_genre
+# and ordered by the series_title
 @permission_classes([permissions.IsAuthenticated])
 class SeriesByGenreView(ListAPIView):
-  def get_queryset(self):
-    return Series.objects.filter(series_genres__contains = [self.kwargs['series_genre']]).order_by('series_title')
-  serializer_class = SeriesSerializer
+  def get(self, request, series_genre, page_number):
+    print(series_genre)
+    print(page_number)
+    try:
+      start = int(page_number) * 21 # Going with 21 here because the frontend displays the books in rows of 3.
+      end = start + 21
+      series_list = Series.objects.filter(series_genres__contains = [series_genre]).order_by('series_title')
+      total_series = series_list.count()
+      if total_series > end:
+        series_list = series_list[start:end]
+      else:
+        series_list = series_list[start:]
+      return JsonResponse({
+        "page_number": int(page_number),
+        "series_list": SeriesSerializer(series_list, many=True, context=self.get_serializer_context()).data,
+        "total_series": total_series
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that return a single Series object matching the provided series_title
 @permission_classes([permissions.IsAuthenticated])
 class SeriesByTitleDetailView(RetrieveAPIView):
   queryset = Series.objects.all()
   serializer_class = SeriesSerializer
   lookup_field = 'series_title'
 
+# API view that return a list of SharedAccess objects,
+# the list is filtered by Club
 @permission_classes([permissions.IsAuthenticated])
 class SharedAccessListView(ListAPIView):
-  def get_queryset(self):
-    club = BookClub.objects.get(id=self.kwargs['club_id'])
-    return SharedAccess.objects.filter(club=club)
-  serializer_class = SharedAccessSerializer
+  def get(self, request, club_id, page_number):
+    try:
+      club = BookClub.objects.get(id=self.kwargs['club_id'])
+      shared_access_list = SharedAccess.objects.filter(club=club)
+      total_count = shared_access_list.count()
+      start = int(page_number) * 5
+      end = start + 5
+      if total_count > end:
+        shared_access_list = shared_access_list[start:end]
+      else:
+        shared_access_list = shared_access_list[start:]
+      return JsonResponse({
+        "page_number": int(page_number),
+        "shared_access_list": SharedAccessSerializer(shared_access_list, many=True, context=self.get_serializer_context()).data,
+        "total_shared_access": total_count
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that gets called when a user submits a request for access
+# to a specfic shared access account
 @permission_classes([permissions.IsAuthenticated])
 class SharedAccessRequest(generics.GenericAPIView):
   def post(self, request):
@@ -158,6 +236,10 @@ class SharedAccessRequest(generics.GenericAPIView):
       error_message = str(e)
       return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that gets called when a user responds to a Shared Access request.
+# If the request is accepted the requesting_user gets added the to allow_list
+# of the specified shared access and the request is deleted
+# Otherwise the requests is just deleted
 @permission_classes([permissions.IsAuthenticated])
 class SharedAccessRequestResponse(generics.GenericAPIView):
   def post(self, request):
@@ -184,6 +266,8 @@ class SharedAccessRequestResponse(generics.GenericAPIView):
       error_message = str(e)
       return JsonResponse({"error_message": error_message}, 400)
 
+# API view that gets called when a user submits a request to
+# have their account deleted.
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def delete_account(request):
@@ -200,8 +284,8 @@ def delete_account(request):
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
 
-
-# Returns a user's secuirty question. THis is used during the password reset process
+# API view that gets called to retrieve a users security question when
+# the user has forgotten their password and is trying to reset it 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def get_security_question(request):
@@ -215,8 +299,9 @@ def get_security_question(request):
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
 
-# Creates a vote object to record a vote made 
-# by a user on a specific poll with a specific choice.
+# API view that gets called when a user makes a vote on a poll.
+# Creates a vote object to record a vote made by a user on a specific poll with a specific choice.
+# If the user has already voted it returns a 200 status with an error_message
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def vote(request):
@@ -241,7 +326,8 @@ def vote(request):
     error_message = str(e)
     return JsonResponse({"error_message":error_message}, status=400)
 
-# Reserve a book for a user
+# API that gets called when a user submits a reservation request for a book.
+# If the user already has 3 reservation it returns a 200 status with an error_message
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def reserve(request):
@@ -257,7 +343,7 @@ def reserve(request):
         book.hold_for = user
         book.save()
         return JsonResponse({
-          "message": "Reservation Completed"
+          "error_message": "Reservation Completed"
         })
     else:
       return JsonResponse({"error_message": "This book is already reserved"})
@@ -265,6 +351,7 @@ def reserve(request):
     error_message = str(e)
     return JsonResponse({"error_message": error_message}, status=400)
 
+# API view that gets called when a user submits a request to delete a book reservation.
 @permission_classes([permissions.IsAuthenticated])
 class ReserveDelete(generics.GenericAPIView):
   def post(self, request, *args, **kwargs):
@@ -283,7 +370,8 @@ class ReserveDelete(generics.GenericAPIView):
       return JsonResponse({"error_message": error_message}, status=400)
 
 
-# Update User Profile
+# API view that gets called when a user submits an update to their profile
+# (Currently only updates their profile interests)
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def update_profile(request):
@@ -298,3 +386,50 @@ def update_profile(request):
   except Exception as e:
     error_message = str(e)
     return JsonResponse({"error:message": error_message}, status=200)
+
+# API view that gets called when a user creates a new discussion thread.
+@permission_classes([permissions.IsAuthenticated])
+class CreateThread(generics.GenericAPIView):
+  def post(self, request):
+    try:
+      request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(id=request_data['user_id'])
+      new_thread = Thread.objects.create(
+        creator = user,
+        title = request_data['thread_title'],
+        description = request_data['thread_description'],
+      )
+      new_thread.save()
+      threads = Thread.objects.all().order_by('-created_on')
+      if threads.count() > 20:
+        current_threads = thread[:20]
+      else:
+        current_threads = threads
+      return JsonResponse({
+        "message": "Thread created successfully",
+        "threads": ThreadSerializer(current_threads, many=True, context=self.get_serializer_context())
+      })
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, 400)
+
+# Api view that gets caled when a user creates a new comment on a thread.
+@permission_classes([permissions.IsAuthenticated])
+class PostComment(generics.GenericAPIView):
+  def post(self, request):
+    try:
+      request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
+      user = User.objects.get(id=request_data['user_id'])
+      thread = Thread.objects.get(id=request_data['thread_id'])
+      reply = None
+      if request_data['reply_to']:
+        reply = Message.objects.get(id=request_data['reply_to'])
+      new_comment = Message.objects.create(
+        thread = thread,
+        creator = user,
+        content = request_data['message_content'],
+        reply_to = reply,
+      )
+    except Exception as e:
+      error_message = str(e)
+      return JsonResponse({"error_message": error_message}, status=400)
