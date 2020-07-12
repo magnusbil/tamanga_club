@@ -9,6 +9,7 @@ import SeriesByTitleView from '../../../containers/Library/SeriesByTitleView';
 import { Card } from 'react-bootstrap';
 import Loading from '../../../components/common/Loading';
 import LibraryNav from '../../../components/Library/LibraryNav';
+import Paginator from '../../../components/common/Paginator';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);
@@ -43,6 +44,11 @@ describe('<SeriesByTitleView /> in loading phase', () => {
     props = {
       getAllSeries: mockGetAllSeries,
       setCurrentSeries: jest.fn(),
+      match: {
+        params: {
+          page_number: 1,
+        },
+      },
     };
   });
 
@@ -66,6 +72,11 @@ describe('<SeriesByTitleView /> with no data', () => {
     props = {
       getAllSeries: mockGetAllSeries,
       setCurrentSeries: jest.fn(),
+      match: {
+        params: {
+          page_number: 1,
+        },
+      },
     };
   });
 
@@ -100,12 +111,18 @@ describe('<SeriesByTitleView /> with data', () => {
     props = {
       getAllSeries: jest.fn(),
       setCurrentSeries: jest.fn(),
+      match: {
+        params: {
+          page_number: 1,
+        },
+      },
     };
   });
 
   it('Should render NoData', () => {
     wrapper = mountRender(store, props);
-    expect(wrapper.containsMatchingElement(LibraryNav)).toBe(true);
-    expect(wrapper.containsMatchingElement(Card)).toBe(true);
+    expect(
+      wrapper.containsAllMatchingElements([LibraryNav, Card, Paginator])
+    ).toBe(true);
   });
 });

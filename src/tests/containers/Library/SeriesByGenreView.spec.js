@@ -8,6 +8,7 @@ import SeriesByGenreView from '../../../containers/Library/SeriesByGenreView';
 import NoData from '../../../components/common/NoData';
 import LibraryNav from '../../../components/Library/LibraryNav';
 import { Card } from 'react-bootstrap';
+import Paginator from '../../../components/common/Paginator';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);
@@ -41,6 +42,7 @@ describe('<SeriesByGenre /> unit test with no data', () => {
       match: {
         params: {
           genre: null,
+          page_number: 1,
         },
       },
     };
@@ -83,6 +85,7 @@ describe('<SeriesByGenre /> unit test with data', () => {
       match: {
         params: {
           genre: 'action',
+          page_number: 1,
         },
       },
     };
@@ -95,7 +98,8 @@ describe('<SeriesByGenre /> unit test with data', () => {
 
   it('Should render Nodata', () => {
     wrapper = mountRender(store, props);
-    expect(wrapper.containsMatchingElement(LibraryNav)).toBe(true);
-    expect(wrapper.containsMatchingElement(Card)).toBe(true);
+    expect(
+      wrapper.containsAllMatchingElements([LibraryNav, Card, Paginator])
+    ).toBe(true);
   });
 });

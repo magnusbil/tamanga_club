@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import PollListView from '../../../containers/Club/PollListView';
 import NoData from '../../../components/common/NoData';
 import Poll from '../../../components/Club/PollView';
+import Paginator from '../../../components/common/Paginator';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 const mockStore = configureMockStore([thunk]);
@@ -37,6 +38,11 @@ describe('<PollListView /> unit test with no data', () => {
     store.dispatch = jest.fn();
     props = {
       getPolls: jest.fn(),
+      match: {
+        params: {
+          page_number: 1,
+        },
+      },
     };
   });
 
@@ -78,11 +84,18 @@ describe('<PollListView /> unit test with data', () => {
     store.dispatch = jest.fn();
     props = {
       getPolls: jest.fn(),
+      match: {
+        params: {
+          page_number: 1,
+        },
+      },
     };
   });
 
   it('Should render 1 <Poll />', () => {
     wrapper = mountRender(store, props);
-    expect(wrapper.containsMatchingElement(<Poll></Poll>)).toBe(true);
+    expect(
+      wrapper.containsAllMatchingElements([<Poll></Poll>, <Paginator />])
+    ).toBe(true);
   });
 });

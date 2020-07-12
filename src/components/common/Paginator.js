@@ -29,6 +29,7 @@ class Paginator extends React.Component {
     }
     return (
       <footer>
+        <div className="buffer"></div>
         <Row>
           <Col lg={{ span: 3, offset: 5 }}>
             <Pagination>{items}</Pagination>

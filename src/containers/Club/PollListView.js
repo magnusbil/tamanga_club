@@ -27,7 +27,7 @@ class PollListView extends React.Component {
         );
       });
       return (
-        <div className="pt-5">
+        <div>
           {poll_rows}
           <Paginator
             split_by={5}
