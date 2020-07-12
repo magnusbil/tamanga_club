@@ -21,7 +21,7 @@ class RecentAdditions extends React.Component {
       let start = i == 0 ? 0 : cards.length - (cards.length - 4);
       let end = i + 4 < cards.length ? i + 4 : cards.length;
       items.push(
-        <Carousel.Item>
+        <Carousel.Item key={'carousel_item_' + i}>
           <Row>{cards.slice(start, end)}</Row>
         </Carousel.Item>
       );
@@ -33,7 +33,10 @@ class RecentAdditions extends React.Component {
     if (this.props.recent_additions.length > 0) {
       var book_cards = this.props.recent_additions.map(function (book) {
         return (
-          <a href={'/series/' + book.series_title} key={book.volume}>
+          <a
+            href={'/series/' + book.series_title}
+            key={book.series + '_' + book.volume}
+          >
             <Card className="img-card">
               <Card.Img
                 src={book.cover_image}

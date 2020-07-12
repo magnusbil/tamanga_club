@@ -26,6 +26,7 @@ const initialState = {
   genre_list: GENRES,
   series_list: undefined,
   current_series_data: undefined,
+  total_series: 0,
 };
 
 export default function (state = initialState, action) {
@@ -36,15 +37,12 @@ export default function (state = initialState, action) {
         recent_additions: action.payload,
       };
     case GET_ALL_SERIES:
-      return {
-        ...state,
-        series_list: action.payload,
-      };
     case GET_GENRE_SERIES:
+      console.log(action.payload);
       return {
         ...state,
-        genre: action.payload.genre,
-        series_list: action.payload.data,
+        series_list: action.payload.series_list,
+        total_series: action.payload.total_series,
       };
     case GET_SINGLE_SERIES:
       return {

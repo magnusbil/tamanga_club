@@ -37,8 +37,8 @@ class NavBar extends React.Component {
             Meetup
           </Nav.Link>
           <Nav.Link href="/search">Library</Nav.Link>
-          <Nav.Link href="/polls">Polls</Nav.Link>
-          <Nav.Link href="/shared">Shared Access</Nav.Link>
+          <Nav.Link href="/polls/page=1">Polls</Nav.Link>
+          <Nav.Link href="/shared/page=1">Shared Access</Nav.Link>
         </Nav>
         <Nav className="ml-auto pl-2" id="navbar">
           <Nav.Link href="/profile" id="profile-link" className="rounded">

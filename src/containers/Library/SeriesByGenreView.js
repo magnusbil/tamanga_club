@@ -6,6 +6,7 @@ import { getGenreSeries, setCurrentSeries } from '../../actions/library';
 import Loading from '../../components/common/Loading';
 import LibraryNav from '../../components/Library/LibraryNav';
 import NoData from '../../components/common/NoData';
+import Paginator from '../../components/common/Paginator';
 
 const SeriesRow = (props) => {
   return <Row className="display-row">{props.cards}</Row>;
@@ -19,7 +20,10 @@ class SeriesByGenreView extends React.Component {
 
   componentDidMount() {
     if (!this.props.series_list) {
-      this.props.getGenreSeries(this.props.current_genre);
+      this.props.getGenreSeries(
+        this.props.current_genre,
+        this.props.page_number
+      );
     }
   }
 
@@ -89,6 +93,12 @@ class SeriesByGenreView extends React.Component {
         <LibraryNav currentLink="series" />
         {this.renderGenreNav()}
         {this.renderSeries()}
+        <Paginator
+          split_by={21}
+          base_url={'search/by_genre/' + this.props.current_genre + '/page='}
+          page_number={this.props.page_number}
+          total={this.props.total_polls}
+        />
       </div>
     ) : (
       <Loading />
@@ -100,6 +110,8 @@ const mapPropsToState = (state, ownProps) => ({
   genre_list: state.library.genre_list,
   current_genre: ownProps.match.params.genre,
   series_list: state.library.series_list,
+  page_number: ownProps.match.params.page_number - 1,
+  total_series: state.library.total_series,
 });
 
 export default connect(mapPropsToState, { getGenreSeries, setCurrentSeries })(

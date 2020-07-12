@@ -27,22 +27,27 @@ export const getRecents = () => (dispatch, getState) => {
 };
 
 // Get all series for the SeriesDetailView
-export const getAllSeries = () => (dispatch, getState) => {
-  axios.get('/club/series', tokenConfig(getState)).then((res) => {
-    dispatch({
-      type: GET_ALL_SERIES,
-      payload: res.data,
+export const getAllSeries = (page_number) => (dispatch, getState) => {
+  axios
+    .get('/club/series' + '/' + page_number, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_ALL_SERIES,
+        payload: res.data,
+      });
     });
-  });
 };
 
-export const getGenreSeries = (genre) => (dispatch, getState) => {
+export const getGenreSeries = (genre, page_number) => (dispatch, getState) => {
   axios
-    .get('/club/series/genre/' + genre, tokenConfig(getState))
+    .get(
+      '/club/series/genre/' + genre + '/' + page_number,
+      tokenConfig(getState)
+    )
     .then((res) => {
       dispatch({
         type: GET_GENRE_SERIES,
-        payload: { genre: genre, data: res.data },
+        payload: res.data,
       });
     })
     .catch((err) => dispatch(createMessage({ message: err })));
@@ -51,7 +56,7 @@ export const getGenreSeries = (genre) => (dispatch, getState) => {
 // This is used when you go directly to the SeriesDetailView
 export const getSingleSeries = (title) => (dispatch, getState) => {
   axios
-    .get('/club/series/' + title, tokenConfig(getState))
+    .get('/club/series/detail/' + title, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_SINGLE_SERIES,
