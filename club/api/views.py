@@ -337,7 +337,7 @@ def reserve(request):
         book.hold_for = user
         book.save()
         return JsonResponse({
-          "error_message": "Reservation Completed"
+          "message": "Reservation Completed"
         })
     else:
       return JsonResponse({"error_message": "This book is already reserved"})
