@@ -3,7 +3,7 @@ import { SCREEN_RESIZE } from '../actions/types';
 const window_size = typeof window == 'object' ? window.innerWidth : 0;
 const initialState = {
   is_mobile: window < 690,
-  card_break_size: typeof window == 'object' ? window.innerWidth < 1200 : null,
+  card_break_size: 4,
 };
 
 export default function (state = initialState, action) {
