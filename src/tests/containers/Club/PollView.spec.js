@@ -32,6 +32,10 @@ describe('<Poll /> unit test with no data', () => {
         poll_list: [],
         poll_results: [],
       },
+      ui: {
+        is_mobile: false,
+        card_break_size: 4,
+      },
     });
     props = {
       submitVote: jest.fn(),
@@ -57,6 +61,10 @@ describe('<Poll /> unit test with data', () => {
       club: {
         poll_list: [],
         poll_results: [],
+      },
+      ui: {
+        is_mobile: false,
+        card_break_size: 4,
       },
     });
     props = {

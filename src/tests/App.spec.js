@@ -37,6 +37,10 @@ describe('<App/> unit Test', () => {
       auth: {
         user: {},
       },
+      ui: {
+        is_mobile: false,
+        card_break_size: 4,
+      },
       errors: {},
       messages: {},
     });

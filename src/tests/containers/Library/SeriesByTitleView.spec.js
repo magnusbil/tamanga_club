@@ -40,6 +40,9 @@ describe('<SeriesByTitleView /> in loading phase', () => {
       library: {
         series_list: undefined,
       },
+      ui: {
+        card_break_size: 4,
+      },
     });
     props = {
       getAllSeries: mockGetAllSeries,
@@ -67,6 +70,9 @@ describe('<SeriesByTitleView /> with no data', () => {
       },
       library: {
         series_list: [],
+      },
+      ui: {
+        card_break_size: 4,
       },
     });
     props = {
@@ -106,6 +112,9 @@ describe('<SeriesByTitleView /> with data', () => {
             volumes: [],
           },
         ],
+      },
+      ui: {
+        card_break_size: 4,
       },
     });
     props = {

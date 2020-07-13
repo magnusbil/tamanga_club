@@ -26,7 +26,7 @@ describe('<LibraryNav', () => {
         <Nav.Link eventKey="by_title" href="/search/by_title/page=1">
           Alphabetical
         </Nav.Link>,
-        <Nav.Link eventKey="genre" href="/search/by_genre/action/page=1">
+        <Nav.Link eventKey="by_genre" href="/search/by_genre/action/page=1">
           Genre
         </Nav.Link>,
       ])

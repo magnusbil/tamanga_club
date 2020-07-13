@@ -34,6 +34,9 @@ describe('<PollListView /> unit test with no data', () => {
       club: {
         poll_list: [],
       },
+      ui: {
+        card_break_size: 4,
+      },
     });
     store.dispatch = jest.fn();
     props = {
@@ -79,6 +82,9 @@ describe('<PollListView /> unit test with data', () => {
             //     poll_votes: [],
           },
         },
+      },
+      ui: {
+        card_break_size: 4,
       },
     });
     store.dispatch = jest.fn();
