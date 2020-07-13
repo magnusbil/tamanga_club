@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { Provider as AlertProvider } from 'react-alert';
 import App from '../App';
 import { Alerts } from '../components/common/Alerts';
-import NavBar from '../components/common/NavBar';
+import TamcHeader from '../components/common/TamcHeader';
 import axios from 'axios';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
@@ -48,7 +48,11 @@ describe('<App/> unit Test', () => {
   it('Should have an rendered components', () => {
     wrapper = mountRender(store, props);
     expect(
-      wrapper.containsAllMatchingElements([AlertProvider, Alerts, <NavBar />])
+      wrapper.containsAllMatchingElements([
+        AlertProvider,
+        Alerts,
+        <TamcHeader />,
+      ])
     ).toBe(true);
   });
 
