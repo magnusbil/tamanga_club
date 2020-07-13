@@ -124,8 +124,8 @@ class SeriesDetailView extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  user: state.auth.user,
   title: ownProps.match.params.title,
+  user: state.auth.user,
   series_data: state.library.current_series_data,
 });
 

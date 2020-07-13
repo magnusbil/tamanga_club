@@ -30,7 +30,6 @@ class SeriesByTitleView extends React.Component {
     if (this.props.series_list.length > 0) {
       var rows = [];
       var cards = [];
-
       // Generate Cards containg individual Series data
       var series_cards = this.props.series_list.map(function (series) {
         return (
@@ -52,7 +51,10 @@ class SeriesByTitleView extends React.Component {
       // construct rows from the series cards,
       for (var i = 0; i < series_cards.length; i++) {
         cards.push(series_cards[i]);
-        if (cards.length === 4 || i === series_cards.length - 1) {
+        if (
+          cards.length === this.props.card_break_size ||
+          i === series_cards.length - 1
+        ) {
           rows.push(<SeriesRow cards={cards} key={i}></SeriesRow>);
           cards = [];
         }
@@ -67,7 +69,7 @@ class SeriesByTitleView extends React.Component {
   render() {
     return this.props.series_list ? (
       <div>
-        <LibraryNav currentLink="series" />
+        <LibraryNav currentLink="by_title" />
         {this.renderSeries()}
         <Paginator
           split_by={21}
@@ -83,9 +85,10 @@ class SeriesByTitleView extends React.Component {
 }
 
 const mapPropsToState = (state, ownProps) => ({
-  series_list: state.library.series_list,
   page_number: ownProps.match.params.page_number - 1,
+  series_list: state.library.series_list,
   total_series: state.library.total_series,
+  card_break_size: state.ui.card_break_size,
 });
 
 export default connect(mapPropsToState, { getAllSeries, setCurrentSeries })(

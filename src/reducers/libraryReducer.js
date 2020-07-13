@@ -38,7 +38,6 @@ export default function (state = initialState, action) {
       };
     case GET_ALL_SERIES:
     case GET_GENRE_SERIES:
-      console.log(action.payload);
       return {
         ...state,
         series_list: action.payload.series_list,

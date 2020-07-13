@@ -48,10 +48,10 @@ class PollListView extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  page_number: ownProps.match.params.page_number - 1,
   user: state.auth.user,
   poll_list: state.club.poll_list,
   total_polls: state.club.total_polls,
-  page_number: ownProps.match.params.page_number - 1,
 });
 
 export default connect(mapStateToProps, { getPolls })(PollListView);
