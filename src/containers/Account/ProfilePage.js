@@ -28,6 +28,16 @@ class ProfilePage extends React.Component {
     });
   }
 
+  deleteReserve() {
+    this.setState({
+      show_delete_reservation_modal: false,
+    });
+    this.props.removeReservation(
+      this.props.user.id,
+      this.state.selected_reservation.id
+    );
+  }
+
   toggleHandleRequest(request) {
     this.setState({
       selected_request: request,
@@ -40,16 +50,6 @@ class ProfilePage extends React.Component {
     this.setState({
       show_handle_request_modal: !this.state.show_handle_request_modal,
     });
-  }
-
-  deleteReserve() {
-    this.setState({
-      show_modal: false,
-    });
-    this.props.removeReservation(
-      this.props.user.id,
-      this.state.selected_reservation.id
-    );
   }
 
   renderAbout() {
