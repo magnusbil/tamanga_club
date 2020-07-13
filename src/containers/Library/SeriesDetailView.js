@@ -50,8 +50,7 @@ class SeriesDetailView extends React.Component {
     // Creates an array of Cards that contain individual book data
     var book_cards = this.props.series_data.volumes.map(function (book) {
       return (
-        // <Col className="book" key={book.volume_number}>
-        <Card className="img-card">
+        <Card className="img-card" key={book.volume_number}>
           {book.hold_for ? (
             <Card.Img src={book.cover_image} className="reserved book-img" />
           ) : (
@@ -62,7 +61,6 @@ class SeriesDetailView extends React.Component {
             />
           )}
         </Card>
-        // </Col>
       );
     }, this);
 

@@ -33,6 +33,10 @@ describe('<SeriesDetailView /> unit test with no data', () => {
       library: {
         current_series_data: undefined,
       },
+      ui: {
+        is_mobile: false,
+        card_break_size: 4,
+      },
     });
     props = {
       match: {
@@ -81,6 +85,10 @@ describe('<SeriesDetailView /> unit test with data', () => {
             },
           ],
         },
+      },
+      ui: {
+        is_mobile: false,
+        card_break_size: 4,
       },
       series_data: undefined,
     });
