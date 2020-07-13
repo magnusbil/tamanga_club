@@ -35,7 +35,7 @@ class SeriesByGenreView extends React.Component {
     const links = Object.keys(this.props.genre_list).map((key, index) => {
       return (
         <Nav.Item key={key}>
-          <Nav.Link eventKey={key} href={'/search/by_genre/' + key}>
+          <Nav.Link eventKey={key} href={'/search/by_genre/' + key + '/page=1'}>
             {this.props.genre_list[key]}
           </Nav.Link>
         </Nav.Item>

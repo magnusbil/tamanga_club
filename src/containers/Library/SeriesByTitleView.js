@@ -42,7 +42,7 @@ class SeriesByTitleView extends React.Component {
             <Card className="img-card">
               <Card.Img
                 src={series.series_cover_image}
-                className="book-img-select"
+                className="book-img book-img-select"
               />
             </Card>
           </a>
