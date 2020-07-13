@@ -73,7 +73,6 @@ export const requestAccess = (user, shared_access) => (dispatch, getState) => {
     shared_access_id: shared_access.id,
   };
 
-  console.log(body);
   axios
     .post('/club/request_shared_access', body, tokenConfig(getState))
     .then((res) => {
@@ -86,7 +85,6 @@ export const requestAccess = (user, shared_access) => (dispatch, getState) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };

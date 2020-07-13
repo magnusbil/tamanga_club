@@ -75,7 +75,10 @@ class SeriesByGenreView extends React.Component {
       // construct rows from the series cards,
       for (var i = 0; i < series_cards.length; i++) {
         cards.push(series_cards[i]);
-        if (cards.length === 4 || i === series_cards.length - 1) {
+        if (
+          cards.length === this.props.card_break_size ||
+          i === series_cards.length - 1
+        ) {
           rows.push(<SeriesRow cards={cards} key={i}></SeriesRow>);
           cards = [];
         }
@@ -90,7 +93,7 @@ class SeriesByGenreView extends React.Component {
   render() {
     return this.props.series_list ? (
       <div>
-        <LibraryNav currentLink="series" />
+        <LibraryNav currentLink="by_genre" />
         {this.renderGenreNav()}
         {this.renderSeries()}
         <Paginator
@@ -107,11 +110,12 @@ class SeriesByGenreView extends React.Component {
 }
 
 const mapPropsToState = (state, ownProps) => ({
-  genre_list: state.library.genre_list,
   current_genre: ownProps.match.params.genre,
-  series_list: state.library.series_list,
   page_number: ownProps.match.params.page_number - 1,
+  genre_list: state.library.genre_list,
+  series_list: state.library.series_list,
   total_series: state.library.total_series,
+  card_break_size: state.ui.card_break_size,
 });
 
 export default connect(mapPropsToState, { getGenreSeries, setCurrentSeries })(

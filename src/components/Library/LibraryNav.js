@@ -16,7 +16,7 @@ class LibraryNav extends React.Component {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="genre" href="/search/by_genre/action/page=1">
+          <Nav.Link eventKey="by_genre" href="/search/by_genre/action/page=1">
             Genre
           </Nav.Link>
         </Nav.Item>

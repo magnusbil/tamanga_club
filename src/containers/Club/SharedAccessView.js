@@ -53,9 +53,9 @@ class SharedAccessView extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  page_number: ownProps.match.params.page_number - 1,
   user: state.auth.user,
   shared_access: state.club.shared_access,
-  page_number: ownProps.match.params.page_number - 1,
   total_shared_access: state.club.total_shared_access,
 });
 

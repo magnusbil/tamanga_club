@@ -1,12 +1,12 @@
 import React from 'react';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavDropdown, Navbar, Nav } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
-class NavBar extends React.Component {
+class TamcHeader extends React.Component {
   static propTypes = {
     logout: PropTypes.func.isRequired,
   };
@@ -28,7 +28,8 @@ class NavBar extends React.Component {
       </Navbar>
     );
   }
-  userNav() {
+
+  largeNav() {
     return (
       <Navbar id="bg-navbar-pink">
         <Navbar.Brand href="/">Triangle Manga Club</Navbar.Brand>
@@ -49,7 +50,15 @@ class NavBar extends React.Component {
             }
             {this.props.user.username}
           </Nav.Link>
-          <NavDropdown id="nav-dropdown" alignRight title="">
+          <NavDropdown
+            id="nav-dropdown"
+            alignRight
+            title={
+              <span>
+                <FontAwesomeIcon icon={faBars} />
+              </span>
+            }
+          >
             <NavDropdown.Item href="/profile/settings">
               Account Settings
             </NavDropdown.Item>
@@ -59,12 +68,62 @@ class NavBar extends React.Component {
       </Navbar>
     );
   }
+
+  smallNav() {
+    return (
+      <Navbar id="bg-navbar-pink">
+        <Navbar.Brand href="/">Triangle Manga Club</Navbar.Brand>
+        <Nav className="ml-auto">
+          <NavDropdown
+            id="nav-dropdown"
+            alignRight
+            title={
+              <span>
+                <FontAwesomeIcon icon={faBars} />
+              </span>
+            }
+          >
+            <NavDropdown.Item
+              href="https://www.meetup.com/TriangleAnime"
+              target="_blank"
+            >
+              Meetup
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/search">Library</NavDropdown.Item>
+            <NavDropdown.Item href="/polls/page=1">Polls</NavDropdown.Item>
+            <NavDropdown.Item href="/shared/page=1">
+              Shared Access
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/profile">
+              {
+                <span id="profile-icon">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+              }
+              {this.props.user.username}
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/profile/settings">
+              Account Settings
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={this.onSubmit}>Logout</NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </Navbar>
+    );
+  }
+
   render() {
-    return this.props.user ? this.userNav() : this.guestNav();
+    return this.props.user
+      ? this.props.is_mobile
+        ? this.smallNav()
+        : this.largeNav()
+      : this.guestNav();
   }
 }
 
 const mapsStateToProps = (state) => ({
   user: state.auth.user,
+  is_mobile: state.ui.is_mobile,
 });
-export default connect(mapsStateToProps, { logout })(NavBar);
+
+export default connect(mapsStateToProps, { logout })(TamcHeader);

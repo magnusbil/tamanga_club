@@ -50,26 +50,27 @@ class SeriesDetailView extends React.Component {
     // Creates an array of Cards that contain individual book data
     var book_cards = this.props.series_data.volumes.map(function (book) {
       return (
-        <Col className="book" key={book.volume_number}>
-          <Card className="img-card">
-            {book.hold_for ? (
-              <Card.Img src={book.cover_image} className="reserved book-img" />
-            ) : (
-              <Card.Img
-                src={book.cover_image}
-                className="book-img book-img-select"
-                onClick={() => this.toggle(book)}
-              />
-            )}
-          </Card>
-        </Col>
+        <Card className="img-card" key={book.volume_number}>
+          {book.hold_for ? (
+            <Card.Img src={book.cover_image} className="reserved book-img" />
+          ) : (
+            <Card.Img
+              src={book.cover_image}
+              className="book-img book-img-select"
+              onClick={() => this.toggle(book)}
+            />
+          )}
+        </Card>
       );
     }, this);
 
     // Constructs rows out of the book cards created above
     for (var i = 0; i < book_cards.length; i++) {
       cards.push(book_cards[i]);
-      if (cards.length === 3 || i === book_cards.length - 1) {
+      if (
+        cards.length === this.props.card_break_size ||
+        i === book_cards.length - 1
+      ) {
         rows.push(<BookRow cards={cards} key={i}></BookRow>);
         cards = [];
       }
@@ -124,9 +125,10 @@ class SeriesDetailView extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  user: state.auth.user,
   title: ownProps.match.params.title,
+  user: state.auth.user,
   series_data: state.library.current_series_data,
+  card_break_size: state.ui.card_break_size,
 });
 
 export default connect(mapStateToProps, { getSingleSeries, reserveBook })(
