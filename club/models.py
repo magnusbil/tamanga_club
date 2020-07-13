@@ -104,6 +104,7 @@ class AccessRequest(models.Model):
       return self.request_from.username + " requested access to " + self.request_for.resource_name +  " from " + self.request_to.username
 
 class Thread(models.Model):
+    club = models.ForeignKey(BookClub, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="threads_created")

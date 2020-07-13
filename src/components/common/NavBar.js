@@ -37,6 +37,7 @@ class NavBar extends React.Component {
             Meetup
           </Nav.Link>
           <Nav.Link href="/search">Library</Nav.Link>
+          <Nav.Link href="/forum/page=1">Forum</Nav.Link>
           <Nav.Link href="/polls/page=1">Polls</Nav.Link>
           <Nav.Link href="/shared/page=1">Shared Access</Nav.Link>
         </Nav>

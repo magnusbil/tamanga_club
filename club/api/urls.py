@@ -23,5 +23,6 @@ urlpatterns = [
     path('shared/<club_id>/<page_number>', SharedAccessListView.as_view()),
     path('request_shared_access', SharedAccessRequest.as_view()),
     path('access_request_respond', SharedAccessRequestResponse.as_view()),
-    path('createThread', CreateThread.as_view())
+    path('create_thread', CreateThread.as_view()),
+    path('create_comment', CreateComment.as_view())
 ]

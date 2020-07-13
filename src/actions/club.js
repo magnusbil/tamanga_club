@@ -8,6 +8,7 @@ import {
   GET_SHARED_ACCESS,
   ACCESS_REQUEST_SUCCESS,
   ACCESS_REQUEST_RESPONSE_SUCCESS,
+  GET_THREADS_SUCCESS,
 } from './types';
 
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -111,3 +112,20 @@ export const respondToAccessRequest = (request, decision) => (
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
+
+export const getThreads = ((club_id, page_number) = (dispatch, getState) => {
+  axios
+    .get(
+      '/club/get_threads/' + club_id + '/' + page_number,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: GET_THREADS_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+});

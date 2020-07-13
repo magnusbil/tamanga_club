@@ -381,6 +381,26 @@ def update_profile(request):
     error_message = str(e)
     return JsonResponse({"error:message": error_message}, status=200)
 
+# API view that returns a subset of filtered thread objects
+# subset is filtered by Club
+class ThreadListView(ListAPIView):
+    def get(self, request, club_id, page_number):
+      try:
+        thread_list = Threads.objects.filter(club=club_id)
+        start = page_number * 10
+        end = start + 10
+        total_threads = thread_list.count()
+        if total_threads > end:
+          total_threads = total_threads[start:end]
+        else:
+          total_threads = total_threads[start:]
+        return JsonResponse({
+          "thread_list": ThreadSerializer(thread_list, many=True, context=self.get_serializer_context()).data,
+          "total_threads": total_threads
+        })
+      except Exception as e:
+        return JsonResponse({"error_message": error_message}, status=400)
+
 # API view that gets called when a user creates a new discussion thread.
 @permission_classes([permissions.IsAuthenticated])
 class CreateThread(generics.GenericAPIView):
@@ -409,7 +429,7 @@ class CreateThread(generics.GenericAPIView):
 
 # Api view that gets caled when a user creates a new comment on a thread.
 @permission_classes([permissions.IsAuthenticated])
-class PostComment(generics.GenericAPIView):
+class CreateComment(generics.GenericAPIView):
   def post(self, request):
     try:
       request_data = request_data = json.loads(request.body.decode(encoding='utf-8'))
