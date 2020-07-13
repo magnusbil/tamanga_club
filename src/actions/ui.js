@@ -1,7 +1,7 @@
 import { SCREEN_RESIZE } from './types';
 
 export const screen_resize = (screen_width) => (dispatch) => {
-  const is_mobile = screen_width < 690;
+  const is_mobile = screen_width < 710;
   const break_size =
     screen_width < 768
       ? 1
