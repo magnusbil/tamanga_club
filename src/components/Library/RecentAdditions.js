@@ -17,9 +17,9 @@ class RecentAdditions extends React.Component {
   generateItems(cards) {
     let items = [];
     cards = cards.reverse();
-    for (var i = 0; i < cards.length; i += 4) {
-      let start = i == 0 ? 0 : cards.length - (cards.length - 4);
-      let end = i + 4 < cards.length ? i + 4 : cards.length;
+    for (var i = 0; i < cards.length / this.props.card_break_size; i++) {
+      let start = i * this.props.card_break_size;
+      let end = start + this.props.card_break_size;
       items.push(
         <Carousel.Item key={'carousel_item_' + i}>
           <Row>{cards.slice(start, end)}</Row>
@@ -35,7 +35,7 @@ class RecentAdditions extends React.Component {
         return (
           <a
             href={'/series/' + book.series_title}
-            key={book.series + '_' + book.volume}
+            key={book.series + '_' + book.volume_number}
           >
             <Card className="img-card">
               <Card.Img
@@ -65,6 +65,7 @@ class RecentAdditions extends React.Component {
 
 const mapStateToProps = (state) => ({
   recent_additions: state.library.recent_additions,
+  card_break_size: state.ui.card_break_size,
 });
 
 export default connect(mapStateToProps, { getRecents })(RecentAdditions);

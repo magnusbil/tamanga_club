@@ -122,9 +122,9 @@ class PollListView(generics.GenericAPIView):
 @permission_classes([permissions.IsAuthenticated])
 class RecentBooksView(ListAPIView):
   books = Book.objects.all().order_by('-added_on', 'series', 'volume_number')
-  end = books.count()-8 # I only want the last 8 books
-  if end > 0:
-    queryset = books[end:]
+  total = books.count() # I only want the last 8 books
+  if total > 8:
+    queryset = books[:8]
   else:
     queryset = books
   serializer_class = BookSerializer
@@ -337,7 +337,7 @@ def reserve(request):
         book.hold_for = user
         book.save()
         return JsonResponse({
-          "error_message": "Reservation Completed"
+          "message": "Reservation Completed"
         })
     else:
       return JsonResponse({"error_message": "This book is already reserved"})

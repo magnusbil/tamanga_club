@@ -36,6 +36,9 @@ describe('<SeriesByGenre /> unit test with no data', () => {
       library: {
         series_list: undefined,
       },
+      ui: {
+        card_break_size: 4,
+      },
     });
     props = {
       getGenreSeries: mockGetGenreSeries,
@@ -78,6 +81,9 @@ describe('<SeriesByGenre /> unit test with data', () => {
           },
         ],
         genre_list: { action: 'Action' },
+      },
+      ui: {
+        card_break_size: 4,
       },
     });
     props = {
