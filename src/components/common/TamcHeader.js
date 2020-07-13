@@ -50,7 +50,15 @@ class TamcHeader extends React.Component {
             }
             {this.props.user.username}
           </Nav.Link>
-          <NavDropdown id="nav-dropdown" alignRight title="">
+          <NavDropdown
+            id="nav-dropdown"
+            alignRight
+            title={
+              <span>
+                <FontAwesomeIcon icon={faBars} />
+              </span>
+            }
+          >
             <NavDropdown.Item href="/profile/settings">
               Account Settings
             </NavDropdown.Item>

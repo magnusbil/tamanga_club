@@ -1,7 +1,7 @@
 import { SCREEN_RESIZE } from '../actions/types';
 
 const initialState = {
-  is_mobile: typeof window == 'object' ? 680 < 690 : null,
+  is_mobile: typeof window == 'object' ? window.innerWidth < 690 : null,
 };
 
 export default function (state = initialState, action) {

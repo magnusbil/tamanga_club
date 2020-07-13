@@ -34,6 +34,10 @@ body {
   background-color: lightpink;
 }
 
+.dropdown-toggle::after {
+  display: none !important;
+}
+
 .buffer {
   width: 100%;
   height: 100px;
